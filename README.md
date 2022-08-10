@@ -83,9 +83,13 @@
 
 To get a local copy up and running follow these simple example steps.
 
+<br/>
+
 ### Prerequisites
 
 Make sure you have set up your [React-Native-Enviornment](https://reactnative.dev/docs/environment-setup) properly.
+
+<br/>
 
 ### Installation
 
