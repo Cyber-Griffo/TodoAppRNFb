@@ -1,10 +1,6 @@
 <a name="readme-top"></a>
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 
-
-<!-- PROJECT LOGO -->
+<!-- PROJECT HEADER -->
 <br />
 <div align="center">
   <a href="https://github.com/Cyber-Griffo/TodoAppRNFb">
