@@ -99,18 +99,26 @@ Clone the repo
 ```
 git clone https://github.com/Cyber-Griffo/TodoAppRNFb.git
 ```
+
 <br/>
+
 Install NPM packages either with:
 ```
 yarn install
 ```
-or
+
+or:
+
 ```
 npm install
 ```
+
 Note: On MacOs you have to run `cd ios && pod install` in order to install pod dependencies.
+
 <br/>
-Start the emulator
+
+Start the emulator:
+
 ```
 yarn run adroid
 ```
