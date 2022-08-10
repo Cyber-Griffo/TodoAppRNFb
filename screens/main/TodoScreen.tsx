@@ -2,18 +2,16 @@ import React, { useEffect, useState } from 'react'
 import {
   Button,
   FlatList,
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import TodoElement from './src/components/todoelement/TodoElement'
-import Modal from './src/components/modal/Modal'
-import SafetyQuestion from './src/components/safetyQuestion/SafetyQuestion'
-import TodoInput from './src/components/todoInput/TodoInput'
+import TodoElement from '../../src/components/todoelement/TodoElement'
+import Modal from '../../src/components/modal/Modal'
+import SafetyQuestion from '../../src/components/safetyQuestion/SafetyQuestion'
+import TodoInput from '../../src/components/todoInput/TodoInput'
 
 type Todo = {
   done: boolean
@@ -22,7 +20,7 @@ type Todo = {
 }
 
 const TodoScreen = () => {
-  //! CONST
+  //! Defined Variables
   const HEADER_HEIGHT = 56
 
   // State for managing Todos
@@ -33,7 +31,7 @@ const TodoScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   // State for correct Modal to show
-  const [isAddTodoModalShowing, setIsAddTodoModalShowing] = useState<boolean>(false)
+  const [isAddTodoModalShowing, setIsAddTodoModalShowing] = useState<boolean>(true)
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] = useState<boolean>(false)
 
   // Getting SafeAreaInsets

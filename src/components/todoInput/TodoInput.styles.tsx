@@ -41,6 +41,12 @@ export const getStyles = (): TodoInputStyles => {
       padding: 10,
       marginHorizontal: 20,
       marginVertical: 10
+    },
+    errorText: {
+      marginTop: 5,
+      marginBottom: 15,
+      color: 'red',
+      textAlign: 'center'
     }
   }
 }

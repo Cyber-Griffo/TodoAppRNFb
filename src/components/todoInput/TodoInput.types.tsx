@@ -12,4 +12,5 @@ export type TodoInputStyles = {
   buttonWrapper: StyleProp<ViewStyle>
   buttonContainer: StyleProp<ViewStyle>
   buttonText: StyleProp<TextStyle>
+  errorText: StyleProp<TextStyle>
 }
