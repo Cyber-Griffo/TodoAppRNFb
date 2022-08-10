@@ -161,9 +161,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white
 [linkedin-url]: https://linkedin.com/in/christoph-gerling-45217023b
 
-[React-Native-shield]: https://img.shields.io/badge/"React%20Native"-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-Native-shield]: https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-Native-url]: https://reactnative.dev/
-[Firebase-shield]: https://img.shields.io/badge/"Firebase"-20232A?style=for-the-badge&logo=firebase
+[Firebase-shield]: https://img.shields.io/badge/Firebase-20232A?style=for-the-badge&logo=firebase
 [Firebase-url]: https://firebase.google.com/
-[Typescript-shield]: https://img.shields.io/badge/"Typescript"-20232A?style=for-the-badge&logo=typescript&logoColor=61DAFB
+[Typescript-shield]: https://img.shields.io/badge/Typescript-20232A?style=for-the-badge&logo=typescript&logoColor=61DAFB
 [Typescript-url]: https://www.typescriptlang.org/
