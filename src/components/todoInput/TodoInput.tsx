@@ -24,7 +24,13 @@ const TodoInput = (props: TodoInputProps) => {
           onChangeText={(text) => setTitle(text)}
           style={styles.textInput} />
         <View style={styles.buttonWrapper}>
-          <TouchableNativeFeedback onPress={() => createFunction(title)}>
+          <TouchableNativeFeedback onPress={() => {
+            // just create a new Todo if Title is provided
+            if (title) {
+              createFunction(title)
+              setTitle("")
+            }
+          }}>
             <View style={[styles.buttonContainer, { backgroundColor: '#1AA3FF' }]}>
               <Text style={styles.buttonText}>Create</Text>
             </View>
