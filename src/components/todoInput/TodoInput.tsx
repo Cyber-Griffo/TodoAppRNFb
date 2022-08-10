@@ -36,9 +36,10 @@ const TodoInput = (props: TodoInputProps) => {
             // just create a new Todo if Title is provided
             if (title) {
               createFunction(title)
-              setTitle("")
+            } else {
+              setErrorMessage("Please enter a Title!")
             }
-            setErrorMessage("Please enter a Title!")
+            setTitle("")
           }}>
             <View style={[styles.buttonContainer, { backgroundColor: '#1AA3FF' }]}>
               <Text style={styles.buttonText}>Create</Text>

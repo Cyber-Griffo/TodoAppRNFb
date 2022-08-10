@@ -19,7 +19,8 @@ export const getStyles = (): TodoInputStyles => {
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'space-evenly',
-      marginBottom: 20
+      marginBottom: 20,
+      paddingHorizontal: 10
     },
     buttonContainer: {
       flex: 1,
