@@ -17,7 +17,7 @@
       <img src="https://img.shields.io/github/issues/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
     </a>
     <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/blob/master/LICENSE.txt">
-      <img src="https://img.shields.io/github/license/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
+      <img src="https://img.shields.io/github/license/Cyber-Griffo/TodoAppRNFb.svg?lable=LICENSE&style=for-the-badge">
     </a>
   </div>
 
