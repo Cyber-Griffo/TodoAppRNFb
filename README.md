@@ -152,9 +152,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+If you have something similar in mind, you should go and check out some of these links.
+
+* [Setting up React-Native-Enviornment](https://reactnative.dev/docs/environment-setup)
+* [React-Native-Typescript-Template](https://reactnative.dev/docs/typescript)
+* [Setting up Firebase with React-Native](https://rnfirebase.io/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
