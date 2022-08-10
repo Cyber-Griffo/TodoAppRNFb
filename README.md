@@ -10,18 +10,20 @@
   <a href="https://github.com/Cyber-Griffo/TodoAppRNFb">
     <img src="https://media.giphy.com/media/SxFXYgj3u4dXrqOsWv/giphy.gif" width="25%">
   </a>
-  <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/network/members">
-    <img src="https://img.shields.io/github/forks/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
-  </a>
-  <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/stargazers">
-    <img src="https://img.shields.io/github/stars/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
-  </a>
-  <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/issues">
-    <img src="https://img.shields.io/github/issues/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
-  </a>
-  <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/blob/master/LICENSE.txt">
-    <img src="https://img.shields.io/github/license/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
-  </a>
+  <div align="center">
+    <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/network/members">
+      <img src="https://img.shields.io/github/forks/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
+    </a>
+    <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/stargazers">
+      <img src="https://img.shields.io/github/stars/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
+    </a>
+    <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/issues">
+      <img src="https://img.shields.io/github/issues/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
+    </a>
+    <a href="https://github.com/Cyber-Griffo/TodoAppRNFb/blob/master/LICENSE.txt">
+      <img src="https://img.shields.io/github/license/Cyber-Griffo/TodoAppRNFb.svg?style=for-the-badge">
+    </a>
+  </div>
 
 <h3 align="center">TodoApp with React-Native and Firebase</h3>
 
