@@ -57,7 +57,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
+<br/>
 <div align="center">
   <img src="assets/img/Mockup.png" width="50%">
 </div>
