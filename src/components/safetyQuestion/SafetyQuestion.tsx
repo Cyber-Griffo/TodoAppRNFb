@@ -11,9 +11,11 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
   const { acceptFunction, cancelFunction, title } = props
   const styles = getStyles()
 
+  const displayMessage = `Are you sure you want to delete \n "${title}"?`
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Are you sure you want to delete "{title}"?</Text>
+      <Text style={styles.title}>{displayMessage}</Text>
       <View style={styles.buttonWrapper}>
         <TouchableNativeFeedback onPress={() => acceptFunction()}>
           <View style={[styles.buttonContainer, styles.buttonAccept]}>

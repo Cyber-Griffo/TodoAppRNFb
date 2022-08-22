@@ -59,9 +59,7 @@
 ## About The Project
 
 <div align="center">
-  <img src="assets/img/Create-Todo.png" width="25%">
-  <img src="assets/img/List-View.png" width="25%">
-  <img src="assets/img/Delete-Todo.png" width="25%">
+  <img src="assets/img/Mockup.png" width="25%">
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
