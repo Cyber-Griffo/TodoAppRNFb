@@ -13,7 +13,8 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     }],
     title: [{
       color: 'black',
-      fontSize: 16
+      fontSize: 16,
+      marginRight: 16
     },
     ctx.done && { color: 'darkgrey' }],
     mark: [{

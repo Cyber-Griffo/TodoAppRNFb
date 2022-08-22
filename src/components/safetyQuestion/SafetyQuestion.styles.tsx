@@ -31,9 +31,19 @@ export const getStyles = (): SafetyQuestionStyles => {
       justifyContent: 'center',
       alignItems: 'center'
     },
+    buttonAccept: {
+      backgroundColor: '#1AA3FF'
+    },
+    buttonCancel: {
+      borderWidth: 1,
+      borderColor: '#1AA3FF'
+    },
     buttonText: {
       fontWeight: "600",
       color: 'white'
     },
+    buttonTextCancel: {
+      color: '#1AA3FF'
+    }
   }
 }

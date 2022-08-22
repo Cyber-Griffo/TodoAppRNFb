@@ -16,13 +16,13 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
       <Text style={styles.title}>Are you sure you want to delete "{title}"?</Text>
       <View style={styles.buttonWrapper}>
         <TouchableNativeFeedback onPress={() => acceptFunction()}>
-          <View style={[styles.buttonContainer, { backgroundColor: '#1AA3FF' }]}>
+          <View style={[styles.buttonContainer, styles.buttonAccept]}>
             <Text style={styles.buttonText}>Yes</Text>
           </View>
         </TouchableNativeFeedback>
         <TouchableNativeFeedback onPress={() => cancelFunction()}>
-          <View style={[styles.buttonContainer, { backgroundColor: '#FF5252' }]}>
-            <Text style={styles.buttonText}>Cancel</Text>
+          <View style={[styles.buttonContainer, styles.buttonCancel]}>
+            <Text style={[styles.buttonText, styles.buttonTextCancel]}>Cancel</Text>
           </View>
         </TouchableNativeFeedback>
       </View >

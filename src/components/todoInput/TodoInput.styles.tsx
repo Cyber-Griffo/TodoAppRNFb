@@ -27,13 +27,22 @@ export const getStyles = (): TodoInputStyles => {
       marginHorizontal: 10,
       paddingVertical: 12,
       borderRadius: 8,
-      backgroundColor: '#1AA3FF',
       justifyContent: 'center',
       alignItems: 'center'
+    },
+    buttonCreate: {
+      backgroundColor: '#1AA3FF'
+    },
+    buttonCancel: {
+      borderWidth: 1,
+      borderColor: '#1AA3FF'
     },
     buttonText: {
       fontWeight: "600",
       color: 'white'
+    },
+    buttonTextCancel: {
+      color: '#1AA3FF'
     },
     textInput: {
       borderColor: "gray",
@@ -41,11 +50,11 @@ export const getStyles = (): TodoInputStyles => {
       borderRadius: 10,
       padding: 10,
       marginHorizontal: 20,
-      marginVertical: 10
+      marginVertical: 20,
+      color: 'black'
     },
     errorText: {
       marginTop: 5,
-      marginBottom: 15,
       color: 'red',
       textAlign: 'center'
     }

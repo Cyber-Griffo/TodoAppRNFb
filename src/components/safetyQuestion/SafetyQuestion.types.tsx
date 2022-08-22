@@ -11,5 +11,8 @@ export type SafetyQuestionStyles = {
   title: StyleProp<TextStyle>
   buttonWrapper: StyleProp<ViewStyle>
   buttonContainer: StyleProp<ViewStyle>
+  buttonAccept: StyleProp<ViewStyle>
+  buttonCancel: StyleProp<ViewStyle>
   buttonText: StyleProp<TextStyle>
+  buttonTextCancel: StyleProp<TextStyle>
 }

@@ -4,6 +4,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableNativeFeedback,
   View,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -19,10 +20,11 @@ type Todo = {
   id: string
 }
 
-const TodoScreen = () => {
-  //! Defined Variables
-  const HEADER_HEIGHT = 56
+//! Defined Variables
+const HEADER_HEIGHT = 56
+const FOOTER_HEIGHT = 48
 
+const TodoScreen = () => {
   // State for managing Todos
   const [todos, setTodos] = useState<Todo[]>([])
   const [selectedTodoId, setSelectedTodoId] = useState<string>()
@@ -31,7 +33,7 @@ const TodoScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   // State for correct Modal to show
-  const [isAddTodoModalShowing, setIsAddTodoModalShowing] = useState<boolean>(true)
+  const [isAddTodoModalShowing, setIsAddTodoModalShowing] = useState<boolean>(false)
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] = useState<boolean>(false)
 
   // Getting SafeAreaInsets
@@ -175,12 +177,13 @@ const TodoScreen = () => {
   return (
     <>
       <View style={[styles.wrapperContainer, { paddingBottom: safeareaInsets.bottom }]}>
-        <View style={{ height: safeareaInsets.top + HEADER_HEIGHT, justifyContent: 'flex-end', backgroundColor: 'lightgrey' }}>
-          <View style={[styles.headerContainer, { height: HEADER_HEIGHT }]}>
+        <View style={[styles.headerWrapper, { height: safeareaInsets.top + HEADER_HEIGHT }]}>
+          <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Your Todo's</Text>
           </View>
         </View>
         <FlatList
+          style={styles.list}
           data={todos}
           renderItem={({ item }) => (
             <TodoElement
@@ -190,14 +193,14 @@ const TodoScreen = () => {
               toggleTodo={(id) => toggleTodo(id)}
               removeTodo={(id) => handleRemoveTodoModalActivation(id)}
             />
-          )
-          }
+          )}
           keyExtractor={({ id }) => id}
         />
-        <Button
-          color={"#1AA3FF"}
-          onPress={() => handleAddTodoModalActivation()}
-          title='Add new Todo' />
+        <TouchableNativeFeedback onPress={() => handleAddTodoModalActivation()}>
+          <View style={styles.footerButton}>
+            <Text style={styles.footerText}>Add new Todo</Text>
+          </View>
+        </TouchableNativeFeedback>
       </View>
       <Modal
         visible={isAddTodoModalShowing}
@@ -227,17 +230,47 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'white',
   },
+  headerWrapper: {
+    justifyContent: 'flex-end',
+    backgroundColor: '#1AA3FF',
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5
+  },
   headerContainer: {
+    height: HEADER_HEIGHT,
     width: '100%',
-    backgroundColor: 'lightgrey',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerText: {
-    color: 'black',
+    color: 'white',
     fontWeight: '500',
     fontSize: 18
   },
+  list: {
+    backgroundColor: 'white',
+    zIndex: -1
+  },
+  footerButton: {
+    width: '100%',
+    height: FOOTER_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  footerText: {
+    color: '#1AA3FF',
+    fontSize: 18
+  },
+
+  // Loading State
   loadingScreenContainer: {
     height: '100%',
     width: '100%',
