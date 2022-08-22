@@ -59,7 +59,7 @@
 ## About The Project
 
 <div align="center">
-  <img src="assets/img/Mockup.png" width="25%">
+  <img src="assets/img/Mockup.png" width="75%">
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
