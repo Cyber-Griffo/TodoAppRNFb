@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Button,
   FlatList,
   StyleSheet,
   Text,
@@ -18,6 +17,7 @@ type Todo = {
   done: boolean
   title: string
   id: string
+  timestamp: FirebaseFirestoreTypes.Timestamp
 }
 
 //! Defined Variables
@@ -59,7 +59,8 @@ const TodoScreen = () => {
       .collection('todos')
       .add({
         title,
-        done: false
+        done: false,
+        timestamp: firestore.FieldValue.serverTimestamp()
       }).then(() => console.log('New Todo: ' + '\'' + title + '\'' + ' successfully added.'))
   }
   function removeTodo(id: string) {
@@ -86,6 +87,16 @@ const TodoScreen = () => {
   //#region Helper functions
   function findTodoById(id: string): Todo | undefined {
     return todos?.find(todo => todo.id == id)
+  }
+  function sortTodosByTimestamp() {
+    setTodos(currTodos => {
+      return currTodos.sort((a, b) => {
+        if (a.timestamp?.valueOf() < b.timestamp?.valueOf()) {
+          return -1
+        }
+        return 1
+      })
+    })
   }
   //#endregion
 
@@ -122,18 +133,18 @@ const TodoScreen = () => {
       })
     }
     function handleAddedChange(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
-      const { title, done } = doc.data()
+      const { title, done, timestamp } = doc.data()
       if (todos.find(todo => todo.id === doc.id)) return
       setTodos(currTodos => {
-        return [...currTodos, { id: doc.id, title, done }]
+        return [...currTodos, { id: doc.id, title, done, timestamp }]
       })
     }
     function handleModifiedChange(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
-      const { title, done } = doc.data()
+      const { title, done, timestamp } = doc.data()
       setTodos(currTodos => {
         return currTodos.map((todo) => {
           if (todo.id === doc.id) {
-            return { id: doc.id, title, done }
+            return { id: doc.id, title, done, timestamp }
           }
           else {
             return todo
@@ -144,13 +155,14 @@ const TodoScreen = () => {
     //#endregion
 
     return firestore()
-      .collection('todos')
+      .collection('todos').orderBy('timestamp', 'desc')
       .onSnapshot(querySnapshot => {
         querySnapshot.docChanges().forEach(docChange => {
           if (docChange.type === 'removed') {
             handleRemovedChange(docChange.doc.id)
           } else if (docChange.type === 'added') {
             handleAddedChange(docChange.doc)
+            sortTodosByTimestamp()
           } else if (docChange.type === 'modified') {
             handleModifiedChange(docChange.doc)
           } else {
