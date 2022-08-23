@@ -43,6 +43,7 @@ const TodoInput = (props: TodoInputProps) => {
           }}
           style={styles.textInput}
           placeholder={INPUT_PLACEHOLDER}
+          placeholderTextColor={'#A1A1A1'}
           onSubmitEditing={() => handleSubmitting()}
         />
         <View style={styles.buttonWrapper}>
