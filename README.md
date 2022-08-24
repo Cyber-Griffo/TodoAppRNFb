@@ -37,6 +37,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#features">Features</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -65,6 +66,14 @@
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+### Features
+
+* Add new Todos
+* Toggle Todos
+* Remove Todos
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ### Built With
 
@@ -73,7 +82,6 @@
 * [![Typescript][Typescript-shield]][Typescript-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- GETTING STARTED -->
