@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useImperativeHandle, useState } from 'react'
 import {
   View,
   Text,
@@ -8,13 +8,19 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 import { getStyles } from './TodoInput.styles'
-import { Props as TodoInputProps } from './TodoInput.types'
+import { Props as TodoInputProps, RefFunctions } from './TodoInput.types'
 
-const TodoInput = (props: TodoInputProps) => {
+const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = (props: TodoInputProps, ref) => {
   const { cancelFunction, createFunction } = props
 
-  const [title, setTitle] = useState<string>("")
-  const [errorMessage, setErrorMessage] = useState<string>("")
+  useImperativeHandle(ref, () => ({
+    isInputEmpty() {
+      return title === '' ? true : false
+    },
+  }))
+
+  const [title, setTitle] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const INPUT_PLACEHOLDER = 'Title'
 
@@ -25,9 +31,9 @@ const TodoInput = (props: TodoInputProps) => {
     if (title) {
       createFunction(title)
     } else {
-      setErrorMessage("Please enter a Title!")
+      setErrorMessage('Please enter a Title!')
     }
-    setTitle("")
+    setTitle('')
   }
 
   return (
@@ -39,7 +45,7 @@ const TodoInput = (props: TodoInputProps) => {
           value={title}
           onChangeText={(text) => {
             setTitle(text)
-            if (errorMessage) setErrorMessage("")
+            if (errorMessage) setErrorMessage('')
           }}
           style={styles.textInput}
           placeholder={INPUT_PLACEHOLDER}
@@ -63,4 +69,4 @@ const TodoInput = (props: TodoInputProps) => {
   )
 }
 
-export default TodoInput
+export default React.forwardRef(TodoInput)

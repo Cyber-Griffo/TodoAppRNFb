@@ -5,6 +5,10 @@ export type Props = {
   cancelFunction: () => void
 }
 
+export type RefFunctions = {
+  isInputEmpty: () => boolean
+}
+
 export type TodoInputStyles = {
   container: StyleProp<ViewStyle>
   title: StyleProp<TextStyle>

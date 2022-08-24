@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   FlatList,
   StyleSheet,
@@ -12,6 +12,7 @@ import TodoElement from '../../src/components/todoelement/TodoElement'
 import Modal from '../../src/components/modal/Modal'
 import SafetyQuestion from '../../src/components/safetyQuestion/SafetyQuestion'
 import TodoInput from '../../src/components/todoInput/TodoInput'
+import { RefFunctions } from '../../src/components/todoInput/TodoInput.types'
 
 type Todo = {
   done: boolean
@@ -35,6 +36,8 @@ const TodoScreen = () => {
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] = useState<boolean>(false)
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] = useState<boolean>(false)
+
+  const reffer = useRef<RefFunctions>(null)
 
   // Getting SafeAreaInsets
   const safeareaInsets = useSafeAreaInsets()
@@ -216,8 +219,11 @@ const TodoScreen = () => {
       </View>
       <Modal
         visible={isAddTodoModalShowing}
-        onBackdropPress={() => handleAddTodoModalDismiss()}>
+        onBackdropPress={() => {
+          if (reffer.current?.isInputEmpty()) handleAddTodoModalDismiss()
+        }}>
         <TodoInput
+          ref={reffer}
           createFunction={(title) => handleAddTodo(title)}
           cancelFunction={() => handleAddTodoModalDismiss()}
         />
