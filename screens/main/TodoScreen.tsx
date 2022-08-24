@@ -101,6 +101,16 @@ const TodoScreen = () => {
       })
     })
   }
+  function sortTodosByDone() {
+    setTodos(currTodos => {
+      return currTodos.sort((a, b) => {
+        if (a.done) {
+          return -1
+        }
+        return 1
+      })
+    })
+  }
   //#endregion
 
   //#region Handle Modal State
@@ -168,6 +178,7 @@ const TodoScreen = () => {
             sortTodosByTimestamp()
           } else if (docChange.type === 'modified') {
             handleModifiedChange(docChange.doc)
+            sortTodosByDone()
           } else {
             console.error("Unexpected Error accured while processing incoming Firebase Data: \n" + JSON.stringify(docChange.doc))
           }
