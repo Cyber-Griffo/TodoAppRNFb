@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
   FlatList,
+  SectionList,
   StyleSheet,
   Text,
   TouchableNativeFeedback,
@@ -12,13 +13,19 @@ import TodoElement from '../../src/components/todoelement/TodoElement'
 import Modal from '../../src/components/modal/Modal'
 import SafetyQuestion from '../../src/components/safetyQuestion/SafetyQuestion'
 import TodoInput from '../../src/components/todoInput/TodoInput'
-import { RefFunctions } from '../../src/components/todoInput/TodoInput.types'
+import { RefFunctions as TodoInputRefFunctions } from '../../src/components/todoInput/TodoInput.types'
+import useAsyncStorage from '../../hooks/useAsyncStorage'
 
 type Todo = {
   done: boolean
   title: string
   id: string
   timestamp: FirebaseFirestoreTypes.Timestamp
+}
+
+type DataTodo = {
+  title: string
+  data: Todo[]
 }
 
 //! Defined Variables
@@ -28,7 +35,7 @@ const FOOTER_HEIGHT = 48
 const TodoScreen = () => {
   // State for managing Todos
   const [todos, setTodos] = useState<Todo[]>([])
-  const [selectedTodoId, setSelectedTodoId] = useState<string>()
+  const [selectedTodoId, setSelectedTodoId] = useState<string>('')
 
   // State for managing loading
   const [isLoading, setIsLoading] = useState(true)
@@ -37,7 +44,12 @@ const TodoScreen = () => {
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] = useState<boolean>(false)
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] = useState<boolean>(false)
 
-  const reffer = useRef<RefFunctions>(null)
+  // Async Storage for Filter
+  const [filter, setFiler] = useAsyncStorage('filter', 'timestamp')
+
+  // Refs
+  const todoInputRef = useRef<TodoInputRefFunctions>(null)
+  const isRemoveChange = useRef<boolean>(false)
 
   // Getting SafeAreaInsets
   const safeareaInsets = useSafeAreaInsets()
@@ -91,25 +103,18 @@ const TodoScreen = () => {
   function findTodoById(id: string): Todo | undefined {
     return todos?.find(todo => todo.id == id)
   }
-  function sortTodosByTimestamp() {
+  function sortTodosByDoneThenTimestamp() {
     setTodos(currTodos => {
       return currTodos.sort((a, b) => {
-        if (a.timestamp?.valueOf() < b.timestamp?.valueOf()) {
-          return -1
-        }
-        return 1
+        return (a.done === b.done) ? checkForTimestamp(a, b) : a.done ? 1 : -1
       })
     })
   }
-  function sortTodosByDone() {
-    setTodos(currTodos => {
-      return currTodos.sort((a, b) => {
-        if (a.done) {
-          return -1
-        }
-        return 1
-      })
-    })
+  function checkForTimestamp(a: Todo, b: Todo) {
+    if (a.timestamp?.valueOf() < b.timestamp?.valueOf()) {
+      return -1
+    }
+    return 1
   }
   //#endregion
 
@@ -162,6 +167,8 @@ const TodoScreen = () => {
           else {
             return todo
           }
+        }).sort((a, b) => {
+          return (a.done === b.done) ? checkForTimestamp(a, b) : a.done ? 1 : -1
         })
       })
     }
@@ -175,14 +182,18 @@ const TodoScreen = () => {
             handleRemovedChange(docChange.doc.id)
           } else if (docChange.type === 'added') {
             handleAddedChange(docChange.doc)
-            sortTodosByTimestamp()
+            isRemoveChange.current = true
           } else if (docChange.type === 'modified') {
             handleModifiedChange(docChange.doc)
-            sortTodosByDone()
           } else {
             console.error("Unexpected Error accured while processing incoming Firebase Data: \n" + JSON.stringify(docChange.doc))
           }
         })
+
+        if (isRemoveChange.current) {
+          sortTodosByDoneThenTimestamp()
+          isRemoveChange.current = false
+        }
 
         if (isLoading) setIsLoading(false)
       })
@@ -231,10 +242,10 @@ const TodoScreen = () => {
       <Modal
         visible={isAddTodoModalShowing}
         onBackdropPress={() => {
-          if (reffer.current?.isInputEmpty()) handleAddTodoModalDismiss()
+          if (todoInputRef.current?.isInputEmpty()) handleAddTodoModalDismiss()
         }}>
         <TodoInput
-          ref={reffer}
+          ref={todoInputRef}
           createFunction={(title) => handleAddTodo(title)}
           cancelFunction={() => handleAddTodoModalDismiss()}
         />
