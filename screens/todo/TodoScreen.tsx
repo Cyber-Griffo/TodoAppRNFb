@@ -295,7 +295,6 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   list: {
-    backgroundColor: 'white',
     zIndex: -1
   },
   footerButton: {

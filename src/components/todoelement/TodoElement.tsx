@@ -15,7 +15,7 @@ const TodoElement = (props: TodoElementProps) => {
       onPress={() => toggleTodo(id)}
       onLongPress={() => removeTodo(id)}
       style={styles.wrapper}
-      activeOpacity={.95}
+      activeOpacity={.9}
     >
       <View style={styles.container}>
         <View style={styles.mark} />

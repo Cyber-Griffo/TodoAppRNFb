@@ -13,18 +13,19 @@ import { Props as TodoInputProps, RefFunctions } from './TodoInput.types'
 const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = (props: TodoInputProps, ref) => {
   const { cancelFunction, createFunction } = props
 
+  const [title, setTitle] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const styles = getStyles()
+
+  const INPUT_PLACEHOLDER = 'Title'
+
   useImperativeHandle(ref, () => ({
     isInputEmpty() {
       return title === '' ? true : false
     },
   }))
 
-  const [title, setTitle] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-
-  const INPUT_PLACEHOLDER = 'Title'
-
-  const styles = getStyles()
 
   const handleSubmitting = () => {
     // just create a new Todo if Title is provided
@@ -42,7 +43,6 @@ const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = 
         <Text style={styles.title}>Please enter a new Todo:</Text>
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
         <TextInput
-          ref={inputRef}
           value={title}
           onChangeText={(text) => {
             setTitle(text)
