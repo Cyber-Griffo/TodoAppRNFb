@@ -8,10 +8,7 @@ import { getStyles } from './Modal.styles'
 import { Props as ModalProps } from './Modal.types'
 
 const Modal = (props: ModalProps) => {
-  const { children, onBackdropPress, containerStyles, visible } = props
-  if (!visible) {
-    return (<></>)
-  }
+  const { children, onBackdropPress, containerStyles } = props
   const styles = getStyles({ containerStyles })
 
   return (

@@ -5,7 +5,6 @@ export type Props = {
   children: React.ReactNode
   onBackdropPress?: () => void
   containerStyles?: StyleProp<ViewStyle>
-  visible: boolean
 }
 
 export type ModalStyleContext = {

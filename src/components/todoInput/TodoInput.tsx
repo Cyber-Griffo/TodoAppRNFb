@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from 'react'
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import { Props as TodoInputProps, RefFunctions } from './TodoInput.types'
 
 const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = (props: TodoInputProps, ref) => {
   const { cancelFunction, createFunction } = props
+  const inputRef = useRef<TextInput | null>(null)
 
   useImperativeHandle(ref, () => ({
     isInputEmpty() {
@@ -36,12 +37,19 @@ const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = 
     setTitle('')
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 50)
+  }, [])
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <Text style={styles.title}>Please enter a new Todo:</Text>
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
         <TextInput
+          ref={inputRef}
           value={title}
           onChangeText={(text) => {
             setTitle(text)

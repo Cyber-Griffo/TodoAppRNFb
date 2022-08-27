@@ -1,3 +1,4 @@
+import { Ref } from 'react'
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 
 export type Props = {

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -175,7 +176,7 @@ const TodoScreen = () => {
     //#endregion
 
     return firestore()
-      .collection('todos').orderBy('timestamp', 'desc')
+      .collection('todos')
       .onSnapshot(querySnapshot => {
         querySnapshot.docChanges().forEach(docChange => {
           if (docChange.type === 'removed') {
@@ -233,14 +234,13 @@ const TodoScreen = () => {
           )}
           keyExtractor={({ id }) => id}
         />
-        <TouchableNativeFeedback onPress={() => handleAddTodoModalActivation()}>
+        <TouchableWithoutFeedback onPress={() => handleAddTodoModalActivation()}>
           <View style={styles.footerButton}>
             <Text style={styles.footerText}>Add new Todo</Text>
           </View>
-        </TouchableNativeFeedback>
+        </TouchableWithoutFeedback>
       </View>
-      <Modal
-        visible={isAddTodoModalShowing}
+      {isAddTodoModalShowing && <Modal
         onBackdropPress={() => {
           if (todoInputRef.current?.isInputEmpty()) handleAddTodoModalDismiss()
         }}>
@@ -249,16 +249,15 @@ const TodoScreen = () => {
           createFunction={(title) => handleAddTodo(title)}
           cancelFunction={() => handleAddTodoModalDismiss()}
         />
-      </Modal>
-      <Modal
-        visible={isRemoveTodoModalShowing}
+      </Modal>}
+      {isRemoveTodoModalShowing && <Modal
         onBackdropPress={() => handleRemoveModalDismiss()}>
         <SafetyQuestion
           title={todos.find(todo => todo.id === selectedTodoId)?.title || ""}
           acceptFunction={() => handleRemoveTodo()}
           cancelFunction={() => handleRemoveModalDismiss()}
         />
-      </Modal>
+      </Modal>}
     </>
   )
   //#endregion
