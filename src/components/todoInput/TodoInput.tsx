@@ -12,7 +12,6 @@ import { Props as TodoInputProps, RefFunctions } from './TodoInput.types'
 
 const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = (props: TodoInputProps, ref) => {
   const { cancelFunction, createFunction } = props
-  const inputRef = useRef<TextInput | null>(null)
 
   useImperativeHandle(ref, () => ({
     isInputEmpty() {
@@ -37,12 +36,6 @@ const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = 
     setTitle('')
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      inputRef.current?.focus()
-    }, 50)
-  }, [])
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -59,6 +52,8 @@ const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = 
           placeholder={INPUT_PLACEHOLDER}
           placeholderTextColor={'#A1A1A1'}
           onSubmitEditing={() => handleSubmitting()}
+          blurOnSubmit={false}
+          autoFocus={true}
         />
         <View style={styles.buttonWrapper}>
           <TouchableNativeFeedback onPress={() => handleSubmitting()}>
