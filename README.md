@@ -24,7 +24,7 @@
 <h3 align="center">TodoApp with React-Native and Firebase</h3>
 
   <p align="center">
-    This project is a simple implementation of a ToDo app using React-Native and Firebas
+    This project is a simple implementation of a ToDo app using React-Native and Firebase
   </p>
 </div>
 
