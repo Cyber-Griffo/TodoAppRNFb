@@ -14,6 +14,7 @@ export type TodoElementStyleContext = {
 
 export type TodoElementStyles = {
   container: StyleProp<ViewStyle>
+  titleWrapper: StyleProp<ViewStyle>
   title: StyleProp<TextStyle>
   mark: StyleProp<ViewStyle>
   wrapper: StyleProp<ViewStyle>

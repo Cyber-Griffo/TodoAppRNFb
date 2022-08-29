@@ -19,6 +19,12 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         flex: 1,
       },
     ],
+    titleWrapper: [
+      {
+        flex: 1,
+        height: '100%',
+      },
+    ],
     title: [
       {
         color: 'black',

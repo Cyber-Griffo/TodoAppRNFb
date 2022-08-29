@@ -24,11 +24,6 @@ type Todo = {
   timestamp: FirebaseFirestoreTypes.Timestamp
 }
 
-type DataTodo = {
-  title: string
-  data: Todo[]
-}
-
 //! Defined Variables
 const HEADER_HEIGHT = 56
 const FOOTER_HEIGHT = 48
@@ -48,6 +43,7 @@ const TodoScreen = () => {
     useState<boolean>(false)
 
   // Async Storage for Filter
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filter, setFiler] = useAsyncStorage('filter', 'timestamp')
 
   // Refs
@@ -60,7 +56,9 @@ const TodoScreen = () => {
   //#region Interaction with Firebase
   function toggleTodo(id: string) {
     const todo = findTodoById(id)
-    if (!todo) return
+    if (!todo) {
+      return
+    }
 
     firestore()
       .collection('todos')
@@ -94,9 +92,13 @@ const TodoScreen = () => {
       )
   }
   function removeTodo(id: string) {
-    if (id === '') return
+    if (id === '') {
+      return
+    }
     const todo = findTodoById(id)
-    if (!todo) return
+    if (!todo) {
+      return
+    }
 
     firestore()
       .collection('todos')
@@ -105,6 +107,7 @@ const TodoScreen = () => {
       .then(() => console.log('Successfully removed Todo: ' + todo.title))
   }
   //! Warning just for testing purposes
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function removeAllTestTodo() {
     todos?.forEach((todo) => {
       if (todo.title === 'Test') {
@@ -116,7 +119,7 @@ const TodoScreen = () => {
 
   //#region Helper functions
   function findTodoById(id: string): Todo | undefined {
-    return todos?.find((todo) => todo.id == id)
+    return todos?.find((todo) => todo.id === id)
   }
   function sortTodosByDoneThenTimestamp() {
     setTodos((currTodos) => {
@@ -168,7 +171,9 @@ const TodoScreen = () => {
       doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
     ) {
       const { title, done, timestamp } = doc.data()
-      if (todos.find((todo) => todo.id === doc.id)) return
+      if (todos.find((todo) => todo.id === doc.id)) {
+        return
+      }
       setTodos((currTodos) => {
         return [...currTodos, { id: doc.id, title, done, timestamp }]
       })
@@ -217,9 +222,11 @@ const TodoScreen = () => {
           isRemoveChange.current = false
         }
 
-        if (isLoading) setIsLoading(false)
+        if (isLoading) {
+          setIsLoading(false)
+        }
       })
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   //#endregion
 
   //#region Loading Screen
@@ -276,8 +283,9 @@ const TodoScreen = () => {
       {isAddTodoModalShowing && (
         <Modal
           onBackdropPress={() => {
-            if (todoInputRef.current?.isInputEmpty())
+            if (todoInputRef.current?.isInputEmpty()) {
               handleAddTodoModalDismiss()
+            }
           }}
         >
           <TodoInput

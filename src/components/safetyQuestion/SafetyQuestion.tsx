@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableNativeFeedback } from 'react-native'
+import { Text, TouchableNativeFeedback, View } from 'react-native'
 import { getStyles } from './SafetyQuestion.styles'
 import { Props as SafetyQuestionProps } from './SafetyQuestion.types'
 

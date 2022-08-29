@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableWithoutFeedback, SafeAreaView, View } from 'react-native'
+import { SafeAreaView, TouchableWithoutFeedback, View } from 'react-native'
 import { getStyles } from './Modal.styles'
 import { Props as ModalProps } from './Modal.types'
 

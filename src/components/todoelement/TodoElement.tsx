@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableHighlight } from 'react-native'
+import { Text, TouchableHighlight, View } from 'react-native'
 import { Props as TodoElementProps } from './TodoElement.types'
 import { getStyles } from './TodoElement.styles'
 
@@ -16,7 +16,7 @@ const TodoElement = (props: TodoElementProps) => {
     >
       <View style={styles.container}>
         <View style={styles.mark} />
-        <View style={{ flex: 1, height: '100%' }}>
+        <View style={styles.titleWrapper}>
           <Text style={styles.title}>{title}</Text>
         </View>
       </View>

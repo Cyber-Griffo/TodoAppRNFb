@@ -1,14 +1,14 @@
 import React, { useImperativeHandle, useState } from 'react'
 import {
-  View,
-  Text,
-  TouchableNativeFeedback,
-  TextInput,
   Keyboard,
+  Text,
+  TextInput,
+  TouchableNativeFeedback,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native'
 import { getStyles } from './TodoInput.styles'
-import { Props as TodoInputProps, RefFunctions } from './TodoInput.types'
+import { RefFunctions, Props as TodoInputProps } from './TodoInput.types'
 
 const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
@@ -48,7 +48,9 @@ const TodoInput: React.ForwardRefRenderFunction<
           value={title}
           onChangeText={(text) => {
             setTitle(text)
-            if (errorMessage) setErrorMessage('')
+            if (errorMessage) {
+              setErrorMessage('')
+            }
           }}
           style={styles.textInput}
           placeholder={INPUT_PLACEHOLDER}
