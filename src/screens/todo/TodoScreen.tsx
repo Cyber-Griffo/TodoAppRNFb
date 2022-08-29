@@ -57,16 +57,7 @@ const TodoScreen = () => {
         done: !todo?.done,
       })
       .then(() => {
-        console.log(
-          'Updating ' +
-            "'" +
-            todo?.title +
-            "'" +
-            ' to ' +
-            "'" +
-            !todo?.done +
-            "'"
-        )
+        console.log(`Updating '${todo?.title}' to '${!todo?.done}'`)
       })
   }
   function addTodo(title: string) {
@@ -77,9 +68,7 @@ const TodoScreen = () => {
         done: false,
         timestamp: firestore.FieldValue.serverTimestamp(),
       })
-      .then(() =>
-        console.log('New Todo: ' + "'" + title + "'" + ' successfully added.')
-      )
+      .then(() => console.log(`New Todo: '${title}' successfully added.`))
   }
   function removeTodo(id: string) {
     if (id === '') {
@@ -94,7 +83,7 @@ const TodoScreen = () => {
       .collection('todos')
       .doc(todo.id)
       .delete()
-      .then(() => console.log('Successfully removed Todo: ' + todo.title))
+      .then(() => console.log(`Successfully removed Todo: '${todo.title}'`))
   }
   //! Warning just for testing purposes
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
