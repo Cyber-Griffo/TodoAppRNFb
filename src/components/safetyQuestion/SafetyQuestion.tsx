@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, TouchableHighlight, View } from 'react-native'
+import { Text, View } from 'react-native'
+import Button from '../button/Button'
 import { getStyles } from './SafetyQuestion.styles'
 import { Props as SafetyQuestionProps } from './SafetyQuestion.types'
 
@@ -13,26 +14,25 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
     <View style={styles.container}>
       <Text style={styles.title}>{displayMessage}</Text>
       <View style={styles.buttonWrapper}>
-        <TouchableHighlight
+        <Button
+          value={'Yes'}
+          rounded
           onPress={() => acceptFunction()}
-          style={styles.touchableWrapper}
-          activeOpacity={0.9}
-        >
-          <View style={[styles.buttonContainer, styles.buttonAccept]}>
-            <Text style={styles.buttonText}>Yes</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
+          style={{
+            wrapper: styles.touchableWrapper,
+            text: styles.buttonText,
+          }}
+        />
+        <Button
+          value={'Cancel'}
+          variant={'secondary'}
+          rounded
           onPress={() => cancelFunction()}
-          style={styles.touchableWrapper}
-          activeOpacity={0.9}
-        >
-          <View style={[styles.buttonContainer, styles.buttonCancel]}>
-            <Text style={[styles.buttonText, styles.buttonTextCancel]}>
-              Cancel
-            </Text>
-          </View>
-        </TouchableHighlight>
+          style={{
+            wrapper: styles.touchableWrapper,
+            text: styles.buttonText,
+          }}
+        />
       </View>
     </View>
   )

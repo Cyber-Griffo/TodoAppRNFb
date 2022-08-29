@@ -3,10 +3,10 @@ import {
   Keyboard,
   Text,
   TextInput,
-  TouchableHighlight,
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
+import Button from '../button/Button'
 import { getStyles } from './TodoInput.styles'
 import { RefFunctions, Props as TodoInputProps } from './TodoInput.types'
 
@@ -60,26 +60,25 @@ const TodoInput: React.ForwardRefRenderFunction<
           autoFocus={true}
         />
         <View style={styles.buttonWrapper}>
-          <TouchableHighlight
+          <Button
+            value={'Create'}
+            rounded
             onPress={() => handleSubmitting()}
-            style={styles.touchableWrapper}
-            activeOpacity={0.9}
-          >
-            <View style={[styles.buttonContainer, styles.buttonCreate]}>
-              <Text style={styles.buttonText}>Create</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
+            style={{
+              wrapper: styles.touchableWrapper,
+              text: styles.buttonText,
+            }}
+          />
+          <Button
+            value={'Cancel'}
+            variant={'secondary'}
+            rounded
             onPress={() => cancelFunction()}
-            style={styles.touchableWrapper}
-            activeOpacity={0.9}
-          >
-            <View style={[styles.buttonContainer, styles.buttonCancel]}>
-              <Text style={[styles.buttonText, styles.buttonTextCancel]}>
-                Cancel
-              </Text>
-            </View>
-          </TouchableHighlight>
+            style={{
+              wrapper: styles.touchableWrapper,
+              text: styles.buttonText,
+            }}
+          />
         </View>
       </View>
     </TouchableWithoutFeedback>

@@ -28,24 +28,8 @@ export const getStyles = (): SafetyQuestionStyles => {
       borderRadius: 10,
       flex: 1,
     },
-    buttonContainer: {
-      paddingVertical: 12,
-      borderRadius: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    buttonAccept: {
-      backgroundColor: '#1AA3FF',
-    },
-    buttonCancel: {
-      backgroundColor: 'white',
-    },
     buttonText: {
       fontWeight: '600',
-      color: 'white',
-    },
-    buttonTextCancel: {
-      color: '#1AA3FF',
     },
   }
 }

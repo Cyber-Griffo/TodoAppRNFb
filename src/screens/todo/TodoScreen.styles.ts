@@ -42,7 +42,6 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
       justifyContent: 'center',
     },
     footerText: {
-      color: '#1AA3FF',
       fontSize: 18,
     },
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import firestore, {
   FirebaseFirestoreTypes,
@@ -11,6 +11,7 @@ import TodoInput from '../../components/todoInput/TodoInput'
 import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInput/TodoInput.types'
 import { Todo } from './TodoScreen.types'
 import { getStyles } from './TodoScreen.styles'
+import Button from '../../components/button/Button'
 
 //! Defined Variables
 const HEADER_HEIGHT = 56
@@ -263,13 +264,18 @@ const TodoScreen = () => {
           )}
           keyExtractor={({ id }) => id}
         />
-        <TouchableWithoutFeedback
+        <Button
+          value={'Add new Todo'}
+          variant={'secondary'}
           onPress={() => handleAddTodoModalActivation()}
-        >
-          <View style={styles.footerButton}>
-            <Text style={styles.footerText}>Add new Todo</Text>
-          </View>
-        </TouchableWithoutFeedback>
+          style={{
+            container: styles.footerButton,
+            text: styles.footerText,
+          }}
+          touchableProps={{
+            activeOpacity: 1,
+          }}
+        />
       </View>
       {isAddTodoModalShowing && (
         <Modal
