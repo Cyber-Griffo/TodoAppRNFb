@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TouchableNativeFeedback, View } from 'react-native'
+import { Text, TouchableHighlight, View } from 'react-native'
 import { getStyles } from './SafetyQuestion.styles'
 import { Props as SafetyQuestionProps } from './SafetyQuestion.types'
 
@@ -13,18 +13,26 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
     <View style={styles.container}>
       <Text style={styles.title}>{displayMessage}</Text>
       <View style={styles.buttonWrapper}>
-        <TouchableNativeFeedback onPress={() => acceptFunction()}>
+        <TouchableHighlight
+          onPress={() => acceptFunction()}
+          style={styles.touchableWrapper}
+          activeOpacity={0.9}
+        >
           <View style={[styles.buttonContainer, styles.buttonAccept]}>
             <Text style={styles.buttonText}>Yes</Text>
           </View>
-        </TouchableNativeFeedback>
-        <TouchableNativeFeedback onPress={() => cancelFunction()}>
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => cancelFunction()}
+          style={styles.touchableWrapper}
+          activeOpacity={0.9}
+        >
           <View style={[styles.buttonContainer, styles.buttonCancel]}>
             <Text style={[styles.buttonText, styles.buttonTextCancel]}>
               Cancel
             </Text>
           </View>
-        </TouchableNativeFeedback>
+        </TouchableHighlight>
       </View>
     </View>
   )

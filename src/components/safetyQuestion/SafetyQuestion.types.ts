@@ -10,6 +10,7 @@ export type SafetyQuestionStyles = {
   container: StyleProp<ViewStyle>
   title: StyleProp<TextStyle>
   buttonWrapper: StyleProp<ViewStyle>
+  touchableWrapper: StyleProp<ViewStyle>
   buttonContainer: StyleProp<ViewStyle>
   buttonAccept: StyleProp<ViewStyle>
   buttonCancel: StyleProp<ViewStyle>

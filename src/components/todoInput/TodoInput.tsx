@@ -3,7 +3,7 @@ import {
   Keyboard,
   Text,
   TextInput,
-  TouchableNativeFeedback,
+  TouchableHighlight,
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
@@ -60,18 +60,26 @@ const TodoInput: React.ForwardRefRenderFunction<
           autoFocus={true}
         />
         <View style={styles.buttonWrapper}>
-          <TouchableNativeFeedback onPress={() => handleSubmitting()}>
+          <TouchableHighlight
+            onPress={() => handleSubmitting()}
+            style={styles.touchableWrapper}
+            activeOpacity={0.9}
+          >
             <View style={[styles.buttonContainer, styles.buttonCreate]}>
               <Text style={styles.buttonText}>Create</Text>
             </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback onPress={() => cancelFunction()}>
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={() => cancelFunction()}
+            style={styles.touchableWrapper}
+            activeOpacity={0.9}
+          >
             <View style={[styles.buttonContainer, styles.buttonCancel]}>
               <Text style={[styles.buttonText, styles.buttonTextCancel]}>
                 Cancel
               </Text>
             </View>
-          </TouchableNativeFeedback>
+          </TouchableHighlight>
         </View>
       </View>
     </TouchableWithoutFeedback>

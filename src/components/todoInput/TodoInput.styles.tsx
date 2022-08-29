@@ -22,9 +22,12 @@ export const getStyles = (): TodoInputStyles => {
       marginBottom: 20,
       paddingHorizontal: 10,
     },
-    buttonContainer: {
-      flex: 1,
+    touchableWrapper: {
       marginHorizontal: 10,
+      borderRadius: 10,
+      flex: 1,
+    },
+    buttonContainer: {
       paddingVertical: 12,
       borderRadius: 8,
       justifyContent: 'center',
@@ -34,8 +37,7 @@ export const getStyles = (): TodoInputStyles => {
       backgroundColor: '#1AA3FF',
     },
     buttonCancel: {
-      borderWidth: 1,
-      borderColor: '#1AA3FF',
+      backgroundColor: 'white',
     },
     buttonText: {
       fontWeight: '600',

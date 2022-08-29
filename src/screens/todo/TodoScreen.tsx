@@ -17,7 +17,7 @@ const HEADER_HEIGHT = 56
 const FOOTER_HEIGHT = 48
 
 const TodoScreen = () => {
-  const styles = getStyles({ FOOTER_HEIGHT, HEADER_HEIGHT })
+  const styles = getStyles({ HEADER_HEIGHT, FOOTER_HEIGHT })
 
   // State for managing Todos
   const [todos, setTodos] = useState<Todo[]>([])
@@ -60,6 +60,7 @@ const TodoScreen = () => {
         console.log(`Updating '${todo?.title}' to '${!todo?.done}'`)
       })
   }
+
   function addTodo(title: string) {
     firestore()
       .collection('todos')
@@ -70,6 +71,7 @@ const TodoScreen = () => {
       })
       .then(() => console.log(`New Todo: '${title}' successfully added.`))
   }
+
   function removeTodo(id: string) {
     if (id === '') {
       return
@@ -119,21 +121,22 @@ const TodoScreen = () => {
   //#endregion
 
   //#region Handler
-  function handleAddTodoModalDismiss() {
-    setIsAddTodoModalShowing(false)
-  }
   function handleAddTodoModalActivation() {
     setIsAddTodoModalShowing(true)
   }
-  function handleRemoveModalDismiss() {
-    setIsRemoveTodoModalShowing(false)
+  function handleAddTodoModalDismiss() {
+    setIsAddTodoModalShowing(false)
   }
   function handleRemoveTodoModalActivation(id: string) {
     setSelectedTodoId(id)
     setIsRemoveTodoModalShowing(true)
   }
-  function handleRemoveTodo() {
-    removeTodo(selectedTodoId || '')
+  function handleRemoveModalDismiss() {
+    setIsRemoveTodoModalShowing(false)
+  }
+
+  function handleRemoveTodo(id: string) {
+    removeTodo(id)
     setIsRemoveTodoModalShowing(false)
   }
   function handleAddTodo(title: string) {
@@ -287,7 +290,7 @@ const TodoScreen = () => {
         <Modal onBackdropPress={() => handleRemoveModalDismiss()}>
           <SafetyQuestion
             title={findTodoById(selectedTodoId)?.title || ''}
-            acceptFunction={() => handleRemoveTodo()}
+            acceptFunction={() => handleRemoveTodo(selectedTodoId)}
             cancelFunction={() => handleRemoveModalDismiss()}
           />
         </Modal>
