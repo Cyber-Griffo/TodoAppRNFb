@@ -4,13 +4,13 @@ import { Props as TodoElementProps } from './TodoElement.types'
 import { getStyles } from './TodoElement.styles'
 
 const TodoElement = (props: TodoElementProps) => {
-  const { done, title, toggleTodo, id, removeTodo } = props
+  const { done, title, onPress, id, onLongPress } = props
   const styles = getStyles({ done })
 
   return (
     <TouchableHighlight
-      onPress={() => toggleTodo(id)}
-      onLongPress={() => removeTodo(id)}
+      onPress={() => onPress(id)}
+      onLongPress={() => onLongPress(id)}
       style={styles.wrapper}
       activeOpacity={0.9}
     >

@@ -48,7 +48,7 @@ const TodoScreen = () => {
 
   // Refs
   const todoInputRef = useRef<TodoInputRefFunctions>(null)
-  const isRemoveChange = useRef<boolean>(false)
+  const isAddedChange = useRef<boolean>(false)
 
   // Getting SafeAreaInsets
   const safeareaInsets = useSafeAreaInsets()
@@ -124,7 +124,7 @@ const TodoScreen = () => {
   function sortTodosByDoneThenTimestamp() {
     setTodos((currTodos) => {
       return currTodos.sort((a, b) => {
-        return sortingConditions(a, b)
+        return todoSortingConditions(a, b)
       })
     })
   }
@@ -134,14 +134,17 @@ const TodoScreen = () => {
     }
     return 1
   }
-  function sortingConditions(a: Todo, b: Todo): number {
+  function todoSortingConditions(a: Todo, b: Todo): number {
     return a.done === b.done ? checkForTimestamp(a, b) : a.done ? 1 : -1
   }
   //#endregion
 
-  //#region Handle Modal State
+  //#region Handler
   function handleAddTodoModalDismiss() {
     setIsAddTodoModalShowing(false)
+  }
+  function handleAddTodoModalActivation() {
+    setIsAddTodoModalShowing(true)
   }
   function handleRemoveModalDismiss() {
     setIsRemoveTodoModalShowing(false)
@@ -150,15 +153,15 @@ const TodoScreen = () => {
     setSelectedTodoId(id)
     setIsRemoveTodoModalShowing(true)
   }
-  function handleAddTodoModalActivation() {
-    setIsAddTodoModalShowing(true)
-  }
   function handleRemoveTodo() {
     removeTodo(selectedTodoId || '')
     setIsRemoveTodoModalShowing(false)
   }
   function handleAddTodo(title: string) {
     addTodo(title)
+  }
+  function handleToggleTodo(id: string): void {
+    toggleTodo(id)
   }
   //#endregion
 
@@ -198,7 +201,7 @@ const TodoScreen = () => {
             }
           })
           .sort((a, b) => {
-            return sortingConditions(a, b)
+            return todoSortingConditions(a, b)
           })
       })
     }
@@ -212,7 +215,7 @@ const TodoScreen = () => {
             handleRemovedChange(docChange.doc.id)
           } else if (docChange.type === 'added') {
             handleAddedChange(docChange.doc)
-            isRemoveChange.current = true
+            isAddedChange.current = true
           } else if (docChange.type === 'modified') {
             handleModifiedChange(docChange.doc)
           } else {
@@ -223,9 +226,9 @@ const TodoScreen = () => {
           }
         })
 
-        if (isRemoveChange.current) {
+        if (isAddedChange.current) {
           sortTodosByDoneThenTimestamp()
-          isRemoveChange.current = false
+          isAddedChange.current = false
         }
 
         if (isLoading) {
@@ -272,8 +275,8 @@ const TodoScreen = () => {
               done={item.done}
               title={item.title}
               id={item.id}
-              toggleTodo={(id) => toggleTodo(id)}
-              removeTodo={(id) => handleRemoveTodoModalActivation(id)}
+              onPress={(id) => handleToggleTodo(id)}
+              onLongPress={(id) => handleRemoveTodoModalActivation(id)}
             />
           )}
           keyExtractor={({ id }) => id}
