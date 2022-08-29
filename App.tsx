@@ -1,7 +1,7 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import TodoScreen from './screens/todo/TodoScreen'
+import TodoScreen from './src/screens/todo/TodoScreen'
 
 const App = () => {
   //#region App

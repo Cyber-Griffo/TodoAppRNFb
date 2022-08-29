@@ -10,18 +10,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore'
-import TodoElement from '../../src/components/todoelement/TodoElement'
-import Modal from '../../src/components/modal/Modal'
-import SafetyQuestion from '../../src/components/safetyQuestion/SafetyQuestion'
-import TodoInput from '../../src/components/todoInput/TodoInput'
-import { RefFunctions as TodoInputRefFunctions } from '../../src/components/todoInput/TodoInput.types'
-import useAsyncStorage from '../../src/hooks/useAsyncStorage'
+import TodoElement from '../../components/todoelement/TodoElement'
+import Modal from '../../components/modal/Modal'
+import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
+import TodoInput from '../../components/todoInput/TodoInput'
+import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInput/TodoInput.types'
 
 type Todo = {
   done: boolean
   title: string
   id: string
   timestamp: FirebaseFirestoreTypes.Timestamp
+  category: string
 }
 
 //! Defined Variables
@@ -42,9 +42,9 @@ const TodoScreen = () => {
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
     useState<boolean>(false)
 
+  // !TODO ADDING FILTER FUNCTION
   // Async Storage for Filter
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filter, setFiler] = useAsyncStorage('filter', 'timestamp')
+  // const [filter, setFiler] = useAsyncStorage('filter', 'timestamp')
 
   // Refs
   const todoInputRef = useRef<TodoInputRefFunctions>(null)
@@ -124,7 +124,7 @@ const TodoScreen = () => {
   function sortTodosByDoneThenTimestamp() {
     setTodos((currTodos) => {
       return currTodos.sort((a, b) => {
-        return a.done === b.done ? checkForTimestamp(a, b) : a.done ? 1 : -1
+        return sortingConditions(a, b)
       })
     })
   }
@@ -133,6 +133,9 @@ const TodoScreen = () => {
       return -1
     }
     return 1
+  }
+  function sortingConditions(a: Todo, b: Todo): number {
+    return a.done === b.done ? checkForTimestamp(a, b) : a.done ? 1 : -1
   }
   //#endregion
 
@@ -175,7 +178,10 @@ const TodoScreen = () => {
         return
       }
       setTodos((currTodos) => {
-        return [...currTodos, { id: doc.id, title, done, timestamp }]
+        return [
+          ...currTodos,
+          { id: doc.id, title, done, timestamp, category: '' },
+        ]
       })
     }
     function handleModifiedChange(
@@ -186,13 +192,13 @@ const TodoScreen = () => {
         return currTodos
           .map((todo) => {
             if (todo.id === doc.id) {
-              return { id: doc.id, title, done, timestamp }
+              return { id: doc.id, title, done, timestamp, category: '' }
             } else {
               return todo
             }
           })
           .sort((a, b) => {
-            return a.done === b.done ? checkForTimestamp(a, b) : a.done ? 1 : -1
+            return sortingConditions(a, b)
           })
       })
     }
@@ -298,9 +304,7 @@ const TodoScreen = () => {
       {isRemoveTodoModalShowing && (
         <Modal onBackdropPress={() => handleRemoveModalDismiss()}>
           <SafetyQuestion
-            title={
-              todos.find((todo) => todo.id === selectedTodoId)?.title || ''
-            }
+            title={findTodoById(selectedTodoId)?.title || ''}
             acceptFunction={() => handleRemoveTodo()}
             cancelFunction={() => handleRemoveModalDismiss()}
           />
