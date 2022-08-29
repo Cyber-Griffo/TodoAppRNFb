@@ -1,16 +1,19 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { useImperativeHandle, useState } from 'react'
 import {
   View,
   Text,
   TouchableNativeFeedback,
   TextInput,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native'
 import { getStyles } from './TodoInput.styles'
 import { Props as TodoInputProps, RefFunctions } from './TodoInput.types'
 
-const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = (props: TodoInputProps, ref) => {
+const TodoInput: React.ForwardRefRenderFunction<
+  RefFunctions,
+  TodoInputProps
+> = (props: TodoInputProps, ref) => {
   const { cancelFunction, createFunction } = props
 
   const [title, setTitle] = useState<string>('')
@@ -25,7 +28,6 @@ const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = 
       return title === '' ? true : false
     },
   }))
-
 
   const handleSubmitting = () => {
     // just create a new Todo if Title is provided
@@ -63,7 +65,9 @@ const TodoInput: React.ForwardRefRenderFunction<RefFunctions, TodoInputProps> = 
           </TouchableNativeFeedback>
           <TouchableNativeFeedback onPress={() => cancelFunction()}>
             <View style={[styles.buttonContainer, styles.buttonCancel]}>
-              <Text style={[styles.buttonText, styles.buttonTextCancel]}>Cancel</Text>
+              <Text style={[styles.buttonText, styles.buttonTextCancel]}>
+                Cancel
+              </Text>
             </View>
           </TouchableNativeFeedback>
         </View>
