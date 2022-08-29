@@ -1,21 +1,21 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   FlatList,
-  SectionList,
   StyleSheet,
   Text,
-  TouchableNativeFeedback,
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore'
 import TodoElement from '../../src/components/todoelement/TodoElement'
 import Modal from '../../src/components/modal/Modal'
 import SafetyQuestion from '../../src/components/safetyQuestion/SafetyQuestion'
 import TodoInput from '../../src/components/todoInput/TodoInput'
 import { RefFunctions as TodoInputRefFunctions } from '../../src/components/todoInput/TodoInput.types'
-import useAsyncStorage from '../../hooks/useAsyncStorage'
+import useAsyncStorage from '../../src/hooks/useAsyncStorage'
 
 type Todo = {
   done: boolean
@@ -42,8 +42,10 @@ const TodoScreen = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   // State for correct Modal to show
-  const [isAddTodoModalShowing, setIsAddTodoModalShowing] = useState<boolean>(false)
-  const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] = useState<boolean>(false)
+  const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
+    useState<boolean>(false)
+  const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
+    useState<boolean>(false)
 
   // Async Storage for Filter
   const [filter, setFiler] = useAsyncStorage('filter', 'timestamp')
@@ -67,7 +69,16 @@ const TodoScreen = () => {
         done: !todo?.done,
       })
       .then(() => {
-        console.log('Updating ' + '\'' + todo?.title + '\'' + ' to ' + '\'' + !todo?.done + '\'')
+        console.log(
+          'Updating ' +
+            "'" +
+            todo?.title +
+            "'" +
+            ' to ' +
+            "'" +
+            !todo?.done +
+            "'"
+        )
       })
   }
   function addTodo(title: string) {
@@ -76,11 +87,14 @@ const TodoScreen = () => {
       .add({
         title,
         done: false,
-        timestamp: firestore.FieldValue.serverTimestamp()
-      }).then(() => console.log('New Todo: ' + '\'' + title + '\'' + ' successfully added.'))
+        timestamp: firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() =>
+        console.log('New Todo: ' + "'" + title + "'" + ' successfully added.')
+      )
   }
   function removeTodo(id: string) {
-    if (id === "") return
+    if (id === '') return
     const todo = findTodoById(id)
     if (!todo) return
 
@@ -92,7 +106,7 @@ const TodoScreen = () => {
   }
   //! Warning just for testing purposes
   function removeAllTestTodo() {
-    todos?.forEach(todo => {
+    todos?.forEach((todo) => {
       if (todo.title === 'Test') {
         removeTodo(todo.id)
       }
@@ -102,12 +116,12 @@ const TodoScreen = () => {
 
   //#region Helper functions
   function findTodoById(id: string): Todo | undefined {
-    return todos?.find(todo => todo.id == id)
+    return todos?.find((todo) => todo.id == id)
   }
   function sortTodosByDoneThenTimestamp() {
-    setTodos(currTodos => {
+    setTodos((currTodos) => {
       return currTodos.sort((a, b) => {
-        return (a.done === b.done) ? checkForTimestamp(a, b) : a.done ? 1 : -1
+        return a.done === b.done ? checkForTimestamp(a, b) : a.done ? 1 : -1
       })
     })
   }
@@ -134,7 +148,7 @@ const TodoScreen = () => {
     setIsAddTodoModalShowing(true)
   }
   function handleRemoveTodo() {
-    removeTodo(selectedTodoId || "")
+    removeTodo(selectedTodoId || '')
     setIsRemoveTodoModalShowing(false)
   }
   function handleAddTodo(title: string) {
@@ -144,41 +158,45 @@ const TodoScreen = () => {
 
   //#region Fetching Data from Firebase
   useEffect(() => {
-
     //#region helper functions for setting State correctly
     function handleRemovedChange(id: string) {
-      setTodos(currTodos => {
-        return currTodos?.filter(todo => todo.id !== id)
+      setTodos((currTodos) => {
+        return currTodos?.filter((todo) => todo.id !== id)
       })
     }
-    function handleAddedChange(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+    function handleAddedChange(
+      doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
+    ) {
       const { title, done, timestamp } = doc.data()
-      if (todos.find(todo => todo.id === doc.id)) return
-      setTodos(currTodos => {
+      if (todos.find((todo) => todo.id === doc.id)) return
+      setTodos((currTodos) => {
         return [...currTodos, { id: doc.id, title, done, timestamp }]
       })
     }
-    function handleModifiedChange(doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+    function handleModifiedChange(
+      doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
+    ) {
       const { title, done, timestamp } = doc.data()
-      setTodos(currTodos => {
-        return currTodos.map((todo) => {
-          if (todo.id === doc.id) {
-            return { id: doc.id, title, done, timestamp }
-          }
-          else {
-            return todo
-          }
-        }).sort((a, b) => {
-          return (a.done === b.done) ? checkForTimestamp(a, b) : a.done ? 1 : -1
-        })
+      setTodos((currTodos) => {
+        return currTodos
+          .map((todo) => {
+            if (todo.id === doc.id) {
+              return { id: doc.id, title, done, timestamp }
+            } else {
+              return todo
+            }
+          })
+          .sort((a, b) => {
+            return a.done === b.done ? checkForTimestamp(a, b) : a.done ? 1 : -1
+          })
       })
     }
     //#endregion
 
     return firestore()
       .collection('todos')
-      .onSnapshot(querySnapshot => {
-        querySnapshot.docChanges().forEach(docChange => {
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.docChanges().forEach((docChange) => {
           if (docChange.type === 'removed') {
             handleRemovedChange(docChange.doc.id)
           } else if (docChange.type === 'added') {
@@ -187,7 +205,10 @@ const TodoScreen = () => {
           } else if (docChange.type === 'modified') {
             handleModifiedChange(docChange.doc)
           } else {
-            console.error("Unexpected Error accured while processing incoming Firebase Data: \n" + JSON.stringify(docChange.doc))
+            console.error(
+              'Unexpected Error accured while processing incoming Firebase Data: \n' +
+                JSON.stringify(docChange.doc)
+            )
           }
         })
 
@@ -214,8 +235,18 @@ const TodoScreen = () => {
   //#region App
   return (
     <>
-      <View style={[styles.wrapperContainer, { paddingBottom: safeareaInsets.bottom }]}>
-        <View style={[styles.headerWrapper, { height: safeareaInsets.top + HEADER_HEIGHT }]}>
+      <View
+        style={[
+          styles.wrapperContainer,
+          { paddingBottom: safeareaInsets.bottom },
+        ]}
+      >
+        <View
+          style={[
+            styles.headerWrapper,
+            { height: safeareaInsets.top + HEADER_HEIGHT },
+          ]}
+        >
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Your Todo's</Text>
           </View>
@@ -234,30 +265,39 @@ const TodoScreen = () => {
           )}
           keyExtractor={({ id }) => id}
         />
-        <TouchableWithoutFeedback onPress={() => handleAddTodoModalActivation()}>
+        <TouchableWithoutFeedback
+          onPress={() => handleAddTodoModalActivation()}
+        >
           <View style={styles.footerButton}>
             <Text style={styles.footerText}>Add new Todo</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
-      {isAddTodoModalShowing && <Modal
-        onBackdropPress={() => {
-          if (todoInputRef.current?.isInputEmpty()) handleAddTodoModalDismiss()
-        }}>
-        <TodoInput
-          ref={todoInputRef}
-          createFunction={(title) => handleAddTodo(title)}
-          cancelFunction={() => handleAddTodoModalDismiss()}
-        />
-      </Modal>}
-      {isRemoveTodoModalShowing && <Modal
-        onBackdropPress={() => handleRemoveModalDismiss()}>
-        <SafetyQuestion
-          title={todos.find(todo => todo.id === selectedTodoId)?.title || ""}
-          acceptFunction={() => handleRemoveTodo()}
-          cancelFunction={() => handleRemoveModalDismiss()}
-        />
-      </Modal>}
+      {isAddTodoModalShowing && (
+        <Modal
+          onBackdropPress={() => {
+            if (todoInputRef.current?.isInputEmpty())
+              handleAddTodoModalDismiss()
+          }}
+        >
+          <TodoInput
+            ref={todoInputRef}
+            createFunction={(title) => handleAddTodo(title)}
+            cancelFunction={() => handleAddTodoModalDismiss()}
+          />
+        </Modal>
+      )}
+      {isRemoveTodoModalShowing && (
+        <Modal onBackdropPress={() => handleRemoveModalDismiss()}>
+          <SafetyQuestion
+            title={
+              todos.find((todo) => todo.id === selectedTodoId)?.title || ''
+            }
+            acceptFunction={() => handleRemoveTodo()}
+            cancelFunction={() => handleRemoveModalDismiss()}
+          />
+        </Modal>
+      )}
     </>
   )
   //#endregion
@@ -273,7 +313,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     backgroundColor: '#1AA3FF',
 
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -281,7 +321,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
 
-    elevation: 5
+    elevation: 5,
   },
   headerContainer: {
     height: HEADER_HEIGHT,
@@ -292,20 +332,20 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'white',
     fontWeight: '500',
-    fontSize: 18
+    fontSize: 18,
   },
   list: {
-    zIndex: -1
+    zIndex: -1,
   },
   footerButton: {
     width: '100%',
     height: FOOTER_HEIGHT,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   footerText: {
     color: '#1AA3FF',
-    fontSize: 18
+    fontSize: 18,
   },
 
   // Loading State
@@ -313,13 +353,13 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   loadingScreenText: {
     color: 'black',
     fontWeight: '600',
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
 })
 
 export default TodoScreen
