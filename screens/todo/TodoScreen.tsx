@@ -233,7 +233,7 @@ const TodoScreen = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingScreenContainer}>
-        <Text style={styles.loadingScreenText}>Loading</Text>
+        <Text style={styles.loadingScreenText}>Loading...</Text>
       </View>
     )
   }
