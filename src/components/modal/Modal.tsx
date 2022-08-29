@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  TouchableWithoutFeedback,
-  SafeAreaView,
-  View
-} from 'react-native'
+import { TouchableWithoutFeedback, SafeAreaView, View } from 'react-native'
 import { getStyles } from './Modal.styles'
 import { Props as ModalProps } from './Modal.types'
 
@@ -15,8 +11,11 @@ const Modal = (props: ModalProps) => {
     <>
       <TouchableWithoutFeedback onPress={onBackdropPress}>
         <View style={styles.wrapper} />
-      </TouchableWithoutFeedback >
-      <SafeAreaView style={styles.container} pointerEvents="box-none">
+      </TouchableWithoutFeedback>
+      <SafeAreaView
+        style={styles.container}
+        pointerEvents={'box-none'}
+      >
         {children}
       </SafeAreaView>
     </>

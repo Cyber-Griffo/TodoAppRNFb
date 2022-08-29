@@ -6,8 +6,8 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
       {
         marginVertical: 4,
         marginHorizontal: 6,
-        borderRadius: 8
-      }
+        borderRadius: 8,
+      },
     ],
     container: [
       {
@@ -16,16 +16,16 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
-        flex: 1
-      }
+        flex: 1,
+      },
     ],
     title: [
       {
         color: 'black',
         fontSize: 16,
-        marginRight: 16
+        marginRight: 16,
       },
-      ctx.done && { color: 'darkgrey' }
+      ctx.done && { color: 'darkgrey' },
     ],
     mark: [
       {
@@ -38,7 +38,7 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         marginRight: 16,
         height: 10,
       },
-      ctx.done && { backgroundColor: 'darkgrey', borderColor: 'darkgrey' }
+      ctx.done && { backgroundColor: 'darkgrey', borderColor: 'darkgrey' },
     ],
   }
 }
