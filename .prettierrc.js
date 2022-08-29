@@ -7,4 +7,5 @@ module.exports = {
   semi: false,
   singleQuote: true,
   singleAttributePerLine: true,
+  printWidth: 80,
 }
