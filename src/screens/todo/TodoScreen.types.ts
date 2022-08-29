@@ -1,21 +1,27 @@
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 
-export type Props = {
+export type Todo = {
   done: boolean
   title: string
   id: string
-  onPress: (id: string) => void
-  onLongPress: (id: string) => void
+  timestamp: FirebaseFirestoreTypes.Timestamp
+  category: string
 }
 
-export type TodoElementStyleContext = {
-  done: boolean
+export type TodoScreenStyleContext = {
+  HEADER_HEIGHT: number
+  FOOTER_HEIGHT: number
 }
 
-export type TodoElementStyles = {
-  container: StyleProp<ViewStyle>
-  titleWrapper: StyleProp<ViewStyle>
-  title: StyleProp<TextStyle>
-  mark: StyleProp<ViewStyle>
-  wrapper: StyleProp<ViewStyle>
+export type TodoScreenStyles = {
+  wrapperContainer: StyleProp<ViewStyle>
+  headerWrapper: StyleProp<ViewStyle>
+  headerContainer: StyleProp<ViewStyle>
+  headerText: StyleProp<TextStyle>
+  list: StyleProp<ViewStyle>
+  footerButton: StyleProp<ViewStyle>
+  footerText: StyleProp<TextStyle>
+  loadingScreenContainer: StyleProp<ViewStyle>
+  loadingScreenText: StyleProp<TextStyle>
 }
