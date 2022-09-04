@@ -17,7 +17,10 @@ const TodoInput: React.ForwardRefRenderFunction<
 > = (props: TodoInputProps, ref) => {
   const { cancelFunction, createFunction } = props
 
-  const [title, setTitle] = useState<string>(faker.name.firstName())
+  //! PLACEHOLDER STRING ONLY FOR DEV-STAGE
+  const [title, setTitle] = useState<string>(
+    faker.lorem.sentence(Math.floor(Math.random() * 10) + 1)
+  )
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const styles = getStyles()
