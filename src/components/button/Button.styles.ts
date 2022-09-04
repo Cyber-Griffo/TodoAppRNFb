@@ -13,7 +13,7 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
         paddingVertical: 12,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#1AA3FF',
+        backgroundColor: '#4FA5DE',
       },
       ctx.variant === 'secondary' && {
         backgroundColor: 'white',
@@ -27,7 +27,7 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
         color: 'white',
       },
       ctx.variant === 'secondary' && {
-        color: '#1AA3FF',
+        color: '#4FA5DE',
       },
     ],
   }

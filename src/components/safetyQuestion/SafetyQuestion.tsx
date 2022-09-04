@@ -15,12 +15,13 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
       <Text style={styles.title}>{displayMessage}</Text>
       <View style={styles.buttonWrapper}>
         <Button
-          value={'Yes'}
+          value={'Delete'}
           rounded
           onPress={() => acceptFunction()}
           style={{
             wrapper: styles.touchableWrapper,
             text: styles.buttonText,
+            container: { backgroundColor: '#de5950' },
           }}
         />
         <Button

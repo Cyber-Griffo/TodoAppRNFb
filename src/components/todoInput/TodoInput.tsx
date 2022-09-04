@@ -9,6 +9,7 @@ import {
 import Button from '../button/Button'
 import { getStyles } from './TodoInput.styles'
 import { RefFunctions, Props as TodoInputProps } from './TodoInput.types'
+import { faker } from '@faker-js/faker'
 
 const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
@@ -16,7 +17,7 @@ const TodoInput: React.ForwardRefRenderFunction<
 > = (props: TodoInputProps, ref) => {
   const { cancelFunction, createFunction } = props
 
-  const [title, setTitle] = useState<string>('')
+  const [title, setTitle] = useState<string>(faker.name.firstName())
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const styles = getStyles()
@@ -76,7 +77,7 @@ const TodoInput: React.ForwardRefRenderFunction<
             onPress={() => cancelFunction()}
             style={{
               wrapper: styles.touchableWrapper,
-              text: styles.buttonText,
+              text: [styles.buttonText, { color: '#de5950' }],
             }}
           />
         </View>
