@@ -19,7 +19,6 @@ export type TodoScreenStyles = {
   headerWrapper: StyleProp<ViewStyle>
   headerContainer: StyleProp<ViewStyle>
   headerText: StyleProp<TextStyle>
-  list: StyleProp<ViewStyle>
   footerButton: StyleProp<ViewStyle>
   footerText: StyleProp<TextStyle>
   loadingScreenContainer: StyleProp<ViewStyle>

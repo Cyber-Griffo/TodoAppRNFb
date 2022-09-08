@@ -32,9 +32,6 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
       fontWeight: '500',
       fontSize: 18,
     },
-    list: {
-      zIndex: -1,
-    },
     footerButton: {
       width: '100%',
       height: ctx.FOOTER_HEIGHT,

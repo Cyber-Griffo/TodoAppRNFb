@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore'
-import TodoElement from '../../components/todoelement/TodoElement'
 import Modal from '../../components/modal/Modal'
 import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
 import TodoInput from '../../components/todoInput/TodoInput'
@@ -12,6 +11,8 @@ import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInpu
 import { Todo } from './TodoScreen.types'
 import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import TodoList from '../../components/todoList/TodoList'
 
 //! Defined Variables
 const HEADER_HEIGHT = 56
@@ -19,6 +20,10 @@ const FOOTER_HEIGHT = 48
 
 const TodoScreen = () => {
   const styles = getStyles({ HEADER_HEIGHT, FOOTER_HEIGHT })
+
+  // State for auth
+  const [initializing, setInitializing] = useState(true)
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>()
 
   // State for managing Todos
   const [todos, setTodos] = useState<Todo[]>([])
@@ -215,6 +220,15 @@ const TodoScreen = () => {
         }
       })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged((userObj) => {
+      setUser(userObj)
+      if (initializing) setInitializing(false)
+    })
+    return subscriber // unsubscribe on unmount
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   //#endregion
 
   //#region Loading Screen
@@ -226,6 +240,28 @@ const TodoScreen = () => {
     )
   }
   //#endregion
+
+  if (initializing) {
+    return (
+      <View>
+        <Text>Initialisierung</Text>
+      </View>
+    )
+  }
+
+  if (!user) {
+    return (
+      <View>
+        <Text>No User</Text>
+        <Button
+          value={'login'}
+          onPress={() => {
+            auth().signInWithEmailAndPassword('test@test.test', '12345678')
+          }}
+        />
+      </View>
+    )
+  }
 
   //#region App
   return (
@@ -246,19 +282,14 @@ const TodoScreen = () => {
             <Text style={styles.headerText}>Your Todo's</Text>
           </View>
         </View>
-        <FlatList
-          style={styles.list}
-          data={todos}
-          renderItem={({ item }) => (
-            <TodoElement
-              done={item.done}
-              title={item.title}
-              id={item.id}
-              onPress={(id) => handleToggleTodo(id)}
-              onLongPress={(id) => handleRemoveTodoModalActivation(id)}
-            />
-          )}
-          keyExtractor={({ id }) => id}
+        <TodoList
+          todos={todos}
+          todoOnPress={(id) => handleToggleTodo(id)}
+          todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
+        />
+        <Button
+          value={'logout'}
+          onPress={() => auth().signOut()}
         />
         <Button
           value={'Add new Todo'}
