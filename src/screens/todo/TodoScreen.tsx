@@ -33,10 +33,6 @@ const TodoScreen = () => {
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
     useState<boolean>(false)
 
-  // !TODO ADDING FILTER FUNCTION
-  // Async Storage for Filter
-  // const [filter, setFiler] = useAsyncStorage('filter', 'timestamp')
-
   // Refs
   const todoInputRef = useRef<TodoInputRefFunctions>(null)
   const isAddedChange = useRef<boolean>(false)
