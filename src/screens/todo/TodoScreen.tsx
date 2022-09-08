@@ -11,7 +11,7 @@ import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInpu
 import { Todo } from './TodoScreen.types'
 import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth'
 import TodoList from '../../components/todoList/TodoList'
 
 //! Defined Variables
@@ -20,10 +20,6 @@ const FOOTER_HEIGHT = 48
 
 const TodoScreen = () => {
   const styles = getStyles({ HEADER_HEIGHT, FOOTER_HEIGHT })
-
-  // State for auth
-  const [initializing, setInitializing] = useState(true)
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>()
 
   // State for managing Todos
   const [todos, setTodos] = useState<Todo[]>([])
@@ -221,14 +217,6 @@ const TodoScreen = () => {
       })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((userObj) => {
-      setUser(userObj)
-      if (initializing) setInitializing(false)
-    })
-    return subscriber // unsubscribe on unmount
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   //#endregion
 
   //#region Loading Screen
@@ -240,28 +228,6 @@ const TodoScreen = () => {
     )
   }
   //#endregion
-
-  if (initializing) {
-    return (
-      <View>
-        <Text>Initialisierung</Text>
-      </View>
-    )
-  }
-
-  if (!user) {
-    return (
-      <View>
-        <Text>No User</Text>
-        <Button
-          value={'login'}
-          onPress={() => {
-            auth().signInWithEmailAndPassword('test@test.test', '12345678')
-          }}
-        />
-      </View>
-    )
-  }
 
   //#region App
   return (
