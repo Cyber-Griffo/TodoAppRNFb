@@ -18,6 +18,7 @@ module.exports = {
         ],
         'unused-imports/no-unused-imports': 'error',
         semi: ['warn', 'never'],
+        curly: ['error', 'multi-line'],
       },
     },
   ],
