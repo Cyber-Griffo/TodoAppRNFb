@@ -8,6 +8,8 @@ const TodoList = (props: TodoListProps) => {
   const { todos, todoOnLongPress, todoOnPress } = props
   const styles = getStyles()
 
+  console.log(todos)
+
   return (
     <FlatList
       style={styles.list}
@@ -17,7 +19,7 @@ const TodoList = (props: TodoListProps) => {
           done={item.done}
           title={item.title}
           id={item.id}
-          onPress={todoOnPress}
+          onPress={() => todoOnPress(item.id, item.done)}
           onLongPress={todoOnLongPress}
         />
       )}

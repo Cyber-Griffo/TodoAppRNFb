@@ -3,8 +3,8 @@ import { Todo } from '../../screens/todo/TodoScreen.types'
 
 export type Props = {
   todos: Todo[]
-  todoOnPress: (param: any) => void
-  todoOnLongPress: (param: any) => void
+  todoOnPress: (id: string, done: boolean) => void
+  todoOnLongPress: (id: string) => void
 }
 
 export type TodoListStyleContext = {}

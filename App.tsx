@@ -1,11 +1,12 @@
+import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import TodoScreen from './src/screens/todo/TodoScreen'
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import { LoginStack } from './src/navigation/LoginNav'
 import Splash from './src/screens/splash/Splash'
+import { MainStack } from './src/navigation/MainNav'
 
 const App = () => {
   // State for auth
@@ -31,7 +32,7 @@ const App = () => {
           backgroundColor={'transparent'}
           translucent={true}
         />
-        {user ? <TodoScreen /> : <LoginStack />}
+        {user ? <MainStack /> : <LoginStack />}
       </SafeAreaProvider>
     </NavigationContainer>
   )

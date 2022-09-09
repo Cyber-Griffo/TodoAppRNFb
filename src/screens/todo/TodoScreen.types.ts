@@ -9,6 +9,10 @@ export type Todo = {
   category: string
 }
 
+export type TodoScreenProps = {
+  todos: Todo[]
+}
+
 export type TodoScreenStyleContext = {
   HEADER_HEIGHT: number
   FOOTER_HEIGHT: number
