@@ -14,3 +14,8 @@ export function checkForTimestamp(a: Todo, b: Todo) {
 export function todoSortingConditions(a: Todo, b: Todo): number {
   return a.done === b.done ? checkForTimestamp(a, b) : a.done ? 1 : -1
 }
+
+export function todoSortingConditionsMainScreen(a: Todo, b: Todo): number {
+  let calc = a.category.localeCompare(b.category)
+  return calc === 0 ? todoSortingConditions(a, b) : calc
+}

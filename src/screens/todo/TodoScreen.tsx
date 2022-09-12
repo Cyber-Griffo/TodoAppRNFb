@@ -9,7 +9,10 @@ import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
 import TodoList from '../../components/todoList/TodoList'
 import { addTodo, removeTodo, toggleTodo } from '../../database/FirebaseHandler'
-import { findTodoById } from '../../helper/TodoHelper'
+import {
+  findTodoById,
+  todoSortingConditionsMainScreen,
+} from '../../helper/TodoHelper'
 import { TodoScreenProps as Props } from './TodoScreen.types'
 import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
 import auth from '@react-native-firebase/auth'
@@ -20,6 +23,12 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
   // State for managing Todos
   // console.log(todos)
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
+
+  if (category === '') {
+    todos = todos.sort((a, b) => {
+      return todoSortingConditionsMainScreen(a, b)
+    })
+  }
 
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
