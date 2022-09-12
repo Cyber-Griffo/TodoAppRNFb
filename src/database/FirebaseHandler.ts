@@ -22,6 +22,15 @@ export async function toggleTodo(id: string, newValue: boolean) {
 export async function addTodo(title: string, category: string) {
   if (!uid) return
 
+  if (category !== '') {
+    const result = await firestoreCategoryPath
+      .where('title', '==', category)
+      .get()
+    if (result.empty) {
+      addCategory(category)
+    }
+  }
+
   await firestoreTodoPath
     .add({
       title,
@@ -49,11 +58,11 @@ export async function removeTodo(id: string) {
   console.log('Removed Todo successfully')
 }
 
-export async function addCategory(category: string) {
+export async function addCategory(title: string) {
   if (!uid) return
 
   await firestoreCategoryPath.add({
-    category,
+    title,
   })
 
   console.log('Added Category successfully')

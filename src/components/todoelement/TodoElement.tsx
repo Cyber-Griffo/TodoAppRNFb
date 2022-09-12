@@ -4,20 +4,24 @@ import { Props as TodoElementProps } from './TodoElement.types'
 import { getStyles } from './TodoElement.styles'
 
 const TodoElement = (props: TodoElementProps) => {
-  const { done, title, onPress, id, onLongPress } = props
-  const styles = getStyles({ done })
+  const { todo, onPress, onLongPress, displayCategoryTitle } = props
+  const styles = getStyles({ done: todo.done })
+
+  const prefix =
+    displayCategoryTitle && todo.category !== '' ? todo.category : ''
 
   return (
     <TouchableHighlight
-      onPress={() => onPress(id)}
-      onLongPress={() => onLongPress(id)}
+      onPress={() => onPress(todo.id)}
+      onLongPress={() => onLongPress(todo.id)}
       style={styles.wrapper}
       activeOpacity={0.9}
     >
       <View style={styles.container}>
         <View style={styles.mark} />
         <View style={styles.titleWrapper}>
-          <Text style={styles.title}>{title}</Text>
+          {prefix && <Text style={styles.titlePrefix}>{prefix}</Text>}
+          <Text style={styles.title}>{todo.title}</Text>
         </View>
       </View>
     </TouchableHighlight>

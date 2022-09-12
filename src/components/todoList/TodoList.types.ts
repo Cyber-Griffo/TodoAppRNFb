@@ -5,6 +5,7 @@ export type Props = {
   todos: Todo[]
   todoOnPress: (id: string, done: boolean) => void
   todoOnLongPress: (id: string) => void
+  displayTodoCategory?: boolean
 }
 
 export type TodoListStyleContext = {}

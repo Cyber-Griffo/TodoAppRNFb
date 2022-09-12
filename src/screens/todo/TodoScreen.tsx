@@ -14,7 +14,7 @@ import { TodoScreenProps as Props } from './TodoScreen.types'
 import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
 import auth from '@react-native-firebase/auth'
 
-const TodoScreen = ({ todos, category = 'all' }: Props) => {
+const TodoScreen = ({ todos, category = '' }: Props) => {
   const styles = getStyles({ HEADER_HEIGHT, FOOTER_HEIGHT })
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
@@ -52,8 +52,8 @@ const TodoScreen = ({ todos, category = 'all' }: Props) => {
     removeTodo(id)
     setIsRemoveTodoModalShowing(false)
   }
-  function handleAddTodo(title: string) {
-    addTodo(title, category)
+  function handleAddTodo(title: string, categoryTitle: string) {
+    addTodo(title, categoryTitle)
   }
   function handleToggleTodo(id: string, oldValue: boolean): void {
     toggleTodo(id, !oldValue)
@@ -77,7 +77,7 @@ const TodoScreen = ({ todos, category = 'all' }: Props) => {
         >
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>
-              {category === 'all' ? "Your Todo's" : category}
+              {category === '' ? "All Todo's" : category}
             </Text>
           </View>
         </View>
@@ -85,6 +85,7 @@ const TodoScreen = ({ todos, category = 'all' }: Props) => {
           todos={todos}
           todoOnPress={(id, done) => handleToggleTodo(id, done)}
           todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
+          displayTodoCategory={category === '' ? true : false}
         />
         <Button
           value={'logout'}
@@ -113,8 +114,11 @@ const TodoScreen = ({ todos, category = 'all' }: Props) => {
         >
           <TodoInput
             ref={todoInputRef}
-            createFunction={(title) => handleAddTodo(title)}
+            createFunction={(title, categoryTitle) =>
+              handleAddTodo(title, categoryTitle)
+            }
             cancelFunction={() => handleAddTodoModalDismiss()}
+            category={category}
           />
         </Modal>
       )}

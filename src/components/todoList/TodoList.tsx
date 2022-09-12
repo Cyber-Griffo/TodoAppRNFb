@@ -5,7 +5,7 @@ import { getStyles } from './TodoList.styles'
 import { Props as TodoListProps } from './TodoList.types'
 
 const TodoList = (props: TodoListProps) => {
-  const { todos, todoOnLongPress, todoOnPress } = props
+  const { todos, todoOnLongPress, todoOnPress, displayTodoCategory } = props
   const styles = getStyles()
 
   return (
@@ -14,11 +14,11 @@ const TodoList = (props: TodoListProps) => {
       data={todos}
       renderItem={({ item }) => (
         <TodoElement
-          done={item.done}
-          title={item.title}
-          id={item.id}
+          todo={item}
           onPress={() => todoOnPress(item.id, item.done)}
           onLongPress={todoOnLongPress}
+          key={item.id}
+          displayCategoryTitle={displayTodoCategory}
         />
       )}
       keyExtractor={({ id }) => id}

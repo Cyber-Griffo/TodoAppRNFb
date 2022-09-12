@@ -1,8 +1,9 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 
 export type Props = {
-  createFunction: (title: string) => void
+  createFunction: (title: string, categoryTitle: string) => void
   cancelFunction: () => void
+  category: string
 }
 
 export type RefFunctions = {

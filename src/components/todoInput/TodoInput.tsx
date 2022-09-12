@@ -15,12 +15,13 @@ const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
   TodoInputProps
 > = (props: TodoInputProps, ref) => {
-  const { cancelFunction, createFunction } = props
+  const { cancelFunction, createFunction, category } = props
 
   //! PLACEHOLDER STRING ONLY FOR DEV-STAGE
   const [title, setTitle] = useState<string>(
     faker.lorem.sentence(Math.floor(Math.random() * 10) + 1)
   )
+  const [categoryTitle, setCategoryTitle] = useState<string>(category)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const styles = getStyles()
@@ -36,7 +37,7 @@ const TodoInput: React.ForwardRefRenderFunction<
   const handleSubmitting = () => {
     // just create a new Todo if Title is provided
     if (title) {
-      createFunction(title)
+      createFunction(title, categoryTitle)
     } else {
       setErrorMessage('Please enter a Title!')
     }
@@ -61,7 +62,18 @@ const TodoInput: React.ForwardRefRenderFunction<
           placeholderTextColor={'#A1A1A1'}
           onSubmitEditing={() => handleSubmitting()}
           blurOnSubmit={false}
-          autoFocus={true}
+          autoFocus
+        />
+        <TextInput
+          value={categoryTitle}
+          onChangeText={(text) => {
+            setCategoryTitle(text)
+          }}
+          style={[styles.textInput, { marginTop: 0 }]}
+          placeholder={INPUT_PLACEHOLDER}
+          placeholderTextColor={'#A1A1A1'}
+          onSubmitEditing={() => handleSubmitting()}
+          blurOnSubmit={false}
         />
         <View style={styles.buttonWrapper}>
           <Button

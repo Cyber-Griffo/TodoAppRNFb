@@ -9,7 +9,7 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
     },
     headerWrapper: {
       justifyContent: 'flex-end',
-      backgroundColor: '#4FA5DE',
+      backgroundColor: '#278BCE',
 
       shadowColor: '#000',
       shadowOffset: {

@@ -33,6 +33,13 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
       },
       ctx.done && { color: 'darkgrey' },
     ],
+    titlePrefix: [
+      {
+        color: '#278BCE',
+        fontWeight: '600',
+      },
+      ctx.done && { color: '#95B7CF' },
+    ],
     mark: [
       {
         width: 10,
