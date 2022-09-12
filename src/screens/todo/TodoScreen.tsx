@@ -7,21 +7,18 @@ import TodoInput from '../../components/todoInput/TodoInput'
 import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInput/TodoInput.types'
 import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
-import auth from '@react-native-firebase/auth'
 import TodoList from '../../components/todoList/TodoList'
 import { addTodo, removeTodo, toggleTodo } from '../../database/FirebaseHandler'
 import { findTodoById } from '../../helper/TodoHelper'
 import { TodoScreenProps as Props } from './TodoScreen.types'
+import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
+import auth from '@react-native-firebase/auth'
 
-//! Defined Variables
-const HEADER_HEIGHT = 56
-const FOOTER_HEIGHT = 48
-
-const TodoScreen = ({ todos }: Props) => {
+const TodoScreen = ({ todos, category = 'all' }: Props) => {
   const styles = getStyles({ HEADER_HEIGHT, FOOTER_HEIGHT })
-
+  // TODO: Many Rerenders (Modal...)
   // State for managing Todos
-  console.log(todos)
+  // console.log(todos)
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
 
   // State for correct Modal to show
@@ -35,16 +32,6 @@ const TodoScreen = ({ todos }: Props) => {
 
   // Getting SafeAreaInsets
   const safeareaInsets = useSafeAreaInsets()
-
-  //! Warning just for testing purposes
-
-  /*   function removeAllTestTodo() {
-    todos?.forEach((todo) => {
-      if (todo.title === 'Test') {
-        removeTodo(todo.id)
-      }
-    })
-  } */
 
   //#region Handler
   function handleAddTodoModalActivation() {
@@ -66,7 +53,7 @@ const TodoScreen = ({ todos }: Props) => {
     setIsRemoveTodoModalShowing(false)
   }
   function handleAddTodo(title: string) {
-    addTodo(title)
+    addTodo(title, category)
   }
   function handleToggleTodo(id: string, oldValue: boolean): void {
     toggleTodo(id, !oldValue)
@@ -89,7 +76,9 @@ const TodoScreen = ({ todos }: Props) => {
           ]}
         >
           <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>Your Todo's</Text>
+            <Text style={styles.headerText}>
+              {category === 'all' ? "Your Todo's" : category}
+            </Text>
           </View>
         </View>
         <TodoList

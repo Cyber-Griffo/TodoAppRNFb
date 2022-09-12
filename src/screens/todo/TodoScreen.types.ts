@@ -11,6 +11,7 @@ export type Todo = {
 
 export type TodoScreenProps = {
   todos: Todo[]
+  category?: 'all' | string
 }
 
 export type TodoScreenStyleContext = {
