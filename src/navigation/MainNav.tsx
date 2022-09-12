@@ -21,22 +21,13 @@ export function MainStack() {
   const uid = auth().currentUser?.uid
   const [todos, setTodos] = useState<Todo[]>([])
   const [categories, setCategories] = useState<Category[]>([])
-  console.log(categories)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isLoadingTodos, setIsLoadingTodos] = useState<boolean>(true)
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true)
+
   const isAddedChangeTodo = useRef<boolean>(false)
   const isAddedChangeCategory = useRef<boolean>(false)
-
-  //! Just for testing purposes
-  /*   function removeAllTestTodo() {
-    todos?.forEach((todo) => {
-      if (todo.title === 'Test') {
-        removeTodo(todo.id)
-      }
-    })
-  } */
 
   //#region Todo Handlers
   function handleTodoRemovedChange(id: string) {
@@ -209,6 +200,18 @@ export function MainStack() {
       <Stack.Screen name="Todos">
         {() => <TodoScreen todos={todos} />}
       </Stack.Screen>
+      {categories.map((category) => {
+        return (
+          <Stack.Screen name={category.category}>
+            {() => (
+              <TodoScreen
+                todos={todos}
+                category={category.category}
+              />
+            )}
+          </Stack.Screen>
+        )
+      })}
     </Stack.Navigator>
   )
 }
