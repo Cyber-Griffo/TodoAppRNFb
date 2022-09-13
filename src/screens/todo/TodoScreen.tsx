@@ -15,7 +15,6 @@ import {
 } from '../../helper/TodoHelper'
 import { TodoScreenProps as Props } from './TodoScreen.types'
 import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
-import auth from '@react-native-firebase/auth'
 
 const TodoScreen = ({ todos, category = '' }: Props) => {
   const styles = getStyles({ HEADER_HEIGHT, FOOTER_HEIGHT })
@@ -95,10 +94,6 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
           todoOnPress={(id, done) => handleToggleTodo(id, done)}
           todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
           displayTodoCategory={category === '' ? true : false}
-        />
-        <Button
-          value={'logout'}
-          onPress={() => auth().signOut()}
         />
         <Button
           value={'Add new Todo'}

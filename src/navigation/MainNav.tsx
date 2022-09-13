@@ -7,8 +7,9 @@ import { todoSortingConditions } from '../helper/TodoHelper'
 import { Text, View } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import { firestoreCategoryPath, firestoreTodoPath } from '../constants/Firebase'
+import { CustomDrawerContent } from './CustomDrawerContent'
 
-const Stack = createDrawerNavigator()
+const Drawer = createDrawerNavigator()
 
 type Category = {
   title: string
@@ -184,6 +185,8 @@ export function MainStack() {
         )
       }
 
+      console.log(currCategories.current)
+
       setCategories(currCategories.current)
 
       if (isLoadingCategories) setIsLoadingCategories(false)
@@ -203,19 +206,22 @@ export function MainStack() {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Todos">
+    <Drawer.Navigator
+      screenOptions={{ headerShown: false }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <Drawer.Screen name="All Todo's">
         {() => (
           <TodoScreen
             todos={todos}
             key={'AllTodos#0'}
           />
         )}
-      </Stack.Screen>
+      </Drawer.Screen>
       {categories.map((category) => {
         if (category.title !== '') {
           return (
-            <Stack.Screen
+            <Drawer.Screen
               name={category.title}
               key={category.id}
             >
@@ -228,10 +234,10 @@ export function MainStack() {
                   key={category.id}
                 />
               )}
-            </Stack.Screen>
+            </Drawer.Screen>
           )
         }
       })}
-    </Stack.Navigator>
+    </Drawer.Navigator>
   )
 }
