@@ -207,7 +207,14 @@ export function MainStack() {
 
   return (
     <Drawer.Navigator
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        drawerActiveTintColor: 'white',
+        drawerActiveBackgroundColor: '#278BCE',
+        drawerInactiveBackgroundColor: 'white',
+        drawerInactiveTintColor: '#278BCE',
+        drawerItemStyle: { borderRadius: 10 },
+      }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="All Todo's">

@@ -5,7 +5,10 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
     buttonTouchable: [
       {},
       ctx.rounded && {
-        borderRadius: 8,
+        borderRadius: ctx.borderRadius + 1,
+      },
+      ctx.variant === 'secondary' && {
+        borderColor: 'white',
       },
     ],
     buttonView: [
@@ -14,12 +17,13 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#278BCE',
+        flexDirection: 'row',
       },
       ctx.variant === 'secondary' && {
         backgroundColor: 'white',
       },
       ctx.rounded && {
-        borderRadius: 8,
+        borderRadius: ctx.borderRadius,
       },
     ],
     text: [

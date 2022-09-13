@@ -24,7 +24,6 @@ export const getStyles = (): TodoInputStyles => {
     },
     touchableWrapper: {
       marginHorizontal: 10,
-      borderRadius: 10,
       flex: 1,
     },
     buttonText: {

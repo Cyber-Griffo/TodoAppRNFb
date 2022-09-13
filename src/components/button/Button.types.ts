@@ -19,11 +19,13 @@ export type Props = {
     wrapper?: StyleProp<ViewStyle>
   }
   touchableProps?: TouchableHighlightProps
+  borderRadius?: number
 }
 
 export type ButtonStyleContext = {
   variant: 'primary' | 'secondary'
   rounded: boolean
+  borderRadius: number
 }
 
 export type ButtonStyles = {

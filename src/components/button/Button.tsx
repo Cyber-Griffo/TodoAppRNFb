@@ -4,8 +4,13 @@ import { getStyles } from './Button.styles'
 import { Props as ButtonProps } from './Button.types'
 
 const Button = (props: ButtonProps) => {
-  const { variant = 'primary', rounded = false } = props
-  const styles = getStyles({ variant, rounded })
+  const {
+    variant = 'primary',
+    rounded = false,
+    borderRadius = 10,
+    children,
+  } = props
+  const styles = getStyles({ variant, rounded, borderRadius })
 
   return (
     <TouchableHighlight
@@ -15,6 +20,7 @@ const Button = (props: ButtonProps) => {
       {...props.touchableProps}
     >
       <View style={[styles.buttonView, props.style?.container]}>
+        {children}
         <Text style={[styles.text, props.style?.text]}>{props.value}</Text>
       </View>
     </TouchableHighlight>
