@@ -4,7 +4,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer'
-import { Text, View } from 'react-native'
+import { Linking, Text, View } from 'react-native'
 import Button from '../components/button/Button'
 import auth from '@react-native-firebase/auth'
 import { HEADER_HEIGHT } from '../constants/StyleGuides'
@@ -70,7 +70,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               color: 'black',
             },
           }}
-          onPress={() => auth().signOut()}
+          onPress={() => Linking.openURL('www.google.com')}
         >
           <Text style={{ marginHorizontal: 10, color: '#278BCE' }}>Icon</Text>
         </Button>

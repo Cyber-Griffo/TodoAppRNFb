@@ -194,7 +194,7 @@ export function MainStack() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!(isLoadingCategories && isLoadingTodos)) setIsLoading(false)
+    if (!isLoadingCategories && !isLoadingTodos) setIsLoading(false)
   }, [isLoadingCategories, isLoadingTodos])
 
   if (isLoading) {
