@@ -3,40 +3,26 @@ import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer'
-import { Linking, Text, View } from 'react-native'
-import Button from '../components/button/Button'
+import { Linking, View } from 'react-native'
+import Button from '../../../components/button/Button'
 import auth from '@react-native-firebase/auth'
-import { HEADER_HEIGHT } from '../constants/StyleGuides'
+import { HEADER_HEIGHT } from '../../../constants/StyleGuides'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import CustomDrawerItemList from './CustomDrawerItemList'
+import CustomDrawerItemList from '../itemlist/CustomDrawerItemList'
+import { getStyles } from './CustomDrawerContent.styles'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const insets = useSafeAreaInsets()
+  const styles = getStyles()
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}
-    >
+    <View style={styles.wrapper}>
       <View
-        style={{
-          height: HEADER_HEIGHT + insets.top,
-          backgroundColor: '#278BCE',
-
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-
-          elevation: 5,
-        }}
+        style={[styles.headerWrapper, { height: HEADER_HEIGHT + insets.top }]}
       >
-        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+        <View style={styles.headerContainer}>
           <Button
             value={'Add New Category'}
             style={{
@@ -51,18 +37,12 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       </View>
       <DrawerContentScrollView
         {...props}
-        style={{ marginTop: -insets.top + 5, zIndex: -1 }}
+        style={[styles.drawerContentScrollView, { marginTop: -insets.top + 5 }]}
       >
         <CustomDrawerItemList {...props} />
       </DrawerContentScrollView>
       <View>
-        <View
-          style={{
-            width: '100%',
-            height: 1,
-            backgroundColor: 'darkgrey',
-          }}
-        />
+        <View style={styles.breaker} />
         <Button
           value={'Project Page'}
           rounded
@@ -80,7 +60,12 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             Linking.openURL('https://github.com/Cyber-Griffo/TodoAppRNFb')
           }
         >
-          <Text style={{ marginHorizontal: 10, color: '#278BCE' }}>Icon</Text>
+          <MaterialCommunityIcon
+            name="github"
+            size={22}
+            style={styles.iconStyle}
+            color={'#278BCE'}
+          />
         </Button>
         <Button
           value={'Sign Out'}
@@ -101,7 +86,12 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           }}
           onPress={() => auth().signOut()}
         >
-          <Text style={{ marginHorizontal: 10, color: '#278BCE' }}>Icon</Text>
+          <MaterialIcon
+            name="logout"
+            size={18}
+            style={[styles.iconStyle, { marginLeft: 2 }]}
+            color={'#278BCE'}
+          />
         </Button>
       </View>
     </View>

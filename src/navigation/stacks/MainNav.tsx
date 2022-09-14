@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import TodoScreen from '../screens/todo/TodoScreen'
-import { Todo } from '../screens/todo/TodoScreen.types'
+import TodoScreen from '../../screens/todo/TodoScreen'
+import { Todo } from '../../screens/todo/TodoScreen.types'
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import { todoSortingConditions } from '../helper/TodoHelper'
-import { Text, View } from 'react-native'
+import { todoSortingConditions } from '../../helper/TodoHelper'
+import { StyleSheet, Text, View } from 'react-native'
 import auth from '@react-native-firebase/auth'
-import { firestoreCategoryPath, firestoreTodoPath } from '../constants/Firebase'
-import { CustomDrawerContent } from './CustomDrawerContent'
+import {
+  firestoreCategoryPath,
+  firestoreTodoPath,
+} from '../../constants/Firebase'
+import { CustomDrawerContent } from './../customdrawer/content/CustomDrawerContent'
 
 const Drawer = createDrawerNavigator()
 
@@ -197,7 +200,7 @@ export function MainStack() {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.loadginScreenContainer}>
         <Text>Loading...</Text>
       </View>
     )
@@ -213,7 +216,9 @@ export function MainStack() {
         drawerInactiveTintColor: '#278BCE',
         drawerItemStyle: { borderRadius: 10 },
       }}
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => {
+        return <CustomDrawerContent {...props} />
+      }}
     >
       <Drawer.Screen name="All Todo's">
         {() => (
@@ -246,3 +251,11 @@ export function MainStack() {
     </Drawer.Navigator>
   )
 }
+
+const styles = StyleSheet.create({
+  loadginScreenContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
