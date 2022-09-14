@@ -185,8 +185,6 @@ export function MainStack() {
         )
       }
 
-      console.log(currCategories.current)
-
       setCategories(currCategories.current)
 
       if (isLoadingCategories) setIsLoadingCategories(false)
@@ -226,7 +224,7 @@ export function MainStack() {
         )}
       </Drawer.Screen>
       {categories.map((category) => {
-        if (category.title !== '') {
+        if (category.title && category.title !== '') {
           return (
             <Drawer.Screen
               name={category.title}

@@ -2,18 +2,24 @@ import React from 'react'
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
-  DrawerItemList,
 } from '@react-navigation/drawer'
 import { Linking, Text, View } from 'react-native'
 import Button from '../components/button/Button'
 import auth from '@react-native-firebase/auth'
 import { HEADER_HEIGHT } from '../constants/StyleGuides'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import CustomDrawerItemList from './CustomDrawerItemList'
 
 export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const insets = useSafeAreaInsets()
+
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: 'white',
+      }}
+    >
       <View
         style={{
           height: HEADER_HEIGHT + insets.top,
@@ -47,7 +53,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         {...props}
         style={{ marginTop: -insets.top + 5, zIndex: -1 }}
       >
-        <DrawerItemList {...props} />
+        <CustomDrawerItemList {...props} />
       </DrawerContentScrollView>
       <View>
         <View
@@ -70,7 +76,9 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               color: 'black',
             },
           }}
-          onPress={() => Linking.openURL('www.google.com')}
+          onPress={() =>
+            Linking.openURL('https://github.com/Cyber-Griffo/TodoAppRNFb')
+          }
         >
           <Text style={{ marginHorizontal: 10, color: '#278BCE' }}>Icon</Text>
         </Button>
