@@ -12,6 +12,7 @@ export type Props = {
   value: string
   variant?: 'primary' | 'secondary'
   rounded?: boolean
+  iconButton?: boolean
   onPress?: ((event: GestureResponderEvent) => void) | undefined
   style?: {
     text?: StyleProp<TextStyle>
@@ -26,6 +27,7 @@ export type ButtonStyleContext = {
   variant: 'primary' | 'secondary'
   rounded: boolean
   borderRadius: number
+  iconButton: boolean
 }
 
 export type ButtonStyles = {

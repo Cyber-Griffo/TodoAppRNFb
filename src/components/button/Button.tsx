@@ -8,9 +8,10 @@ const Button = (props: ButtonProps) => {
     variant = 'primary',
     rounded = false,
     borderRadius = 10,
+    iconButton = false,
     children,
   } = props
-  const styles = getStyles({ variant, rounded, borderRadius })
+  const styles = getStyles({ variant, rounded, borderRadius, iconButton })
 
   return (
     <TouchableHighlight

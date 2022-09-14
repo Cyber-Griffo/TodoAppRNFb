@@ -13,11 +13,16 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
     ],
     buttonView: [
       {
-        paddingVertical: 12,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#278BCE',
         flexDirection: 'row',
+      },
+      ctx.iconButton && {
+        padding: 0,
+      },
+      !ctx.iconButton && {
+        paddingVertical: 12,
       },
       ctx.variant === 'secondary' && {
         backgroundColor: 'white',

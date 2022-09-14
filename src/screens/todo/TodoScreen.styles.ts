@@ -1,6 +1,7 @@
-import { TodoScreenStyleContext, TodoScreenStyles } from './TodoScreen.types'
+import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
+import { TodoScreenStyles } from './TodoScreen.types'
 
-export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
+export const getStyles = (): TodoScreenStyles => {
   return {
     wrapperContainer: {
       height: '100%',
@@ -22,7 +23,7 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
       elevation: 5,
     },
     headerContainer: {
-      height: ctx.HEADER_HEIGHT,
+      height: HEADER_HEIGHT,
       width: '100%',
       justifyContent: 'center',
       alignItems: 'center',
@@ -34,7 +35,7 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
     },
     footerButton: {
       width: '100%',
-      height: ctx.FOOTER_HEIGHT,
+      height: FOOTER_HEIGHT,
       alignItems: 'center',
       justifyContent: 'center',
     },

@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer'
-import { Linking, View } from 'react-native'
+import { Linking, TextInput, View } from 'react-native'
 import Button from '../../../components/button/Button'
 import auth from '@react-native-firebase/auth'
 import { HEADER_HEIGHT } from '../../../constants/StyleGuides'
@@ -12,10 +12,37 @@ import CustomDrawerItemList from '../itemlist/CustomDrawerItemList'
 import { getStyles } from './CustomDrawerContent.styles'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { addCategory } from '../../../database/FirebaseHandler'
+
+type PlaceholderObj = {
+  text: string
+  color: string
+}
 
 export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const insets = useSafeAreaInsets()
   const styles = getStyles()
+
+  const [categoryTitle, setCategoryTitle] = useState<string>('')
+  const defautlPlaceholder: PlaceholderObj = {
+    text: 'Create New Category',
+    color: 'darkgrey',
+  }
+  const errorPlaceholder: PlaceholderObj = {
+    text: 'Enter a Title',
+    color: 'red',
+  }
+  const [placeholderObj, setPlaceholderObj] =
+    useState<PlaceholderObj>(defautlPlaceholder)
+
+  function handleSubmitting() {
+    if (categoryTitle === '') {
+      setPlaceholderObj(errorPlaceholder)
+      return
+    }
+    addCategory(categoryTitle)
+    setCategoryTitle('')
+  }
 
   return (
     <View style={styles.wrapper}>
@@ -23,16 +50,32 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         style={[styles.headerWrapper, { height: HEADER_HEIGHT + insets.top }]}
       >
         <View style={styles.headerContainer}>
-          <Button
-            value={'Add New Category'}
-            style={{
-              text: {
-                fontWeight: '500',
-              },
-            }}
-            onPress={() => console.log('create new Category')}
-            touchableProps={{ activeOpacity: 1 }}
+          <TextInput
+            style={styles.headerTextInput}
+            placeholder={placeholderObj.text}
+            placeholderTextColor={placeholderObj.color}
+            value={categoryTitle}
+            onFocus={() => setPlaceholderObj(defautlPlaceholder)}
+            onChangeText={(text) => setCategoryTitle(text)}
+            onSubmitEditing={() => handleSubmitting()}
           />
+          <Button
+            value={''}
+            variant="secondary"
+            style={{
+              container: styles.headerIconButtonContainer,
+              wrapper: styles.headerIconButtonWrapper,
+            }}
+            rounded
+            onPress={() => handleSubmitting()}
+            iconButton
+          >
+            <MaterialIcon
+              name="add"
+              size={20}
+              color={'#278BCE'}
+            />
+          </Button>
         </View>
       </View>
       <DrawerContentScrollView

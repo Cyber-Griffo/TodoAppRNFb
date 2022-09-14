@@ -14,13 +14,13 @@ import {
   todoSortingConditionsMainScreen,
 } from '../../helper/TodoHelper'
 import { TodoScreenProps as Props } from './TodoScreen.types'
-import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
+import { HEADER_HEIGHT } from '../../constants/StyleGuides'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native'
 
 const TodoScreen = ({ todos, category = '' }: Props) => {
   const navigation = useNavigation()
-  const styles = getStyles({ HEADER_HEIGHT, FOOTER_HEIGHT })
+  const styles = getStyles()
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
   // console.log(todos)
@@ -92,7 +92,6 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
               style={{ position: 'absolute', left: 12 }}
               size={24}
               color={'white'}
-              // eslint
               onPress={() => navigation.openDrawer()}
             />
             <Text style={styles.headerText}>
