@@ -143,6 +143,8 @@ export function MainStack() {
       }
       setTodos(currTodos.current)
 
+      console.log(currTodos.current)
+
       if (isLoadingTodos) setIsLoadingTodos(false)
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -187,6 +189,8 @@ export function MainStack() {
           currCategories.current
         )
       }
+
+      console.log(currCategories.current)
 
       setCategories(currCategories.current)
 

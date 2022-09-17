@@ -9,7 +9,10 @@ const Button = (props: ButtonProps) => {
     rounded = false,
     borderRadius = 10,
     iconButton = false,
-    children,
+    showIconLeft = false,
+    showIconRight = false,
+    iconLeft,
+    iconRight,
   } = props
   const styles = getStyles({ variant, rounded, borderRadius, iconButton })
 
@@ -21,8 +24,9 @@ const Button = (props: ButtonProps) => {
       {...props.touchableProps}
     >
       <View style={[styles.buttonView, props.style?.container]}>
-        {children}
+        {showIconLeft && iconLeft}
         <Text style={[styles.text, props.style?.text]}>{props.value}</Text>
+        {showIconRight && iconRight}
       </View>
     </TouchableHighlight>
   )

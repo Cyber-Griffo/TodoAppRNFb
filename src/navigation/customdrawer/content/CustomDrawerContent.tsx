@@ -102,14 +102,16 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress={() =>
             Linking.openURL('https://github.com/Cyber-Griffo/TodoAppRNFb')
           }
-        >
-          <MaterialCommunityIcon
-            name="github"
-            size={22}
-            style={styles.iconStyle}
-            color={'#278BCE'}
-          />
-        </Button>
+          iconLeft={
+            <MaterialCommunityIcon
+              name="github"
+              size={22}
+              style={styles.iconStyle}
+              color={'#278BCE'}
+            />
+          }
+          showIconLeft
+        />
         <Button
           value={'Sign Out'}
           rounded
@@ -128,14 +130,16 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             },
           }}
           onPress={() => auth().signOut()}
-        >
-          <MaterialIcon
-            name="logout"
-            size={18}
-            style={[styles.iconStyle, { marginLeft: 2 }]}
-            color={'#278BCE'}
-          />
-        </Button>
+          iconLeft={
+            <MaterialIcon
+              name="logout"
+              size={18}
+              style={[styles.iconStyle, { marginLeft: 2 }]}
+              color={'#278BCE'}
+            />
+          }
+          showIconLeft
+        />
       </View>
     </View>
   )

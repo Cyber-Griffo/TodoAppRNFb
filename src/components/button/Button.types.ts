@@ -21,6 +21,10 @@ export type Props = {
   }
   touchableProps?: TouchableHighlightProps
   borderRadius?: number
+  iconLeft?: React.ReactNode
+  iconRight?: React.ReactNode
+  showIconLeft?: boolean
+  showIconRight?: boolean
 }
 
 export type ButtonStyleContext = {

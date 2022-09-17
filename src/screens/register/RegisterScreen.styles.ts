@@ -1,4 +1,4 @@
-import { RegisterStyles } from './Register.types'
+import { RegisterStyles } from './RegisterScreen.types'
 
 export const getStyles = (): RegisterStyles => {
   return {

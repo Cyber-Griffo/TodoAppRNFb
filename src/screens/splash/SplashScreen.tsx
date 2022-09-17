@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { getStyles } from './Splash.styles'
+import { getStyles } from './SplashScreen.styles'
 
 const Splash = () => {
   const styles = getStyles()

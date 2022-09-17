@@ -1,6 +1,6 @@
-import { SplashStyles } from './Splash.types'
+import { LoginStyles } from './LoginScreen.types'
 
-export const getStyles = (): SplashStyles => {
+export const getStyles = (): LoginStyles => {
   return {
     container: {
       flex: 1,

@@ -5,7 +5,7 @@ import { StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import { LoginStack } from './src/navigation/stacks/LoginNav'
-import Splash from './src/screens/splash/Splash'
+import Splash from './src/screens/splash/SplashScreen'
 import { MainStack } from './src/navigation/stacks/MainNav'
 
 const App = () => {

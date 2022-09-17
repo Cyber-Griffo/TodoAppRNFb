@@ -13,6 +13,7 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
     ],
     buttonView: [
       {
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#278BCE',

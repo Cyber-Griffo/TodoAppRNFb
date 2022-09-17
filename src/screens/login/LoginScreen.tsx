@@ -1,8 +1,13 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import Button from '../../components/button/Button'
-import { getStyles } from './Login.styles'
+import { getStyles } from './LoginScreen.styles'
 import auth from '@react-native-firebase/auth'
+
+const LoginTestAccountCredentials = {
+  email: 'text@test.test',
+  password: '12345678',
+}
 
 const Login = () => {
   const styles = getStyles()
@@ -13,7 +18,10 @@ const Login = () => {
       <Button
         value={'login'}
         onPress={() => {
-          auth().signInWithEmailAndPassword('test@test.test', '12345678')
+          auth().signInWithEmailAndPassword(
+            LoginTestAccountCredentials.email,
+            LoginTestAccountCredentials.password
+          )
         }}
       />
     </View>
