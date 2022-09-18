@@ -33,7 +33,6 @@ export const getStyles = (): CustomDrawerContentStyles => {
     ],
     headerIconButtonContainer: { height: 30, width: 30 },
     headerIconButtonWrapper: { marginHorizontal: 12 },
-    breaker: [{ width: '100%', height: 1, backgroundColor: '#E6EDF2' }],
     drawerContentScrollView: [{ zIndex: -1 }],
     iconStyle: [{ marginRight: 10 }],
   }

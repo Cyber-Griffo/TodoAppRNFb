@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
-import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
+import SafetyQuestion from '../../components/safetyquestion/SafetyQuestion'
 import TodoInput from '../../components/todoInput/TodoInput'
 import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInput/TodoInput.types'
 import { getStyles } from './TodoScreen.styles'
@@ -16,10 +16,11 @@ import {
 import { TodoScreenProps as Props } from './TodoScreen.types'
 import { HEADER_HEIGHT } from '../../constants/StyleGuides'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import { useNavigation } from '@react-navigation/native'
+import { ParamListBase, useNavigation } from '@react-navigation/native'
+import { DrawerNavigationProp } from '@react-navigation/drawer'
 
 const TodoScreen = ({ todos, category = '' }: Props) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const styles = getStyles()
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
@@ -89,7 +90,7 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
           <View style={styles.headerContainer}>
             <MaterialIcon
               name="menu"
-              style={{ position: 'absolute', left: 15 }}
+              style={styles.menuIcon}
               size={24}
               color={'white'}
               onPress={() => navigation.openDrawer()}

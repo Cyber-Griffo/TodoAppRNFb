@@ -33,6 +33,10 @@ export const getStyles = (): TodoScreenStyles => {
       fontWeight: '500',
       fontSize: 18,
     },
+    menuIcon: {
+      position: 'absolute',
+      left: 15,
+    },
     footerButton: {
       width: '100%',
       height: FOOTER_HEIGHT,

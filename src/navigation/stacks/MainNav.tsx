@@ -10,7 +10,7 @@ import {
   firestoreCategoryPath,
   firestoreTodoPath,
 } from '../../constants/Firebase'
-import { CustomDrawerContent } from './../customdrawer/content/CustomDrawerContent'
+import { CustomDrawerContent } from '../../components/customdrawer/content/CustomDrawerContent'
 
 const Drawer = createDrawerNavigator()
 

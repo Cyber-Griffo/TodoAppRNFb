@@ -5,8 +5,9 @@ import Button from '../../components/button/Button'
 import WelcomeIllustration from '../../svg/welcomeIllustration/WelcomeIllustration'
 import { getStyles } from './WelcomeScreen.styles'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import { Props as WelcomScreenProps } from './WelcomeScreen.types'
 
-const WelcomeScreen = ({ navigation }) => {
+const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
   const styles = getStyles()
   const insets = useSafeAreaInsets()
 

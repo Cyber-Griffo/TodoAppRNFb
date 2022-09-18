@@ -4,7 +4,7 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer'
 import { Linking, Text, TextInput, View } from 'react-native'
-import Button from '../../../components/button/Button'
+import Button from '../../button/Button'
 import auth from '@react-native-firebase/auth'
 import { HEADER_HEIGHT } from '../../../constants/StyleGuides'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -13,6 +13,7 @@ import { getStyles } from './CustomDrawerContent.styles'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { addCategory } from '../../../database/FirebaseHandler'
+import SectionHeader from '../sectionheader/CustomDrawerSectionHeader'
 
 type PlaceholderObj = {
   text: string
@@ -93,11 +94,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             showIconLeft
           />
         </View>
-        <View style={styles.breaker} />
       </View>
-      <View style={{ backgroundColor: 'white', paddingVertical: 8 }}>
-        <Text style={{ marginLeft: 12, color: '#A3B0B8' }}>Categories</Text>
-      </View>
+      <SectionHeader text="Categories" />
       <DrawerContentScrollView
         {...props}
         style={[styles.drawerContentScrollView, { marginTop: -insets.top }]}
@@ -105,10 +103,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         <CustomDrawerItemList {...props} />
       </DrawerContentScrollView>
       <View style={{}}>
-        <View style={styles.breaker} />
-        <View style={{ backgroundColor: 'white', paddingTop: 10 }}>
-          <Text style={{ marginLeft: 12, color: '#A3B0B8' }}>Other</Text>
-        </View>
+        <SectionHeader text="Other" />
         <Button
           value={'Project Page'}
           variant="secondary"

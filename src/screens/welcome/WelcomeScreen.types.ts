@@ -1,6 +1,9 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 
-export type Props = {}
+export type Props = {
+  navigation: NavigationProp<ParamListBase>
+}
 
 export type WelcomeScreenStyles = {
   container: StyleProp<ViewStyle>

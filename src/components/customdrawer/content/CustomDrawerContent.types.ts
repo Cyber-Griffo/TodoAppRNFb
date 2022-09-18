@@ -8,7 +8,6 @@ export type CustomDrawerContentStyles = {
   headerTextInput: StyleProp<TextStyle>
   headerIconButtonContainer: StyleProp<ViewStyle>
   headerIconButtonWrapper: StyleProp<ViewStyle>
-  breaker: StyleProp<ViewStyle>
   drawerContentScrollView: StyleProp<ViewStyle>
   iconStyle: StyleProp<TextStyle>
 }
