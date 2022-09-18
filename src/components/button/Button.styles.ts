@@ -8,7 +8,7 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
         borderRadius: ctx.borderRadius + 1,
       },
       ctx.variant === 'secondary' && {
-        borderColor: 'white',
+        borderColor: ctx.theme.backgroundColor,
       },
     ],
     buttonView: [
@@ -16,7 +16,7 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#278BCE',
+        backgroundColor: ctx.theme.primaryColor,
         flexDirection: 'row',
       },
       ctx.iconButton && {
@@ -26,7 +26,7 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
         paddingVertical: 12,
       },
       ctx.variant === 'secondary' && {
-        backgroundColor: 'white',
+        backgroundColor: ctx.theme.backgroundColor,
       },
       ctx.rounded && {
         borderRadius: ctx.borderRadius,
@@ -34,10 +34,10 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
     ],
     text: [
       {
-        color: 'white',
+        color: ctx.theme.backgroundColor,
       },
       ctx.variant === 'secondary' && {
-        color: '#278BCE',
+        color: ctx.theme.primaryColor,
       },
     ],
   }

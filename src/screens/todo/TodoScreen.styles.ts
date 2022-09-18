@@ -1,18 +1,18 @@
 import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
-import { TodoScreenStyles } from './TodoScreen.types'
+import { TodoScreenStyleContext, TodoScreenStyles } from './TodoScreen.types'
 
-export const getStyles = (): TodoScreenStyles => {
+export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
   return {
     wrapperContainer: {
       height: '100%',
       width: '100%',
-      backgroundColor: 'white',
+      backgroundColor: ctx.theme.backgroundColor,
     },
     headerWrapper: {
       justifyContent: 'flex-end',
-      backgroundColor: '#278BCE',
+      backgroundColor: ctx.theme.primaryColor,
 
-      shadowColor: '#000',
+      shadowColor: ctx.theme.darkColor,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -29,7 +29,7 @@ export const getStyles = (): TodoScreenStyles => {
       alignItems: 'center',
     },
     headerText: {
-      color: 'white',
+      color: ctx.theme.backgroundColor,
       fontWeight: '500',
       fontSize: 18,
     },
@@ -55,7 +55,7 @@ export const getStyles = (): TodoScreenStyles => {
       alignItems: 'center',
     },
     loadingScreenText: {
-      color: 'black',
+      color: ctx.theme.darkColor,
       fontWeight: '600',
       fontSize: 18,
     },

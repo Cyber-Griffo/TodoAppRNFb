@@ -1,4 +1,5 @@
 import { ColorValue, StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { Theme } from '../../../utils/ThemeContext'
 
 export type Props = {
   text: string
@@ -8,6 +9,7 @@ export type Props = {
 }
 
 export type SectionHeaderStylesContext = {
+  theme: Theme
   textColor?: ColorValue
   lineColor?: ColorValue
   textBackground?: ColorValue

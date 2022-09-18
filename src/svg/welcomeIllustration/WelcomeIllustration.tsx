@@ -60,7 +60,7 @@ const WelcomeIllustration = (props: SvgProps) => (
       <Path
         data-name="Path 99"
         d="M570.721 96.45c-6.035 3.588-9.647 10.18-11.719 16.9a160.073 160.073 0 0 0-6.877 38.24l-2.191 38.86-27.113 103.029c23.5 19.883 37.053 15.363 68.686-.9S626.753 298 626.753 298l6.325-87.663 9.037-95.793a42.487 42.487 0 0 0-6.846-6.581 69.923 69.923 0 0 0-59.761-12.673Z"
-        fill="#278bce"
+        fill={props.color || '#278bce'}
       />
       <Path
         data-name="Path 558"
@@ -70,7 +70,7 @@ const WelcomeIllustration = (props: SvgProps) => (
       <Path
         data-name="Path 101"
         d="M641.665 114.976c15.363 5.422 18.071 64.17 18.071 64.17-18.075-9.94-39.765 6.327-39.765 6.327s-4.518-15.365-9.941-35.246a34.54 34.54 0 0 1 7.229-32.535s9.041-8.141 24.406-2.716Z"
-        fill="#278bce"
+        fill={props.color || '#278bce'}
       />
       <Path
         data-name="Path 102"
@@ -85,7 +85,7 @@ const WelcomeIllustration = (props: SvgProps) => (
     <Path
       data-name="Path 2429"
       d="M385.145 21.8c0 7.534-5.85 13.641-13.068 13.641s-13.069-6.107-13.069-13.642c0-.17.003-.34.01-.51.133-7.532 6.092-13.525 13.308-13.384s12.956 6.361 12.821 13.894Z"
-      fill="#278bce"
+      fill={props.color || '#278bce'}
     />
     <Path
       data-name="Path 2431"
@@ -99,7 +99,7 @@ const WelcomeIllustration = (props: SvgProps) => (
     <Path
       data-name="Path 2429"
       d="M384.145 135.8c0 7.534-5.85 13.641-13.068 13.641s-13.069-6.107-13.069-13.642c0-.17.003-.34.01-.51.133-7.532 6.092-13.525 13.308-13.384s12.956 6.361 12.821 13.894Z"
-      fill="#278bce"
+      fill={props.color || '#278bce'}
     />
     <Path
       data-name="Path 2431"
@@ -113,7 +113,7 @@ const WelcomeIllustration = (props: SvgProps) => (
     <Path
       data-name="Path 2429"
       d="M384.145 249.8c0 7.534-5.85 13.641-13.068 13.641s-13.069-6.107-13.069-13.642c0-.17.003-.34.01-.51.133-7.532 6.092-13.525 13.308-13.384s12.956 6.361 12.821 13.894Z"
-      fill="#278bce"
+      fill={props.color || '#278bce'}
     />
     <Path
       data-name="Path 2431"

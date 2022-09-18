@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, TouchableHighlight, View } from 'react-native'
 import { Props as TodoElementProps } from './TodoElement.types'
 import { getStyles } from './TodoElement.styles'
+import { ThemeContext } from '../../utils/ThemeContext'
 
 const TodoElement = (props: TodoElementProps) => {
   const { todo, onPress, onLongPress, displayCategoryTitle } = props
-  const styles = getStyles({ done: todo.done })
+  const { theme } = useContext(ThemeContext)
+  const styles = getStyles({ theme, done: todo.done })
 
   const prefix =
     displayCategoryTitle && todo.category !== '' ? todo.category : ''

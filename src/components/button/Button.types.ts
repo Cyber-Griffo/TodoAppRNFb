@@ -6,6 +6,7 @@ import {
   TouchableHighlightProps,
   ViewStyle,
 } from 'react-native'
+import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
   children?: React.ReactNode
@@ -28,6 +29,7 @@ export type Props = {
 }
 
 export type ButtonStyleContext = {
+  theme: Theme
   variant: 'primary' | 'secondary'
   rounded: boolean
   borderRadius: number

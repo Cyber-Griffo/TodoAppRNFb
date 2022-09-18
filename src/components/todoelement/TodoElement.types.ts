@@ -1,5 +1,6 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 import { Todo } from '../../screens/todo/TodoScreen.types'
+import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
   todo: Todo
@@ -9,6 +10,7 @@ export type Props = {
 }
 
 export type TodoElementStyleContext = {
+  theme: Theme
   done: boolean
 }
 

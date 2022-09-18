@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import TodoScreen from '../../screens/todo/TodoScreen'
 import { Todo } from '../../screens/todo/TodoScreen.types'
@@ -11,6 +11,7 @@ import {
   firestoreTodoPath,
 } from '../../constants/Firebase'
 import { CustomDrawerContent } from '../../components/customdrawer/content/CustomDrawerContent'
+import { ThemeContext } from '../../utils/ThemeContext'
 
 const Drawer = createDrawerNavigator()
 
@@ -29,6 +30,8 @@ export function MainStack() {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isLoadingTodos, setIsLoadingTodos] = useState<boolean>(true)
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true)
+
+  const { theme } = useContext(ThemeContext)
 
   //#region Todo Handlers
   function handleTodoRemovedChange(id: string, list: Todo[]) {
@@ -143,8 +146,6 @@ export function MainStack() {
       }
       setTodos(currTodos.current)
 
-      console.log(currTodos.current)
-
       if (isLoadingTodos) setIsLoadingTodos(false)
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -189,9 +190,6 @@ export function MainStack() {
           currCategories.current
         )
       }
-
-      console.log(currCategories.current)
-
       setCategories(currCategories.current)
 
       if (isLoadingCategories) setIsLoadingCategories(false)
@@ -214,10 +212,10 @@ export function MainStack() {
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
-        drawerActiveTintColor: '#278BCE',
-        drawerActiveBackgroundColor: '#E6EDF2',
-        drawerInactiveBackgroundColor: 'white',
-        drawerInactiveTintColor: 'black',
+        drawerActiveTintColor: theme.primaryColor as string,
+        drawerActiveBackgroundColor: theme.placeholderLightColor as string,
+        drawerInactiveBackgroundColor: theme.backgroundColor as string,
+        drawerInactiveTintColor: theme.darkColor as string,
         drawerItemStyle: { borderRadius: 10 },
         drawerLabelStyle: { fontSize: 14 },
       }}

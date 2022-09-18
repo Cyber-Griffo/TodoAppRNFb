@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from 'react'
+import React, { useContext, useImperativeHandle, useState } from 'react'
 import {
   Keyboard,
   Text,
@@ -10,6 +10,7 @@ import Button from '../button/Button'
 import { getStyles } from './TodoInput.styles'
 import { RefFunctions, Props as TodoInputProps } from './TodoInput.types'
 import { faker } from '@faker-js/faker'
+import { ThemeContext } from '../../utils/ThemeContext'
 
 const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
@@ -24,7 +25,8 @@ const TodoInput: React.ForwardRefRenderFunction<
   const [categoryTitle, setCategoryTitle] = useState<string>(category)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
-  const styles = getStyles()
+  const { theme } = useContext(ThemeContext)
+  const styles = getStyles({ theme })
 
   const INPUT_PLACEHOLDER = 'Title'
 
@@ -47,7 +49,7 @@ const TodoInput: React.ForwardRefRenderFunction<
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <Text style={styles.title}>Please enter a new Todo:</Text>
+        <Text style={styles.title}>Add new Todo</Text>
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
         <TextInput
           value={title}
@@ -59,7 +61,7 @@ const TodoInput: React.ForwardRefRenderFunction<
           }}
           style={styles.textInput}
           placeholder={INPUT_PLACEHOLDER}
-          placeholderTextColor={'#A1A1A1'}
+          placeholderTextColor={theme.placeholderColor}
           onSubmitEditing={() => handleSubmitting()}
           blurOnSubmit={false}
           autoFocus
@@ -71,7 +73,7 @@ const TodoInput: React.ForwardRefRenderFunction<
           }}
           style={[styles.textInput, { marginTop: 0 }]}
           placeholder={INPUT_PLACEHOLDER}
-          placeholderTextColor={'#A1A1A1'}
+          placeholderTextColor={theme.placeholderColor}
           onSubmitEditing={() => handleSubmitting()}
           blurOnSubmit={false}
         />
@@ -92,7 +94,7 @@ const TodoInput: React.ForwardRefRenderFunction<
             onPress={() => cancelFunction()}
             style={{
               wrapper: styles.touchableWrapper,
-              text: [styles.buttonText, { color: '#de5950' }],
+              text: [styles.buttonText, { color: theme.errorColor }],
             }}
           />
         </View>

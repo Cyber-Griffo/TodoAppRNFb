@@ -1,5 +1,6 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { Theme } from '../../utils/ThemeContext'
 
 export type Todo = {
   done: boolean
@@ -15,8 +16,7 @@ export type TodoScreenProps = {
 }
 
 export type TodoScreenStyleContext = {
-  HEADER_HEIGHT: number
-  FOOTER_HEIGHT: number
+  theme: Theme
 }
 
 export type TodoScreenStyles = {

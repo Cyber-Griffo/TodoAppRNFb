@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, View } from 'react-native'
+import { ThemeContext } from '../../utils/ThemeContext'
 import Button from '../button/Button'
 import { getStyles } from './SafetyQuestion.styles'
 import { Props as SafetyQuestionProps } from './SafetyQuestion.types'
 
 const SafetyQuestion = (props: SafetyQuestionProps) => {
+  const { theme } = useContext(ThemeContext)
   const { acceptFunction, cancelFunction, title } = props
-  const styles = getStyles()
+  const styles = getStyles({ theme })
 
   const displayMessage = `Are you sure you want to delete \n '${title}'?`
 
@@ -21,7 +23,7 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
           style={{
             wrapper: styles.touchableWrapper,
             text: styles.buttonText,
-            container: { backgroundColor: '#de5950' },
+            container: { backgroundColor: theme.errorColor },
           }}
         />
         <Button

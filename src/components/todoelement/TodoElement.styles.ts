@@ -11,7 +11,7 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     ],
     container: [
       {
-        backgroundColor: 'white',
+        backgroundColor: ctx.theme.backgroundColor,
         padding: 8,
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -27,31 +27,34 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     ],
     title: [
       {
-        color: 'black',
+        color: ctx.theme.darkColor,
         fontSize: 16,
         marginRight: 16,
       },
-      ctx.done && { color: 'darkgrey' },
+      ctx.done && { color: ctx.theme.placeholderColor },
     ],
     titlePrefix: [
       {
-        color: '#278BCE',
+        color: ctx.theme.primaryColor,
         fontWeight: '600',
       },
-      ctx.done && { color: '#95B7CF' },
+      ctx.done && { color: ctx.theme.primaryLightColor },
     ],
     mark: [
       {
         width: 10,
         borderRadius: 10,
-        backgroundColor: 'white',
+        backgroundColor: ctx.theme.backgroundColor,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: ctx.theme.darkColor,
         marginLeft: 8,
         marginRight: 16,
         height: 10,
       },
-      ctx.done && { backgroundColor: 'darkgrey', borderColor: 'darkgrey' },
+      ctx.done && {
+        backgroundColor: ctx.theme.placeholderColor,
+        borderColor: ctx.theme.placeholderColor,
+      },
     ],
   }
 }

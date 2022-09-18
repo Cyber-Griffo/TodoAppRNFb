@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, TouchableHighlight, View } from 'react-native'
+import { ThemeContext } from '../../utils/ThemeContext'
 import { getStyles } from './Button.styles'
 import { Props as ButtonProps } from './Button.types'
 
 const Button = (props: ButtonProps) => {
+  const { theme } = useContext(ThemeContext)
   const {
     variant = 'primary',
     rounded = false,
@@ -14,7 +16,13 @@ const Button = (props: ButtonProps) => {
     iconLeft,
     iconRight,
   } = props
-  const styles = getStyles({ variant, rounded, borderRadius, iconButton })
+  const styles = getStyles({
+    theme,
+    variant,
+    rounded,
+    borderRadius,
+    iconButton,
+  })
 
   return (
     <TouchableHighlight

@@ -7,6 +7,7 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import { LoginStack } from './src/navigation/stacks/LoginNav'
 import Splash from './src/screens/splash/SplashScreen'
 import { MainStack } from './src/navigation/stacks/MainNav'
+import ThemeContextProvider from './src/utils/ThemeContext'
 
 const App = () => {
   // State for auth
@@ -25,16 +26,18 @@ const App = () => {
 
   //#region App
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
-        <StatusBar
-          barStyle={'dark-content'}
-          backgroundColor={'transparent'}
-          translucent={true}
-        />
-        {user ? <MainStack /> : <LoginStack />}
-      </SafeAreaProvider>
-    </NavigationContainer>
+    <ThemeContextProvider>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <StatusBar
+            barStyle={'dark-content'}
+            backgroundColor={'transparent'}
+            translucent={true}
+          />
+          {user ? <MainStack /> : <LoginStack />}
+        </SafeAreaProvider>
+      </NavigationContainer>
+    </ThemeContextProvider>
   )
   //#endregion
 }

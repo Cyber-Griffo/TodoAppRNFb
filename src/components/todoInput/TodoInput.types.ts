@@ -1,4 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
   createFunction: (title: string, categoryTitle: string) => void
@@ -8,6 +9,10 @@ export type Props = {
 
 export type RefFunctions = {
   isInputEmpty: () => boolean
+}
+
+export type TodoInputStylesContext = {
+  theme: Theme
 }
 
 export type TodoInputStyles = {

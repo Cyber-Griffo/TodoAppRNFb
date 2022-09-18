@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
@@ -18,13 +18,14 @@ import { HEADER_HEIGHT } from '../../constants/StyleGuides'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
+import { ThemeContext } from '../../utils/ThemeContext'
 
 const TodoScreen = ({ todos, category = '' }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
-  const styles = getStyles()
+  const { theme } = useContext(ThemeContext)
+  const styles = getStyles({ theme })
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
-  // console.log(todos)
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
 
   if (category === '') {
@@ -92,7 +93,7 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
               name="menu"
               style={styles.menuIcon}
               size={24}
-              color={'white'}
+              color={theme.backgroundColor}
               onPress={() => navigation.openDrawer()}
             />
             <Text style={styles.headerText}>

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer'
-import { Linking, Text, TextInput, View } from 'react-native'
+import { ColorValue, Linking, Text, TextInput, View } from 'react-native'
 import Button from '../../button/Button'
 import auth from '@react-native-firebase/auth'
 import { HEADER_HEIGHT } from '../../../constants/StyleGuides'
@@ -14,24 +14,26 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { addCategory } from '../../../database/FirebaseHandler'
 import SectionHeader from '../sectionheader/CustomDrawerSectionHeader'
+import { ThemeContext } from '../../../utils/ThemeContext'
 
 type PlaceholderObj = {
   text: string
-  color: string
+  color: ColorValue
 }
 
 export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const insets = useSafeAreaInsets()
-  const styles = getStyles()
+  const { theme } = useContext(ThemeContext)
+  const styles = getStyles({ theme })
 
   const [categoryTitle, setCategoryTitle] = useState<string>('')
   const defautlPlaceholder: PlaceholderObj = {
     text: 'Add new...',
-    color: '#A3B0B8',
+    color: theme.placeholderColor,
   }
   const errorPlaceholder: PlaceholderObj = {
     text: 'Enter a Title',
-    color: '#FB7185',
+    color: theme.errorColor,
   }
   const [placeholderObj, setPlaceholderObj] =
     useState<PlaceholderObj>(defautlPlaceholder)
@@ -57,7 +59,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           style={{
             marginLeft: 12,
             fontSize: 24,
-            color: '#0B2638',
+            color: theme.darkColor,
             paddingRight: 12,
             fontWeight: '500',
           }}
@@ -88,7 +90,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               <MaterialIcon
                 name="add"
                 size={24}
-                color={'#0B2638'}
+                color={theme.darkColor}
               />
             }
             showIconLeft
@@ -116,7 +118,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             text: {
               fontWeight: '500',
               fontSize: 14,
-              color: '#0B2638',
+              color: theme.darkColor,
             },
           }}
           onPress={() =>
@@ -134,7 +136,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               <MaterialCommunityIcon
                 name="github"
                 size={22}
-                color={'#0B2638'}
+                color={theme.darkColor}
               />
             </View>
           }
@@ -156,7 +158,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             text: {
               fontWeight: '500',
               fontSize: 14,
-              color: '#0B2638',
+              color: theme.darkColor,
             },
           }}
           onPress={() => auth().signOut()}
@@ -172,7 +174,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
               <MaterialIcon
                 name="logout"
                 size={22}
-                color={'#0B2638'}
+                color={theme.darkColor}
               />
             </View>
           }

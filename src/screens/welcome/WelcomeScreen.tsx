@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Button from '../../components/button/Button'
@@ -6,9 +6,11 @@ import WelcomeIllustration from '../../svg/welcomeIllustration/WelcomeIllustrati
 import { getStyles } from './WelcomeScreen.styles'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { Props as WelcomScreenProps } from './WelcomeScreen.types'
+import { ThemeContext } from '../../utils/ThemeContext'
 
 const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
-  const styles = getStyles()
+  const { theme } = useContext(ThemeContext)
+  const styles = getStyles({ theme })
   const insets = useSafeAreaInsets()
 
   return (
@@ -18,7 +20,7 @@ const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
           Blutudo
         </Text>
         <WelcomeIllustration
-          color={'#278BCE'}
+          color={theme.primaryColor}
           style={styles.illustration}
         />
       </View>
@@ -45,7 +47,7 @@ const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
               <MaterialIcon
                 name="arrow-forward-ios"
                 size={16}
-                color={'#278BCE'}
+                color={theme.primaryColor}
               />
             }
             showIconRight

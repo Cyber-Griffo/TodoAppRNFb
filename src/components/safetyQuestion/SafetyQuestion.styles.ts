@@ -1,10 +1,15 @@
-import { SafetyQuestionStyles } from './SafetyQuestion.types'
+import {
+  SafetyQuestionStyles,
+  SafetyQuestionStylesContext,
+} from './SafetyQuestion.types'
 
-export const getStyles = (): SafetyQuestionStyles => {
+export const getStyles = (
+  ctx: SafetyQuestionStylesContext
+): SafetyQuestionStyles => {
   return {
     container: {
       width: '80%',
-      backgroundColor: 'white',
+      backgroundColor: ctx.theme.backgroundColor,
       borderRadius: 12,
     },
     title: {
@@ -14,7 +19,7 @@ export const getStyles = (): SafetyQuestionStyles => {
       fontSize: 16,
       fontWeight: '400',
       paddingHorizontal: 20,
-      color: 'black',
+      color: ctx.theme.darkColor,
     },
     buttonWrapper: {
       flexDirection: 'row',
