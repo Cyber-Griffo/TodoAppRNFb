@@ -5,7 +5,7 @@ import { getStyles } from './LoginScreen.styles'
 import auth from '@react-native-firebase/auth'
 
 const LoginTestAccountCredentials = {
-  email: 'text@test.test',
+  email: 'test@test.test',
   password: '12345678',
 }
 

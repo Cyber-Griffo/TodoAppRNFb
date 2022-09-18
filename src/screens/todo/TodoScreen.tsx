@@ -89,7 +89,7 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
           <View style={styles.headerContainer}>
             <MaterialIcon
               name="menu"
-              style={{ position: 'absolute', left: 12 }}
+              style={{ position: 'absolute', left: 15 }}
               size={24}
               color={'white'}
               onPress={() => navigation.openDrawer()}

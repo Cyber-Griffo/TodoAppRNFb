@@ -3,7 +3,7 @@ import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from '@react-navigation/drawer'
-import { Linking, TextInput, View } from 'react-native'
+import { Linking, Text, TextInput, View } from 'react-native'
 import Button from '../../../components/button/Button'
 import auth from '@react-native-firebase/auth'
 import { HEADER_HEIGHT } from '../../../constants/StyleGuides'
@@ -25,12 +25,12 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
 
   const [categoryTitle, setCategoryTitle] = useState<string>('')
   const defautlPlaceholder: PlaceholderObj = {
-    text: 'Create New Category',
-    color: 'darkgrey',
+    text: 'Add new...',
+    color: '#A3B0B8',
   }
   const errorPlaceholder: PlaceholderObj = {
     text: 'Enter a Title',
-    color: 'red',
+    color: '#FB7185',
   }
   const [placeholderObj, setPlaceholderObj] =
     useState<PlaceholderObj>(defautlPlaceholder)
@@ -47,8 +47,22 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
   return (
     <View style={styles.wrapper}>
       <View
-        style={[styles.headerWrapper, { height: HEADER_HEIGHT + insets.top }]}
+        style={[
+          styles.headerWrapper,
+          { height: HEADER_HEIGHT * 2 + insets.top },
+        ]}
       >
+        <Text
+          style={{
+            marginLeft: 12,
+            fontSize: 24,
+            color: '#0B2638',
+            paddingRight: 12,
+            fontWeight: '500',
+          }}
+        >
+          Your Categories
+        </Text>
         <View style={styles.headerContainer}>
           <TextInput
             style={styles.headerTextInput}
@@ -69,76 +83,106 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             rounded
             onPress={() => handleSubmitting()}
             iconButton
-          >
-            <MaterialIcon
-              name="add"
-              size={20}
-              color={'#278BCE'}
-            />
-          </Button>
+            iconLeft={
+              <MaterialIcon
+                name="add"
+                size={24}
+                color={'#0B2638'}
+              />
+            }
+            showIconLeft
+          />
         </View>
+        <View style={styles.breaker} />
+      </View>
+      <View style={{ backgroundColor: 'white', paddingVertical: 8 }}>
+        <Text style={{ marginLeft: 12, color: '#A3B0B8' }}>Categories</Text>
       </View>
       <DrawerContentScrollView
         {...props}
-        style={[styles.drawerContentScrollView, { marginTop: -insets.top + 5 }]}
+        style={[styles.drawerContentScrollView, { marginTop: -insets.top }]}
       >
         <CustomDrawerItemList {...props} />
       </DrawerContentScrollView>
-      <View>
+      <View style={{}}>
         <View style={styles.breaker} />
+        <View style={{ backgroundColor: 'white', paddingTop: 10 }}>
+          <Text style={{ marginLeft: 12, color: '#A3B0B8' }}>Other</Text>
+        </View>
         <Button
           value={'Project Page'}
-          rounded
           variant="secondary"
           style={{
-            wrapper: { marginHorizontal: 10, marginTop: 10 },
-            container: { justifyContent: 'flex-start' },
+            container: {
+              justifyContent: 'space-between',
+              paddingLeft: 16,
+              paddingRight: 22,
+            },
             text: {
               fontWeight: '500',
-              fontSize: 16,
-              color: 'black',
+              fontSize: 14,
+              color: '#0B2638',
             },
           }}
           onPress={() =>
             Linking.openURL('https://github.com/Cyber-Griffo/TodoAppRNFb')
           }
-          iconLeft={
-            <MaterialCommunityIcon
-              name="github"
-              size={22}
-              style={styles.iconStyle}
-              color={'#278BCE'}
-            />
+          iconRight={
+            <View
+              style={{
+                width: 22,
+                height: 22,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <MaterialCommunityIcon
+                name="github"
+                size={22}
+                color={'#0B2638'}
+              />
+            </View>
           }
-          showIconLeft
+          showIconRight
+          touchableProps={{ activeOpacity: 0.95 }}
         />
         <Button
           value={'Sign Out'}
-          rounded
           variant="secondary"
           style={{
             wrapper: {
-              marginHorizontal: 10,
-              marginTop: 10,
-              marginBottom: insets.bottom === 0 ? 10 : insets.bottom,
+              marginBottom: insets.bottom === 0 ? 6 : insets.bottom,
             },
-            container: { justifyContent: 'flex-start' },
+            container: {
+              justifyContent: 'space-between',
+              paddingLeft: 16,
+              paddingRight: 20,
+            },
             text: {
               fontWeight: '500',
-              fontSize: 16,
-              color: 'black',
+              fontSize: 14,
+              color: '#0B2638',
             },
           }}
           onPress={() => auth().signOut()}
-          iconLeft={
-            <MaterialIcon
-              name="logout"
-              size={18}
-              style={[styles.iconStyle, { marginLeft: 2 }]}
-              color={'#278BCE'}
-            />
+          iconRight={
+            <View
+              style={{
+                width: 22,
+                height: 22,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <MaterialIcon
+                name="logout"
+                size={22}
+                color={'#0B2638'}
+              />
+            </View>
           }
-          showIconLeft
+          showIconRight
+          touchableProps={{ activeOpacity: 0.95 }}
         />
       </View>
     </View>

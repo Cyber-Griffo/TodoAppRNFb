@@ -214,11 +214,12 @@ export function MainStack() {
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
-        drawerActiveTintColor: 'white',
-        drawerActiveBackgroundColor: '#278BCE',
+        drawerActiveTintColor: '#278BCE',
+        drawerActiveBackgroundColor: '#E6EDF2',
         drawerInactiveBackgroundColor: 'white',
-        drawerInactiveTintColor: '#278BCE',
+        drawerInactiveTintColor: 'black',
         drawerItemStyle: { borderRadius: 10 },
+        drawerLabelStyle: { fontSize: 14 },
       }}
       drawerContent={(props) => {
         return <CustomDrawerContent {...props} />

@@ -17,7 +17,7 @@ const WelcomeScreen = ({ navigation }) => {
           Blutudo
         </Text>
         <WelcomeIllustration
-          color={'#278bce'}
+          color={'#278BCE'}
           style={styles.illustration}
         />
       </View>

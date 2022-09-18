@@ -6,21 +6,11 @@ export const getStyles = (): CustomDrawerContentStyles => {
     wrapper: [{ flex: 1, backgroundColor: 'white' }],
     headerWrapper: {
       justifyContent: 'flex-end',
-      backgroundColor: '#278BCE',
-
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-
-      elevation: 5,
+      backgroundColor: 'white',
     },
     headerContainerWrapper: [{ flex: 1 }],
     headerContainer: {
-      height: HEADER_HEIGHT,
+      height: HEADER_HEIGHT + 6,
       width: '100%',
       justifyContent: 'space-around',
       alignItems: 'center',
@@ -29,19 +19,21 @@ export const getStyles = (): CustomDrawerContentStyles => {
     headerTextInput: [
       {
         flex: 1,
-        fontSize: 12,
+        fontSize: 14,
         backgroundColor: 'white',
         paddingVertical: 0,
-        color: 'black',
-        height: 30,
+        color: '#0B2638',
+        height: 34,
         borderRadius: 8,
         marginLeft: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
+        borderWidth: 1,
+        borderColor: '#E6EDF2',
       },
     ],
     headerIconButtonContainer: { height: 30, width: 30 },
     headerIconButtonWrapper: { marginHorizontal: 12 },
-    breaker: [{ width: '100%', height: 1, backgroundColor: 'darkgrey' }],
+    breaker: [{ width: '100%', height: 1, backgroundColor: '#E6EDF2' }],
     drawerContentScrollView: [{ zIndex: -1 }],
     iconStyle: [{ marginRight: 10 }],
   }
