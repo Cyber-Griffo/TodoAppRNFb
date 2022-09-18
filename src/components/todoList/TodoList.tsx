@@ -12,6 +12,7 @@ const TodoList = (props: TodoListProps) => {
     <FlatList
       style={styles.list}
       data={todos}
+      showsVerticalScrollIndicator={false}
       renderItem={({ item }) => (
         <TodoElement
           todo={item}
