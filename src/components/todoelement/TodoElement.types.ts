@@ -11,14 +11,14 @@ export type Props = {
 
 export type TodoElementStyleContext = {
   theme: Theme
-  done: boolean
+  todo: Todo
 }
 
 export type TodoElementStyles = {
   container: StyleProp<ViewStyle>
   titleWrapper: StyleProp<ViewStyle>
   title: StyleProp<TextStyle>
-  titlePrefix: StyleProp<TextStyle>
+  category: StyleProp<TextStyle>
   mark: StyleProp<ViewStyle>
   wrapper: StyleProp<ViewStyle>
 }

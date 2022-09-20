@@ -4,13 +4,15 @@ import darkTheme from '../themes/dark'
 import { ColorValue } from 'react-native'
 
 export type Theme = {
+  backgroundColor: ColorValue
+  darkColor: ColorValue
+  darkGreyColor: ColorValue
   primaryColor: ColorValue
   primaryLightColor: ColorValue
-  darkColor: ColorValue
-  placeholderColor: ColorValue
-  placeholderLightColor: ColorValue
+  primaryGreyColor: ColorValue
+  accentColor: ColorValue
+  accentGreyColor: ColorValue
   errorColor: ColorValue
-  backgroundColor: ColorValue
 }
 
 type ThemeContextValue = {

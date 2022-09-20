@@ -20,8 +20,16 @@ const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
           Blutudo
         </Text>
         <WelcomeIllustration
-          color={theme.primaryColor}
-          style={styles.illustration}
+          color={{
+            accent: theme.accentColor,
+            dark: theme.darkColor,
+            grey: theme.darkGreyColor,
+            primary: theme.primaryColor,
+            white: theme.backgroundColor,
+          }}
+          svgProps={{
+            style: styles.illustration,
+          }}
         />
       </View>
       <View style={styles.bottomContainerWrapper}>

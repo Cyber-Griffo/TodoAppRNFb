@@ -59,7 +59,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           style={{
             marginLeft: 12,
             fontSize: 24,
-            color: theme.darkColor,
+            color: theme.primaryColor,
             paddingRight: 12,
             fontWeight: '500',
           }}
@@ -89,8 +89,8 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
             iconLeft={
               <MaterialIcon
                 name="add"
-                size={24}
-                color={theme.darkColor}
+                size={32}
+                color={theme.accentColor}
               />
             }
             showIconLeft
@@ -104,19 +104,17 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       >
         <CustomDrawerItemList {...props} />
       </DrawerContentScrollView>
-      <View style={{}}>
-        <SectionHeader text="Other" />
+      <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+        <SectionHeader text="Others" />
         <Button
           value={'Project Page'}
           variant="secondary"
           style={{
             container: {
               justifyContent: 'space-between',
-              paddingLeft: 16,
-              paddingRight: 22,
+              paddingHorizontal: 12,
             },
             text: {
-              fontWeight: '500',
               fontSize: 14,
               color: theme.darkColor,
             },
@@ -127,16 +125,16 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           iconRight={
             <View
               style={{
-                width: 22,
-                height: 22,
+                width: 26,
+                height: 26,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
             >
               <MaterialCommunityIcon
                 name="github"
-                size={22}
-                color={theme.darkColor}
+                size={26}
+                color={theme.accentColor}
               />
             </View>
           }
@@ -146,17 +144,18 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
         <Button
           value={'Sign Out'}
           variant="secondary"
+          rounded
           style={{
             wrapper: {
-              marginBottom: insets.bottom === 0 ? 6 : insets.bottom,
+              marginBottom: insets.bottom === 0 ? 0 : insets.bottom,
             },
             container: {
               justifyContent: 'space-between',
-              paddingLeft: 16,
-              paddingRight: 20,
+              paddingLeft: 12,
+              paddingRight: 10,
+              paddingVertical: 10,
             },
             text: {
-              fontWeight: '500',
               fontSize: 14,
               color: theme.darkColor,
             },
@@ -165,21 +164,20 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
           iconRight={
             <View
               style={{
-                width: 22,
-                height: 22,
+                width: 26,
+                height: 26,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
             >
               <MaterialIcon
                 name="logout"
-                size={22}
-                color={theme.darkColor}
+                size={26}
+                color={theme.accentColor}
               />
             </View>
           }
           showIconRight
-          touchableProps={{ activeOpacity: 0.95 }}
         />
       </View>
     </View>

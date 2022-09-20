@@ -33,7 +33,7 @@ export const getStyles = (
         marginLeft: 10,
         paddingHorizontal: 12,
         borderWidth: 1,
-        borderColor: ctx.theme.placeholderColor,
+        borderColor: ctx.theme.primaryLightColor,
       },
     ],
     headerIconButtonContainer: { height: 30, width: 30 },

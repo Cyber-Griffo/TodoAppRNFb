@@ -213,10 +213,10 @@ export function MainStack() {
       screenOptions={{
         headerShown: false,
         drawerActiveTintColor: theme.primaryColor as string,
-        drawerActiveBackgroundColor: theme.placeholderLightColor as string,
+        drawerActiveBackgroundColor: theme.primaryLightColor as string,
         drawerInactiveBackgroundColor: theme.backgroundColor as string,
         drawerInactiveTintColor: theme.darkColor as string,
-        drawerItemStyle: { borderRadius: 10 },
+        drawerItemStyle: { borderRadius: 12 },
         drawerLabelStyle: { fontSize: 14 },
       }}
       drawerContent={(props) => {

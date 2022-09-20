@@ -4,19 +4,23 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
   return {
     wrapper: [
       {
-        marginVertical: 4,
-        marginHorizontal: 6,
-        borderRadius: 8,
+        marginVertical: 6,
+        marginHorizontal: 12,
+        borderRadius: 13,
       },
     ],
     container: [
       {
         backgroundColor: ctx.theme.backgroundColor,
-        padding: 8,
+        padding: 12,
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
         flex: 1,
+        borderRadius: 12,
+      },
+      ctx.todo.done && {
+        backgroundColor: ctx.theme.primaryLightColor,
       },
     ],
     titleWrapper: [
@@ -28,32 +32,40 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     title: [
       {
         color: ctx.theme.darkColor,
-        fontSize: 16,
-        marginRight: 16,
+        fontSize: 14,
+        marginRight: 12,
       },
-      ctx.done && { color: ctx.theme.placeholderColor },
+      ctx.todo.done && { color: ctx.theme.darkGreyColor },
+      ctx.todo.category !== '' && {
+        marginTop: 1,
+      },
     ],
-    titlePrefix: [
+    category: [
       {
         color: ctx.theme.primaryColor,
-        fontWeight: '600',
+        fontSize: 14,
+        marginRight: 12,
       },
-      ctx.done && { color: ctx.theme.primaryLightColor },
+      ctx.todo.done && { color: ctx.theme.primaryGreyColor },
+      ctx.todo.category !== '' && {
+        marginBottom: 1,
+      },
     ],
     mark: [
       {
-        width: 10,
-        borderRadius: 10,
+        width: 12,
+        height: 12,
+        borderRadius: 6,
         backgroundColor: ctx.theme.backgroundColor,
-        borderWidth: 1,
-        borderColor: ctx.theme.darkColor,
-        marginLeft: 8,
-        marginRight: 16,
-        height: 10,
+        borderWidth: 1.5,
+        borderColor: ctx.theme.accentColor,
+        marginRight: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
-      ctx.done && {
-        backgroundColor: ctx.theme.placeholderColor,
-        borderColor: ctx.theme.placeholderColor,
+      ctx.todo.done && {
+        backgroundColor: ctx.theme.accentGreyColor,
+        borderColor: ctx.theme.accentGreyColor,
       },
     ],
   }

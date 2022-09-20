@@ -11,7 +11,7 @@ export const getStyles = (
       {
         width: '100%',
         height: 1,
-        backgroundColor: ctx.theme.placeholderLightColor,
+        backgroundColor: ctx.theme.primaryLightColor,
       },
       ctx.lineColor !== undefined && {
         backgroundColor: ctx.lineColor,
@@ -20,7 +20,7 @@ export const getStyles = (
     textContainer: [
       {
         backgroundColor: ctx.theme.backgroundColor,
-        paddingVertical: 8,
+        paddingVertical: 6,
       },
       ctx.textBackground !== undefined && {
         backgroundColor: ctx.textBackground,
@@ -28,8 +28,7 @@ export const getStyles = (
     ],
     text: [
       {
-        marginLeft: 12,
-        color: ctx.theme.placeholderColor,
+        color: ctx.theme.darkGreyColor,
       },
       ctx.textColor !== undefined && {
         color: ctx.textColor,

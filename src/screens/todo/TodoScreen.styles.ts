@@ -31,11 +31,11 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
     headerText: {
       color: ctx.theme.backgroundColor,
       fontWeight: '500',
-      fontSize: 18,
+      fontSize: 24,
     },
     menuIcon: {
       position: 'absolute',
-      left: 15,
+      left: 16,
     },
     footerButton: {
       width: '100%',
