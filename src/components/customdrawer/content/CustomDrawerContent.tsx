@@ -95,7 +95,10 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
           />
         </View>
       </View>
-      <SectionHeader text="Categories" />
+      <SectionHeader
+        text="Categories"
+        style={{ wrapper: { paddingHorizontal: 12 } }}
+      />
       <DrawerContentScrollView
         {...props.drawerProps}
         style={[

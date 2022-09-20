@@ -6,6 +6,10 @@ export type Props = {
   textColor?: ColorValue
   lineColor?: ColorValue
   textBackground?: ColorValue
+  style?: {
+    text?: StyleProp<TextStyle>
+    wrapper?: StyleProp<ViewStyle>
+  }
 }
 
 export type SectionHeaderStylesContext = {

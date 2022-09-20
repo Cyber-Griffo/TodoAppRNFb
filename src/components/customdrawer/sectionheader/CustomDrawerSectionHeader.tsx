@@ -5,7 +5,7 @@ import { getStyles } from './CustomDrawerSectionHeader.styles'
 import { Props as SectionHeaderProps } from './CustomDrawerSectionHeader.types'
 
 const SectionHeader = (props: SectionHeaderProps) => {
-  const { text, textColor, lineColor, textBackground } = props
+  const { text, textColor, lineColor, textBackground, style } = props
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({
     theme,
@@ -14,12 +14,12 @@ const SectionHeader = (props: SectionHeaderProps) => {
     textBackground,
   })
   return (
-    <>
+    <View style={style?.wrapper}>
       <View style={styles.breaker} />
       <View style={styles.textContainer}>
-        <Text style={styles.text}>{text}</Text>
+        <Text style={[styles.text, style?.text]}>{text}</Text>
       </View>
-    </>
+    </View>
   )
 }
 

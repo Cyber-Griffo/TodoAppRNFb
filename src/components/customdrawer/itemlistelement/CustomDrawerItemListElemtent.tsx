@@ -24,6 +24,8 @@ const CustomDrawerItemListElemtent = (
     ? activeBackgroundColor
     : inactiveBackgroundColor
 
+  //TODO: Refactor Styles!
+
   return (
     <View style={{ width: '100%', paddingHorizontal: 12, marginVertical: 4 }}>
       <Pressable
