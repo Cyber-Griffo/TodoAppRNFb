@@ -15,9 +15,14 @@ import { ThemeContext } from '../../utils/ThemeContext'
 
 const Drawer = createDrawerNavigator()
 
-type Category = {
+export type Category = {
   title: string
   id: string
+}
+
+export type CategoryCount = {
+  title: string
+  count: number
 }
 
 export function MainStack() {
@@ -26,6 +31,7 @@ export function MainStack() {
   const currTodos = useRef<Todo[]>(todos)
   const [categories, setCategories] = useState<Category[]>([])
   const currCategories = useRef<Category[]>(categories)
+  const categoryCounts = useRef<CategoryCount[]>([])
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isLoadingTodos, setIsLoadingTodos] = useState<boolean>(true)
@@ -34,9 +40,32 @@ export function MainStack() {
   const { theme } = useContext(ThemeContext)
 
   //#region Todo Handlers
-  function handleTodoRemovedChange(id: string, list: Todo[]) {
+  function handleTodoRemovedChange(id: string, list: Todo[], category: string) {
+    // Return if Todo isn't contained in List
+    if (!list.find((todo) => todo.id === id)) return list
+
+    // Update CategoryCountList
+    if (categoryCounts.current) {
+      let categoryCountExists = categoryCounts.current.find(
+        (cc) => cc.title === category
+      )
+      if (categoryCountExists) {
+        categoryCounts.current.map((categoryCount) => {
+          if (categoryCount.title === category) {
+            return {
+              title: categoryCount.title,
+              count: categoryCount.count--,
+            }
+          }
+          return categoryCount
+        })
+      }
+    }
+
+    // Filter Todo List
     return list.filter((todo) => todo.id !== id)
   }
+
   function handleTodoAddedChange(
     doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
     list: Todo[]
@@ -44,6 +73,30 @@ export function MainStack() {
     if (list.find((todo) => todo.id === doc.id)) return list
 
     const { title, done, timestamp, category } = doc.data() as Todo
+
+    // Update CategoryCountList
+    if (categoryCounts.current) {
+      let categoryCountExists = categoryCounts.current.find(
+        (cc) => cc.title === category
+      )
+      if (categoryCountExists) {
+        categoryCounts.current.map((categoryCount) => {
+          if (categoryCount.title === category) {
+            return {
+              title: categoryCount.title,
+              count: categoryCount.count++,
+            }
+          }
+          return categoryCount
+        })
+      } else {
+        categoryCounts.current = [
+          ...categoryCounts.current,
+          { title: (doc.data() as Todo).category, count: 1 },
+        ]
+      }
+    }
+
     return [...list, { id: doc.id, title, done, timestamp, category }]
   }
   function handleTodoModifiedChange(
@@ -86,7 +139,10 @@ export function MainStack() {
     return list
       .map((category) => {
         if (category.id === doc.id) {
-          return { id: doc.id, title: doc.data().title as string }
+          return {
+            id: doc.id,
+            title: doc.data().title,
+          }
         }
         return category
       })
@@ -109,8 +165,6 @@ export function MainStack() {
   }
   //#endregion
 
-  // TODO: Change Adding, Modifiing and Deleting Operation to temporary use a helper Datastructure and set the State once after each docChange Event (Helps to increase Performance)
-
   useEffect(() => {
     if (!uid) return
 
@@ -120,7 +174,8 @@ export function MainStack() {
         if (docChange.type === 'removed') {
           currTodos.current = handleTodoRemovedChange(
             docChange.doc.id,
-            currTodos.current
+            currTodos.current,
+            (docChange.doc.data() as Todo).category
           )
         } else if (docChange.type === 'added') {
           currTodos.current = handleTodoAddedChange(
@@ -146,11 +201,11 @@ export function MainStack() {
       }
       setTodos(currTodos.current)
 
+      console.log(categoryCounts.current)
+
       if (isLoadingTodos) setIsLoadingTodos(false)
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // TODO: Change Adding, Modifiing and Deleting Operation to temporary use a helper Datastructure and set the State once after each docChange Event (Helps to increase Performance)
 
   useEffect(() => {
     if (!uid) return
@@ -220,10 +275,18 @@ export function MainStack() {
         drawerLabelStyle: { fontSize: 14 },
       }}
       drawerContent={(props) => {
-        return <CustomDrawerContent {...props} />
+        return (
+          <CustomDrawerContent
+            drawerProps={props}
+            categoryCounts={categoryCounts.current}
+          />
+        )
       }}
     >
-      <Drawer.Screen name="All Todo's">
+      <Drawer.Screen
+        name=" "
+        options={{ title: "All Todo's" }}
+      >
         {() => (
           <TodoScreen
             todos={todos}

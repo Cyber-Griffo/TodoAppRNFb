@@ -1,8 +1,5 @@
 import React, { useContext, useState } from 'react'
-import {
-  DrawerContentComponentProps,
-  DrawerContentScrollView,
-} from '@react-navigation/drawer'
+import { DrawerContentScrollView } from '@react-navigation/drawer'
 import { ColorValue, Linking, Text, TextInput, View } from 'react-native'
 import Button from '../../button/Button'
 import auth from '@react-native-firebase/auth'
@@ -15,13 +12,14 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { addCategory } from '../../../database/FirebaseHandler'
 import SectionHeader from '../sectionheader/CustomDrawerSectionHeader'
 import { ThemeContext } from '../../../utils/ThemeContext'
+import { Props as CustomDrawerContentProps } from './CustomDrawerContent.types'
 
 type PlaceholderObj = {
   text: string
   color: ColorValue
 }
 
-export function CustomDrawerContent(props: DrawerContentComponentProps) {
+export function CustomDrawerContent(props: CustomDrawerContentProps) {
   const insets = useSafeAreaInsets()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
@@ -29,7 +27,7 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
   const [categoryTitle, setCategoryTitle] = useState<string>('')
   const defautlPlaceholder: PlaceholderObj = {
     text: 'Add new...',
-    color: theme.placeholderColor,
+    color: theme.darkGreyColor,
   }
   const errorPlaceholder: PlaceholderObj = {
     text: 'Enter a Title',
@@ -99,10 +97,17 @@ export function CustomDrawerContent(props: DrawerContentComponentProps) {
       </View>
       <SectionHeader text="Categories" />
       <DrawerContentScrollView
-        {...props}
-        style={[styles.drawerContentScrollView, { marginTop: -insets.top }]}
+        {...props.drawerProps}
+        style={[
+          styles.drawerContentScrollView,
+          { marginTop: -insets.top, marginHorizontal: 0, paddingHorizontal: 0 },
+        ]}
+        showsVerticalScrollIndicator={false}
       >
-        <CustomDrawerItemList {...props} />
+        <CustomDrawerItemList
+          {...props.drawerProps}
+          categoryCounts={props.categoryCounts}
+        />
       </DrawerContentScrollView>
       <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
         <SectionHeader text="Others" />

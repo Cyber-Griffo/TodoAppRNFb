@@ -1,4 +1,3 @@
-import { DrawerItem } from '@react-navigation/drawer'
 import {
   DrawerDescriptorMap,
   DrawerNavigationHelpers,
@@ -8,14 +7,16 @@ import {
   DrawerActions,
   DrawerNavigationState,
   ParamListBase,
-  useLinkBuilder,
 } from '@react-navigation/native'
 import * as React from 'react'
+import { CategoryCount } from '../../../navigation/stacks/MainNav'
+import CustomDrawerItemListElemtent from '../itemlistelement/CustomDrawerItemListElemtent'
 
 type Props = {
   state: DrawerNavigationState<ParamListBase>
   navigation: DrawerNavigationHelpers
   descriptors: DrawerDescriptorMap
+  categoryCounts: CategoryCount[]
 }
 
 /**
@@ -25,9 +26,8 @@ export default function CustomDrawerItemList({
   state,
   navigation,
   descriptors,
+  categoryCounts,
 }: Props) {
-  const buildLink = useLinkBuilder()
-
   const focusedRoute = state.routes[state.index]
   const focusedDescriptor = descriptors[focusedRoute.key]
   const focusedOptions = focusedDescriptor.options
@@ -41,6 +41,14 @@ export default function CustomDrawerItemList({
 
   return state.routes.map((route, i) => {
     const focused = i === state.index
+
+    // If All Todo's === ' ' -> Sum up all CategoryCounts, else take the Count of the Correct Category -> default to 0
+    let categoryCount: number =
+      route.name === ' '
+        ? categoryCounts.reduce((prev, curr) => {
+            return prev + curr.count
+          }, 0)
+        : categoryCounts.find((cc) => cc.title === route.name)?.count || 0
 
     const onPress = () => {
       const event = navigation.emit({
@@ -69,7 +77,7 @@ export default function CustomDrawerItemList({
     } = descriptors[route.key].options
 
     return (
-      <DrawerItem
+      <CustomDrawerItemListElemtent
         key={route.key}
         label={
           drawerLabel !== undefined
@@ -87,8 +95,9 @@ export default function CustomDrawerItemList({
         allowFontScaling={drawerAllowFontScaling}
         labelStyle={drawerLabelStyle}
         style={drawerItemStyle}
-        to={buildLink(route.name, route.params)}
         onPress={onPress}
+        index={i}
+        categoryCount={categoryCount}
       />
     )
   }) as React.ReactNode as React.ReactElement
