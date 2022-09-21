@@ -16,13 +16,13 @@ const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
   TodoInputProps
 > = (props: TodoInputProps, ref) => {
-  const { cancelFunction, createFunction, category } = props
+  const { cancelFunction, createFunction, /* categories, */ activeCategory } =
+    props
 
   //! PLACEHOLDER STRING ONLY FOR DEV-STAGE
   const [title, setTitle] = useState<string>(
     faker.lorem.sentence(Math.floor(Math.random() * 10) + 1)
   )
-  const [categoryTitle, setCategoryTitle] = useState<string>(category)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const { theme } = useContext(ThemeContext)
@@ -39,12 +39,14 @@ const TodoInput: React.ForwardRefRenderFunction<
   const handleSubmitting = () => {
     // just create a new Todo if Title is provided
     if (title) {
-      createFunction(title, categoryTitle)
+      createFunction(title, activeCategory ? activeCategory.id : '')
     } else {
       setErrorMessage('Please enter a Title!')
     }
     setTitle('')
   }
+
+  // TODO: Add Select for All Categories
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -65,17 +67,6 @@ const TodoInput: React.ForwardRefRenderFunction<
           onSubmitEditing={() => handleSubmitting()}
           blurOnSubmit={false}
           autoFocus
-        />
-        <TextInput
-          value={categoryTitle}
-          onChangeText={(text) => {
-            setCategoryTitle(text)
-          }}
-          style={[styles.textInput, { marginTop: 0 }]}
-          placeholder={INPUT_PLACEHOLDER}
-          placeholderTextColor={theme.placeholderColor}
-          onSubmitEditing={() => handleSubmitting()}
-          blurOnSubmit={false}
         />
         <View style={styles.buttonWrapper}>
           <Button

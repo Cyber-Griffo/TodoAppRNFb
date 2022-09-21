@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import TodoScreen from '../../screens/todo/TodoScreen'
-import { Todo } from '../../screens/todo/TodoScreen.types'
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import { todoSortingConditions } from '../../helper/TodoHelper'
 import { StyleSheet, Text, View } from 'react-native'
@@ -12,18 +11,9 @@ import {
 } from '../../constants/Firebase'
 import { CustomDrawerContent } from '../../components/customdrawer/content/CustomDrawerContent'
 import { ThemeContext } from '../../utils/ThemeContext'
+import { Category, CategoryCount, Todo } from '../../types/GeneralTypes'
 
 const Drawer = createDrawerNavigator()
-
-export type Category = {
-  title: string
-  id: string
-}
-
-export type CategoryCount = {
-  title: string
-  count: number
-}
 
 export function MainStack() {
   const uid = auth().currentUser?.uid
@@ -40,20 +30,24 @@ export function MainStack() {
   const { theme } = useContext(ThemeContext)
 
   //#region Todo Handlers
-  function handleTodoRemovedChange(id: string, list: Todo[], category: string) {
+  function handleTodoRemovedChange(
+    id: string,
+    list: Todo[],
+    categoryId: string
+  ): Todo[] {
     // Return if Todo isn't contained in List
     if (!list.find((todo) => todo.id === id)) return list
 
     // Update CategoryCountList
     if (categoryCounts.current) {
       let categoryCountExists = categoryCounts.current.find(
-        (cc) => cc.title === category
+        (cc) => cc.categoryId === categoryId
       )
       if (categoryCountExists) {
         categoryCounts.current.map((categoryCount) => {
-          if (categoryCount.title === category) {
+          if (categoryCount.categoryId === categoryId) {
             return {
-              title: categoryCount.title,
+              categoryId: categoryCount.categoryId,
               count: categoryCount.count--,
             }
           }
@@ -69,21 +63,21 @@ export function MainStack() {
   function handleTodoAddedChange(
     doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
     list: Todo[]
-  ) {
+  ): Todo[] {
     if (list.find((todo) => todo.id === doc.id)) return list
 
-    const { title, done, timestamp, category } = doc.data() as Todo
+    const { title, done, timestamp, categoryId } = doc.data() as Todo
 
     // Update CategoryCountList
     if (categoryCounts.current) {
       let categoryCountExists = categoryCounts.current.find(
-        (cc) => cc.title === category
+        (cc) => cc.categoryId === categoryId
       )
       if (categoryCountExists) {
         categoryCounts.current.map((categoryCount) => {
-          if (categoryCount.title === category) {
+          if (categoryCount.categoryId === categoryId) {
             return {
-              title: categoryCount.title,
+              categoryId: categoryCount.categoryId,
               count: categoryCount.count++,
             }
           }
@@ -92,12 +86,12 @@ export function MainStack() {
       } else {
         categoryCounts.current = [
           ...categoryCounts.current,
-          { title: (doc.data() as Todo).category, count: 1 },
+          { categoryId: (doc.data() as Todo).categoryId, count: 1 },
         ]
       }
     }
 
-    return [...list, { id: doc.id, title, done, timestamp, category }]
+    return [...list, { id: doc.id, title, done, timestamp, categoryId }]
   }
   function handleTodoModifiedChange(
     doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
@@ -105,11 +99,11 @@ export function MainStack() {
   ) {
     if (!list.find((todo) => todo.id === doc.id)) return list
 
-    const { title, done, timestamp, category } = doc.data() as Todo
+    const { title, done, timestamp, categoryId } = doc.data() as Todo
     return list
       .map((todo) => {
         if (todo.id === doc.id) {
-          return { id: doc.id, title, done, timestamp, category }
+          return { id: doc.id, title, done, timestamp, categoryId }
         } else {
           return todo
         }
@@ -175,7 +169,7 @@ export function MainStack() {
           currTodos.current = handleTodoRemovedChange(
             docChange.doc.id,
             currTodos.current,
-            (docChange.doc.data() as Todo).category
+            (docChange.doc.data() as Todo).categoryId
           )
         } else if (docChange.type === 'added') {
           currTodos.current = handleTodoAddedChange(
@@ -200,8 +194,6 @@ export function MainStack() {
         currTodos.current = sortTodosByDoneThenTimestamp(currTodos.current)
       }
       setTodos(currTodos.current)
-
-      console.log(categoryCounts.current)
 
       if (isLoadingTodos) setIsLoadingTodos(false)
     })
@@ -291,23 +283,26 @@ export function MainStack() {
           <TodoScreen
             todos={todos}
             key={'AllTodos#0'}
+            categories={categories}
           />
         )}
       </Drawer.Screen>
       {categories.map((category) => {
-        if (category.title && category.title !== '') {
+        if (category.id && category.id !== '') {
           return (
             <Drawer.Screen
-              name={category.title}
+              name={category.id}
               key={category.id}
+              options={{ title: category.title }}
             >
               {() => (
                 <TodoScreen
                   todos={todos.filter(
-                    (todo) => todo.category === category.title
+                    (todo) => todo.categoryId === category.id
                   )}
-                  category={category.title}
+                  activeCategory={category}
                   key={category.id}
+                  categories={categories}
                 />
               )}
             </Drawer.Screen>

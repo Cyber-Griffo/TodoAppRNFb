@@ -5,21 +5,33 @@ import { getStyles } from './TodoList.styles'
 import { Props as TodoListProps } from './TodoList.types'
 
 const TodoList = (props: TodoListProps) => {
-  const { todos, todoOnLongPress, todoOnPress, displayTodoCategory } = props
+  const {
+    todos,
+    todoOnLongPress,
+    todoOnPress,
+    displayTodoCategory,
+    categories,
+  } = props
   const styles = getStyles()
 
   return (
     <FlatList
       style={styles.list}
       data={todos}
+      alwaysBounceVertical
+      overScrollMode="always"
       showsVerticalScrollIndicator={false}
-      renderItem={({ item }) => (
+      renderItem={({ item: todo }) => (
         <TodoElement
-          todo={item}
-          onPress={() => todoOnPress(item.id, item.done)}
+          todo={todo}
+          category={
+            displayTodoCategory
+              ? categories.find((category) => category.id === todo.categoryId)
+              : undefined
+          }
+          onPress={() => todoOnPress(todo.id, todo.done)}
           onLongPress={todoOnLongPress}
-          key={item.id}
-          displayCategoryTitle={displayTodoCategory}
+          key={todo.id}
         />
       )}
       keyExtractor={({ id }) => id}

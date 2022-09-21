@@ -9,7 +9,7 @@ import {
   ParamListBase,
 } from '@react-navigation/native'
 import * as React from 'react'
-import { CategoryCount } from '../../../navigation/stacks/MainNav'
+import { CategoryCount } from '../../../types/GeneralTypes'
 import CustomDrawerItemListElemtent from '../itemlistelement/CustomDrawerItemListElemtent'
 
 type Props = {
@@ -48,7 +48,7 @@ export default function CustomDrawerItemList({
         ? categoryCounts.reduce((prev, curr) => {
             return prev + curr.count
           }, 0)
-        : categoryCounts.find((cc) => cc.title === route.name)?.count || 0
+        : categoryCounts.find((cc) => cc.categoryId === route.name)?.count || 0
 
     const onPress = () => {
       const event = navigation.emit({

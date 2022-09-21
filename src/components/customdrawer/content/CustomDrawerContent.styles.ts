@@ -8,18 +8,34 @@ export const getStyles = (
   ctx: CustomDrawerContentStylesContext
 ): CustomDrawerContentStyles => {
   return {
-    wrapper: [{ flex: 1, backgroundColor: ctx.theme.backgroundColor }],
+    wrapper: [
+      {
+        flex: 1,
+        backgroundColor: ctx.theme.backgroundColor,
+      },
+    ],
     headerWrapper: {
       justifyContent: 'flex-end',
       backgroundColor: ctx.theme.backgroundColor,
     },
-    headerContainerWrapper: [{ flex: 1 }],
+    headerContainerWrapper: [
+      {
+        flex: 1,
+      },
+    ],
     headerContainer: {
       height: HEADER_HEIGHT + 6,
       width: '100%',
       justifyContent: 'space-around',
       alignItems: 'center',
       flexDirection: 'row',
+    },
+    headerHeading: {
+      marginLeft: 12,
+      fontSize: 24,
+      color: ctx.theme.primaryColor,
+      paddingRight: 12,
+      fontWeight: '500',
     },
     headerTextInput: [
       {
@@ -36,9 +52,43 @@ export const getStyles = (
         borderColor: ctx.theme.primaryLightColor,
       },
     ],
-    headerIconButtonContainer: { height: 30, width: 30 },
-    headerIconButtonWrapper: { marginHorizontal: 12 },
-    drawerContentScrollView: [{ zIndex: -1 }],
-    iconStyle: [{ marginRight: 10 }],
+    headerIconButtonContainer: {
+      width: 34,
+    },
+    headerIconButtonWrapper: {
+      marginHorizontal: 12,
+    },
+    headerIcon: {
+      textAlign: 'center',
+      textAlignVertical: 'center',
+    },
+    drawerContentScrollView: [
+      {
+        zIndex: -1,
+        marginHorizontal: 0,
+        paddingHorizontal: 0,
+      },
+    ],
+    footerIconStyle: [
+      {
+        width: 26,
+        height: 26,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+    ],
+    footerContainer: {
+      paddingHorizontal: 12,
+      paddingBottom: 12,
+    },
+    footerButtonContainer: {
+      justifyContent: 'space-between',
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+    },
+    footerButtonText: {
+      fontSize: 14,
+      color: ctx.theme.darkColor,
+    },
   }
 }

@@ -20,18 +20,22 @@ import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
 
-const TodoScreen = ({ todos, category = '' }: Props) => {
+const TodoScreen = ({ todos, activeCategory: category, categories }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
+  console.log('category')
 
-  if (category === '') {
+  if (!category) {
+    console.time("sorting Time of All Todo's")
+    console.log('hier')
     todos = todos.sort((a, b) => {
-      return todoSortingConditionsMainScreen(a, b)
+      return todoSortingConditionsMainScreen(a, b, categories)
     })
+    console.timeEnd("sorting Time of All Todo's")
   }
 
   // State for correct Modal to show
@@ -65,8 +69,8 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
     removeTodo(id)
     setIsRemoveTodoModalShowing(false)
   }
-  function handleAddTodo(title: string, categoryTitle: string) {
-    addTodo(title, categoryTitle)
+  function handleAddTodo(title: string, categoryId: string) {
+    addTodo(title, categoryId)
   }
   function handleToggleTodo(id: string, oldValue: boolean): void {
     toggleTodo(id, !oldValue)
@@ -97,20 +101,32 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
               onPress={() => navigation.openDrawer()}
             />
             <Text style={styles.headerText}>
-              {category === '' ? "All Todo's" : category}
+              {category ? category.title : "All Todo's"}
             </Text>
           </View>
         </View>
         <TodoList
           todos={todos}
+          categories={categories}
           todoOnPress={(id, done) => handleToggleTodo(id, done)}
           todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
-          displayTodoCategory={category === '' ? true : false}
+          displayTodoCategory={category ? false : true}
         />
         <Button
           value={'Add new Todo'}
           variant={'secondary'}
-          onPress={() => handleAddTodoModalActivation()}
+          onPress={
+            () => handleAddTodoModalActivation() /* {
+            //
+            // TESTING_ONLY_REMOVE_ALL_CATEGORIES_WITH_NO_TODOS()
+            // TESTING_ONLY_ADD_MANY_CATEGORIES(5)
+            // TESTING_ONLY_ADD_MANY_TODOS_TO_CATEGORY(1, 'hSbJvOxIqyx2gTKwCuOe')
+            // TESTING_ONLY_REMOVE_ALL_TODOS_FROM_CATEGORY('hSbJvOxIqyx2gTKwCuOe')
+            // TESTING_ONLY_REMOVE_ALL_TODOS()
+            // TESTING_ONLY_REMOVE_ALL_CATEGORIES()
+            // TESTING_ONLY_ADD_MANY_TODOS(65)
+          } */
+          }
           style={{
             container: styles.footerButton,
             text: styles.footerText,
@@ -130,11 +146,10 @@ const TodoScreen = ({ todos, category = '' }: Props) => {
         >
           <TodoInput
             ref={todoInputRef}
-            createFunction={(title, categoryTitle) =>
-              handleAddTodo(title, categoryTitle)
-            }
+            createFunction={handleAddTodo}
             cancelFunction={() => handleAddTodoModalDismiss()}
-            category={category}
+            categories={categories}
+            activeCategory={category}
           />
         </Modal>
       )}
