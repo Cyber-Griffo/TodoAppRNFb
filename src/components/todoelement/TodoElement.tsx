@@ -6,12 +6,9 @@ import { ThemeContext } from '../../utils/ThemeContext'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const TodoElement = (props: TodoElementProps) => {
-  const { todo, onPress, onLongPress, displayCategoryTitle } = props
+  const { todo, onPress, onLongPress, category } = props
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme, todo })
-
-  const prefix =
-    displayCategoryTitle && todo.category !== '' ? todo.category : ''
 
   return (
     <TouchableHighlight
@@ -31,7 +28,7 @@ const TodoElement = (props: TodoElementProps) => {
           )}
         </View>
         <View style={styles.titleWrapper}>
-          {prefix && <Text style={styles.category}>{prefix}</Text>}
+          {category && <Text style={styles.category}>{category.title}</Text>}
           <Text style={styles.title}>{todo.title}</Text>
         </View>
       </View>

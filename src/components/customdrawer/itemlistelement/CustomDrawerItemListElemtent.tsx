@@ -66,10 +66,9 @@ const CustomDrawerItemListElemtent = (
                   style={[
                     {
                       color,
-                      fontWeight: '500',
                     },
                     focused && {
-                      fontWeight: '600',
+                      fontWeight: '500',
                     },
                     labelStyle,
                   ]}

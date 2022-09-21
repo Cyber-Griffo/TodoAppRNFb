@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler'
+import 'react-native-console-time-polyfill'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'react-native'

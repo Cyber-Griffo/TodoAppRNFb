@@ -1,18 +1,11 @@
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { Category, Todo } from '../../types/GeneralTypes'
 import { Theme } from '../../utils/ThemeContext'
-
-export type Todo = {
-  done: boolean
-  title: string
-  id: string
-  timestamp: FirebaseFirestoreTypes.Timestamp
-  category: string
-}
 
 export type TodoScreenProps = {
   todos: Todo[]
-  category?: 'all' | string
+  activeCategory?: Category
+  categories: Category[]
 }
 
 export type TodoScreenStyleContext = {

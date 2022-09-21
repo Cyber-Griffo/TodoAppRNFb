@@ -53,17 +53,7 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
           { height: HEADER_HEIGHT * 2 + insets.top },
         ]}
       >
-        <Text
-          style={{
-            marginLeft: 12,
-            fontSize: 24,
-            color: theme.primaryColor,
-            paddingRight: 12,
-            fontWeight: '500',
-          }}
-        >
-          Your Categories
-        </Text>
+        <Text style={styles.headerHeading}>Your Categories</Text>
         <View style={styles.headerContainer}>
           <TextInput
             style={styles.headerTextInput}
@@ -87,8 +77,9 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
             iconLeft={
               <MaterialIcon
                 name="add"
-                size={32}
+                size={34}
                 color={theme.accentColor}
+                style={styles.headerIcon}
               />
             }
             showIconLeft
@@ -103,7 +94,9 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
         {...props.drawerProps}
         style={[
           styles.drawerContentScrollView,
-          { marginTop: -insets.top, marginHorizontal: 0, paddingHorizontal: 0 },
+          {
+            marginTop: -insets.top,
+          },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -112,33 +105,21 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
           categoryCounts={props.categoryCounts}
         />
       </DrawerContentScrollView>
-      <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+      <View style={styles.footerContainer}>
         <SectionHeader text="Others" />
         <Button
           value={'Project Page'}
           variant="secondary"
+          rounded
           style={{
-            container: {
-              justifyContent: 'space-between',
-              paddingHorizontal: 12,
-            },
-            text: {
-              fontSize: 14,
-              color: theme.darkColor,
-            },
+            container: styles.footerButtonContainer,
+            text: styles.footerButtonText,
           }}
           onPress={() =>
             Linking.openURL('https://github.com/Cyber-Griffo/TodoAppRNFb')
           }
           iconRight={
-            <View
-              style={{
-                width: 26,
-                height: 26,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <View style={styles.footerIconStyle}>
               <MaterialCommunityIcon
                 name="github"
                 size={26}
@@ -157,27 +138,12 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
             wrapper: {
               marginBottom: insets.bottom === 0 ? 0 : insets.bottom,
             },
-            container: {
-              justifyContent: 'space-between',
-              paddingLeft: 12,
-              paddingRight: 10,
-              paddingVertical: 10,
-            },
-            text: {
-              fontSize: 14,
-              color: theme.darkColor,
-            },
+            container: styles.footerButtonContainer,
+            text: styles.footerButtonText,
           }}
           onPress={() => auth().signOut()}
           iconRight={
-            <View
-              style={{
-                width: 26,
-                height: 26,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <View style={styles.footerIconStyle}>
               <MaterialIcon
                 name="logout"
                 size={26}
