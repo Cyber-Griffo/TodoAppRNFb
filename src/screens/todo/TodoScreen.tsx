@@ -27,11 +27,9 @@ const TodoScreen = ({ todos, activeCategory: category, categories }: Props) => {
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
-  console.log('category')
 
   if (!category) {
     console.time("sorting Time of All Todo's")
-    console.log('hier')
     todos = todos.sort((a, b) => {
       return todoSortingConditionsMainScreen(a, b, categories)
     })
