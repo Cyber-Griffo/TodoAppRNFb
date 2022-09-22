@@ -19,23 +19,21 @@ export function handleCategoryModifiedChange(
   list: Category[]
 ): Category[] {
   if (!list.find((category) => doc.id === category.id)) return list
-  return list
-    .map((category) => {
-      if (category.id === doc.id) {
-        return {
-          id: doc.id,
-          title: doc.data().title,
-        }
+  return list.map((category) => {
+    if (category.id === doc.id) {
+      return {
+        id: doc.id,
+        title: doc.data().title,
       }
-      return category
-    })
-    .sort((a, b) => {
-      return a.title.localeCompare(b.title)
-    })
+    }
+    return category
+  })
 }
 
-export function sortCategoriesByCaegoryString(list: Category[]): Category[] {
+export function sortCategoriesByCategoryString(list: Category[]): Category[] {
   return list.sort((a, b) => {
-    return a.title.localeCompare(b.title)
+    return a.title
+      .toLocaleLowerCase()
+      .localeCompare(b.title.toLocaleLowerCase())
   })
 }

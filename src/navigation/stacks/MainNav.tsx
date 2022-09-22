@@ -2,10 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import TodoScreen from '../../screens/todo/TodoScreen'
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import {
-  handleTodoModifiedChange,
-  sortTodosByDoneThenTimestamp,
-} from '../../helper/TodoHelper'
+import { handleTodoModifiedChange } from '../../helper/TodoHelper'
 import { StyleSheet, Text, View } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import {
@@ -19,18 +16,17 @@ import {
   handleCategoryAddedChange,
   handleCategoryModifiedChange,
   handleCategoryRemovedChange,
-  sortCategoriesByCaegoryString,
+  sortCategoriesByCategoryString,
 } from '../../helper/CategoryHelper'
 
 const Drawer = createDrawerNavigator()
 
 export function MainStack() {
   const uid = auth().currentUser?.uid
-  const [todos, setTodos] = useState<Todo[]>([])
-  const currTodos = useRef<Todo[]>(todos)
-  const [categories, setCategories] = useState<Category[]>([])
-  const currCategories = useRef<Category[]>(categories)
+  const currTodos = useRef<Todo[]>([])
+  const currCategories = useRef<Category[]>([])
   const categoryCounts = useRef<CategoryCount[]>([])
+  const [_r, setRerender] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isLoadingTodos, setIsLoadingTodos] = useState<boolean>(true)
@@ -112,7 +108,6 @@ export function MainStack() {
     if (!uid) return
 
     return firestoreTodoPath.onSnapshot((querySnapshot) => {
-      let resortTodos = false
       querySnapshot.docChanges().forEach((docChange) => {
         if (docChange.type === 'removed') {
           currTodos.current = handleTodoRemovedChange(
@@ -125,7 +120,6 @@ export function MainStack() {
             docChange.doc,
             currTodos.current
           )
-          resortTodos = true
         } else if (docChange.type === 'modified') {
           currTodos.current = handleTodoModifiedChange(
             docChange.doc,
@@ -139,11 +133,7 @@ export function MainStack() {
         }
       })
 
-      if (resortTodos) {
-        currTodos.current = sortTodosByDoneThenTimestamp(currTodos.current)
-      }
-
-      setTodos(currTodos.current)
+      setRerender((currRerender) => !currRerender)
 
       if (isLoadingTodos) setIsLoadingTodos(false)
     })
@@ -157,24 +147,22 @@ export function MainStack() {
       let resortCategories = false
       querySnapshot.docChanges().forEach((docChange) => {
         if (docChange.type === 'removed') {
-          // Category removed
           currCategories.current = handleCategoryRemovedChange(
             docChange.doc.id,
             currCategories.current
           )
         } else if (docChange.type === 'added') {
-          // Category added
           currCategories.current = handleCategoryAddedChange(
             docChange.doc,
             currCategories.current
           )
           resortCategories = true
         } else if (docChange.type === 'modified') {
-          // Category modified
           currCategories.current = handleCategoryModifiedChange(
             docChange.doc,
             currCategories.current
           )
+          resortCategories = true
         } else {
           console.error(
             'Unexpected Error accured while processing incoming Firebase Data: \n' +
@@ -184,12 +172,13 @@ export function MainStack() {
       })
 
       if (resortCategories) {
-        currCategories.current = sortCategoriesByCaegoryString(
+        currCategories.current = sortCategoriesByCategoryString(
           currCategories.current
         )
+        console.log(currCategories.current)
       }
 
-      setCategories(currCategories.current)
+      setRerender((currRerender) => !currRerender)
 
       if (isLoadingCategories) setIsLoadingCategories(false)
     })
@@ -233,13 +222,13 @@ export function MainStack() {
       >
         {() => (
           <TodoScreen
-            todos={todos}
+            todos={currTodos.current}
             key={'AllTodos#0'}
-            categories={categories}
+            categories={currCategories.current}
           />
         )}
       </Drawer.Screen>
-      {categories.map((category) => {
+      {currCategories.current.map((category) => {
         if (category.id && category.id !== '') {
           return (
             <Drawer.Screen
@@ -249,12 +238,12 @@ export function MainStack() {
             >
               {() => (
                 <TodoScreen
-                  todos={todos.filter(
+                  todos={currTodos.current.filter(
                     (todo) => todo.categoryId === category.id
                   )}
                   activeCategory={category}
                   key={category.id}
-                  categories={categories}
+                  categories={currCategories.current}
                 />
               )}
             </Drawer.Screen>

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
@@ -21,7 +21,7 @@ import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
 
-const TodoScreen = ({
+const TodoScreen: React.FC<Props> = ({
   todos: rawTodos,
   activeCategory: category,
   categories,
@@ -33,20 +33,13 @@ const TodoScreen = ({
   // State for managing Todos
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
 
-  const todos = useMemo(() => {
-    if (!category) {
-      console.time("Sorting of All Todo's completet in: ")
-      const sorted = rawTodos.sort((a, b) => {
+  const todos = category
+    ? rawTodos.sort((a, b) => {
+        return todoSortingConditions(a, b)
+      })
+    : rawTodos.sort((a, b) => {
         return todoSortingConditionsMainScreen(a, b, categories)
       })
-      console.timeEnd("Sorting of All Todo's completet in: ")
-      return sorted
-    }
-    console.time(`Sorting of ${category.title} completet in: `)
-    const sorted = rawTodos.sort((a, b) => todoSortingConditions(a, b))
-    console.timeEnd(`Sorting of ${category.title} completet in: `)
-    return sorted
-  }, [categories, rawTodos, category])
 
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
@@ -61,25 +54,25 @@ const TodoScreen = ({
   const safeareaInsets = useSafeAreaInsets()
 
   //#region Handler
-  function handleAddTodoModalActivation() {
+  function handleAddTodoModalActivation(): void {
     setIsAddTodoModalShowing(true)
   }
-  function handleAddTodoModalDismiss() {
+  function handleAddTodoModalDismiss(): void {
     setIsAddTodoModalShowing(false)
   }
-  function handleRemoveTodoModalActivation(id: string) {
+  function handleRemoveTodoModalActivation(id: string): void {
     setSelectedTodoId(id)
     setIsRemoveTodoModalShowing(true)
   }
-  function handleRemoveModalDismiss() {
+  function handleRemoveModalDismiss(): void {
     setIsRemoveTodoModalShowing(false)
   }
 
-  function handleRemoveTodo(id: string) {
+  function handleRemoveTodo(id: string): void {
     removeTodo(id)
     setIsRemoveTodoModalShowing(false)
   }
-  function handleAddTodo(title: string, categoryId: string) {
+  function handleAddTodo(title: string, categoryId: string): void {
     addTodo(title, categoryId)
   }
   function handleToggleTodo(id: string, oldValue: boolean): void {

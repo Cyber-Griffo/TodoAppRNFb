@@ -4,7 +4,7 @@ export function checkForTimestamp(
   a: FirebaseFirestoreTypes.Timestamp,
   b: FirebaseFirestoreTypes.Timestamp
 ) {
-  if (a.valueOf() < b?.valueOf()) {
+  if (a?.valueOf() < b?.valueOf()) {
     return -1
   }
   return 1
