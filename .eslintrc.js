@@ -19,6 +19,15 @@ module.exports = {
         'unused-imports/no-unused-imports': 'error',
         semi: ['warn', 'never'],
         curly: ['error', 'multi-line'],
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': [
+          'warn', // or "error"
+          {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^_',
+          },
+        ],
       },
     },
   ],
