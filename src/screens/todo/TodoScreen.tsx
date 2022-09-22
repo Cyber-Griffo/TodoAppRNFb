@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useMemo, useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
@@ -11,6 +11,7 @@ import TodoList from '../../components/todoList/TodoList'
 import { addTodo, removeTodo, toggleTodo } from '../../database/FirebaseHandler'
 import {
   findTodoById,
+  todoSortingConditions,
   todoSortingConditionsMainScreen,
 } from '../../helper/TodoHelper'
 import { TodoScreenProps as Props } from './TodoScreen.types'
@@ -20,7 +21,11 @@ import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
 
-const TodoScreen = ({ todos, activeCategory: category, categories }: Props) => {
+const TodoScreen = ({
+  todos: rawTodos,
+  activeCategory: category,
+  categories,
+}: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
@@ -28,13 +33,20 @@ const TodoScreen = ({ todos, activeCategory: category, categories }: Props) => {
   // State for managing Todos
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
 
-  if (!category) {
-    console.time("sorting Time of All Todo's")
-    todos = todos.sort((a, b) => {
-      return todoSortingConditionsMainScreen(a, b, categories)
-    })
-    console.timeEnd("sorting Time of All Todo's")
-  }
+  const todos = useMemo(() => {
+    if (!category) {
+      console.time("Sorting of All Todo's completet in: ")
+      const sorted = rawTodos.sort((a, b) => {
+        return todoSortingConditionsMainScreen(a, b, categories)
+      })
+      console.timeEnd("Sorting of All Todo's completet in: ")
+      return sorted
+    }
+    console.time(`Sorting of ${category.title} completet in: `)
+    const sorted = rawTodos.sort((a, b) => todoSortingConditions(a, b))
+    console.timeEnd(`Sorting of ${category.title} completet in: `)
+    return sorted
+  }, [categories, rawTodos, category])
 
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
@@ -122,7 +134,7 @@ const TodoScreen = ({ todos, activeCategory: category, categories }: Props) => {
             // TESTING_ONLY_REMOVE_ALL_TODOS_FROM_CATEGORY('hSbJvOxIqyx2gTKwCuOe')
             // TESTING_ONLY_REMOVE_ALL_TODOS()
             // TESTING_ONLY_REMOVE_ALL_CATEGORIES()
-            // TESTING_ONLY_ADD_MANY_TODOS(65)
+            // TESTING_ONLY_ADD_MANY_TODOS(100)
           } */
           }
           style={{

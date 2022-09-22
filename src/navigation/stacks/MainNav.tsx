@@ -2,7 +2,10 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import TodoScreen from '../../screens/todo/TodoScreen'
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import { todoSortingConditions } from '../../helper/TodoHelper'
+import {
+  handleTodoModifiedChange,
+  sortTodosByDoneThenTimestamp,
+} from '../../helper/TodoHelper'
 import { StyleSheet, Text, View } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import {
@@ -12,6 +15,12 @@ import {
 import { CustomDrawerContent } from '../../components/customdrawer/content/CustomDrawerContent'
 import { ThemeContext } from '../../utils/ThemeContext'
 import { Category, CategoryCount, Todo } from '../../types/GeneralTypes'
+import {
+  handleCategoryAddedChange,
+  handleCategoryModifiedChange,
+  handleCategoryRemovedChange,
+  sortCategoriesByCaegoryString,
+} from '../../helper/CategoryHelper'
 
 const Drawer = createDrawerNavigator()
 
@@ -28,6 +37,8 @@ export function MainStack() {
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true)
 
   const { theme } = useContext(ThemeContext)
+
+  //TODO: setState(boolean) just rerender Component
 
   //#region Todo Handlers
   function handleTodoRemovedChange(
@@ -93,72 +104,10 @@ export function MainStack() {
 
     return [...list, { id: doc.id, title, done, timestamp, categoryId }]
   }
-  function handleTodoModifiedChange(
-    doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-    list: Todo[]
-  ) {
-    if (!list.find((todo) => todo.id === doc.id)) return list
 
-    const { title, done, timestamp, categoryId } = doc.data() as Todo
-    return list
-      .map((todo) => {
-        if (todo.id === doc.id) {
-          return { id: doc.id, title, done, timestamp, categoryId }
-        } else {
-          return todo
-        }
-      })
-      .sort((a, b) => {
-        return todoSortingConditions(a, b)
-      })
-  }
   //#endregion
 
-  //#region Category Handlers
-  function handleCategoryRemovedChange(id: string, list: Category[]) {
-    return list.filter((category) => id !== category.id)
-  }
-  function handleCategoryAddedChange(
-    doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-    list: Category[]
-  ) {
-    if (categories.find((category) => doc.id === category.id)) return list
-    return [...list, { id: doc.id, title: doc.data().title }]
-  }
-  function handleCategoryModifiedChange(
-    doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-    list: Category[]
-  ) {
-    if (!categories.find((category) => doc.id === category.id)) return list
-    return list
-      .map((category) => {
-        if (category.id === doc.id) {
-          return {
-            id: doc.id,
-            title: doc.data().title,
-          }
-        }
-        return category
-      })
-      .sort((a, b) => {
-        return a.title.localeCompare(b.title)
-      })
-  }
-  //#endregion
-
-  //#region Helper Functions
-  function sortTodosByDoneThenTimestamp(list: Todo[]) {
-    return list.sort((a, b) => {
-      return todoSortingConditions(a, b)
-    })
-  }
-  function sortCategoriesByCaegoryString(list: Category[]) {
-    return list.sort((a, b) => {
-      return a.title.localeCompare(b.title)
-    })
-  }
-  //#endregion
-
+  // Listen to changes on the FirestoreTodoPath
   useEffect(() => {
     if (!uid) return
 
@@ -193,12 +142,14 @@ export function MainStack() {
       if (resortTodos) {
         currTodos.current = sortTodosByDoneThenTimestamp(currTodos.current)
       }
+
       setTodos(currTodos.current)
 
       if (isLoadingTodos) setIsLoadingTodos(false)
     })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Listen to changes on the FirestoreCategoryPath
   useEffect(() => {
     if (!uid) return
 
@@ -237,6 +188,7 @@ export function MainStack() {
           currCategories.current
         )
       }
+
       setCategories(currCategories.current)
 
       if (isLoadingCategories) setIsLoadingCategories(false)
