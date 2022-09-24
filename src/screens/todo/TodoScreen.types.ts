@@ -1,11 +1,19 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
-import { Category, Todo } from '../../types/GeneralTypes'
+import { Category, TodoLocal } from '../../types/GeneralTypes'
 import { Theme } from '../../utils/ThemeContext'
 
 export type TodoScreenProps = {
-  todos: Todo[]
+  todos: TodoLocal[]
   activeCategory?: Category
   categories: Category[]
+  todoFunctions: {
+    handleTodoAddedChange: (newTodo: TodoLocal, databaseTodo?: boolean) => void
+    handleTodoModifiedChange: (
+      modifiedTodo: TodoLocal,
+      databaseTodo?: boolean
+    ) => void
+    handleTodoRemovedChange: (deletedTodo: TodoLocal) => void
+  }
 }
 
 export type TodoScreenStyleContext = {

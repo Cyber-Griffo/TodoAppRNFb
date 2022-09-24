@@ -12,8 +12,8 @@ const TodoElement = (props: TodoElementProps) => {
 
   return (
     <TouchableHighlight
-      onPress={() => onPress(todo.id)}
-      onLongPress={() => onLongPress(todo.id)}
+      onPress={onPress}
+      onLongPress={onLongPress}
       style={styles.wrapper}
       activeOpacity={0.9}
     >

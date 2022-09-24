@@ -1,11 +1,21 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 
-export type Todo = {
+export type TodoFirebase = {
   done: boolean
   title: string
   id: string
-  timestamp: FirebaseFirestoreTypes.Timestamp
   categoryId: string
+  timestamp: FirebaseFirestoreTypes.Timestamp
+  lastChange: FirebaseFirestoreTypes.Timestamp
+}
+
+export type TodoLocal = {
+  done: boolean
+  title: string
+  id: string
+  categoryId: string
+  timestamp: Date
+  lastChange: Date
 }
 
 export type Category = {

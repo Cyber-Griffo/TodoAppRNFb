@@ -29,8 +29,8 @@ const TodoList = (props: TodoListProps) => {
               ? categories.find((category) => category.id === todo.categoryId)
               : undefined
           }
-          onPress={() => todoOnPress(todo.id, todo.done)}
-          onLongPress={todoOnLongPress}
+          onPress={() => todoOnPress(todo.id)}
+          onLongPress={() => todoOnLongPress(todo.id)}
           key={todo.id}
         />
       )}

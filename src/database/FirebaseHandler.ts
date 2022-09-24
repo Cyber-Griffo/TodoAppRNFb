@@ -2,16 +2,19 @@ import firestore from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth'
 import { firestoreCategoryPath, firestoreTodoPath } from '../constants/Firebase'
 import { faker } from '@faker-js/faker'
+import { v4 } from 'uuid'
+import { TodoLocal } from '../types/GeneralTypes'
 
 const uid = auth().currentUser?.uid
 
-export async function toggleTodo(id: string, newValue: boolean) {
+export async function toggleTodoFirebase(todo: TodoLocal): Promise<void> {
   if (!uid) return
 
   await firestoreTodoPath
-    .doc(id)
+    .doc(todo.id)
     .update({
-      done: newValue,
+      done: !todo.done,
+      lastChange: firestore.FieldValue.serverTimestamp(),
     })
     .catch((err) => {
       console.error(err)
@@ -20,15 +23,15 @@ export async function toggleTodo(id: string, newValue: boolean) {
   console.log('Updated Todo successfully')
 }
 
-export async function addTodo(title: string, categoryId: string) {
+export async function addTodoFirebase(todo: TodoLocal): Promise<void> {
   if (!uid) return
 
   await firestoreTodoPath
-    .add({
-      title,
-      done: false,
+    .doc(todo.id)
+    .set({
+      ...todo,
       timestamp: firestore.FieldValue.serverTimestamp(),
-      categoryId,
+      lastChange: firestore.FieldValue.serverTimestamp(),
     })
     .catch((err) => {
       console.error(err)
@@ -37,11 +40,11 @@ export async function addTodo(title: string, categoryId: string) {
   console.log('Added Todo successfully')
 }
 
-export async function removeTodo(id: string) {
+export async function removeTodoFirebase(todo: TodoLocal): Promise<void> {
   if (!uid) return
 
   await firestoreTodoPath
-    .doc(id)
+    .doc(todo.id)
     .delete()
     .catch((err) => {
       console.error(err)
@@ -111,17 +114,20 @@ export async function TESTING_ONLY_ADD_MANY_TODOS_TO_CATEGORY(
   categoryId: string
 ) {
   let todos = []
+  let id = v4()
   for (let index = 0; index < count; index++) {
     todos.push({
       title: faker.lorem.sentence(Math.floor(Math.random() * 10) + 1),
       done: faker.datatype.boolean(),
       categoryId,
       timestamp: firestore.FieldValue.serverTimestamp(),
+      lastChange: firestore.FieldValue.serverTimestamp(),
+      id,
     })
   }
 
   todos.forEach((todo) => {
-    firestoreTodoPath.add(todo)
+    firestoreTodoPath.doc(id).set(todo)
   })
 }
 
@@ -176,4 +182,29 @@ export async function TESTING_ONLY_REMOVE_ALL_CATEGORIES_WITH_NO_TODOS() {
     // IF there are none -> delete Category
     if (todos.empty) firestoreCategoryPath.doc(v.id).delete()
   })
+}
+
+export async function TESTING_ONLY_ADD_LASTCHANGE_TO_ALL_TODOS() {
+  const todos = await firestoreTodoPath.get()
+
+  todos.forEach((todo) => {
+    firestoreTodoPath.doc(todo.id).update({
+      ...todo.data(),
+      lastChange: firestore.FieldValue.serverTimestamp(),
+    })
+  })
+}
+
+export async function TESTING_ONLY_CONVERT_TODOS() {
+  const todos = await firestoreTodoPath.get()
+
+  todos.forEach((todo) => {
+    const id = v4()
+    firestoreTodoPath.doc(id).set({ ...todo.data(), id })
+    firestoreTodoPath.doc(todo.id).delete()
+  })
+}
+
+export async function TESTING_ONLY_ADDING_CUSTOM_DOC_ID() {
+  firestore().collection('test').doc('123').set({ title: 'baum' })
 }

@@ -8,7 +8,11 @@ import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInpu
 import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
 import TodoList from '../../components/todoList/TodoList'
-import { addTodo, removeTodo, toggleTodo } from '../../database/FirebaseHandler'
+import {
+  addTodoFirebase,
+  removeTodoFirebase,
+  toggleTodoFirebase,
+} from '../../database/FirebaseHandler'
 import {
   findTodoById,
   todoSortingConditions,
@@ -20,12 +24,16 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
+import { v4 } from 'uuid'
+import { TodoLocal } from '../../types/GeneralTypes'
 
 const TodoScreen: React.FC<Props> = ({
   todos: rawTodos,
   activeCategory: category,
   categories,
+  todoFunctions,
 }: Props) => {
+  // console.log(rawTodos)
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
@@ -68,15 +76,32 @@ const TodoScreen: React.FC<Props> = ({
     setIsRemoveTodoModalShowing(false)
   }
 
-  function handleRemoveTodo(id: string): void {
-    removeTodo(id)
-    setIsRemoveTodoModalShowing(false)
+  function handleRemoveTodo(todo?: TodoLocal): void {
+    if (todo) {
+      todoFunctions.handleTodoRemovedChange(todo)
+      removeTodoFirebase(todo)
+      setIsRemoveTodoModalShowing(false)
+    } else {
+      console.error('Removing Error')
+    }
   }
   function handleAddTodo(title: string, categoryId: string): void {
-    addTodo(title, categoryId)
+    const todo = {
+      categoryId,
+      title,
+      timestamp: new Date(Date.now()),
+      lastChange: new Date(Date.now()),
+      done: false,
+      id: v4(),
+    }
+    todoFunctions.handleTodoAddedChange(todo)
+    addTodoFirebase(todo)
   }
-  function handleToggleTodo(id: string, oldValue: boolean): void {
-    toggleTodo(id, !oldValue)
+  function handleToggleTodo(todo?: TodoLocal): void {
+    if (todo) {
+      todoFunctions.handleTodoModifiedChange({ ...todo, done: !todo.done })
+      toggleTodoFirebase(todo)
+    } else console.error('Toggle Fehler')
   }
   //#endregion
 
@@ -111,25 +136,14 @@ const TodoScreen: React.FC<Props> = ({
         <TodoList
           todos={todos}
           categories={categories}
-          todoOnPress={(id, done) => handleToggleTodo(id, done)}
+          todoOnPress={(id) => handleToggleTodo(findTodoById(id, todos))}
           todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
           displayTodoCategory={category ? false : true}
         />
         <Button
           value={'Add new Todo'}
           variant={'secondary'}
-          onPress={
-            () => handleAddTodoModalActivation() /* {
-            //
-            // TESTING_ONLY_REMOVE_ALL_CATEGORIES_WITH_NO_TODOS()
-            // TESTING_ONLY_ADD_MANY_CATEGORIES(5)
-            // TESTING_ONLY_ADD_MANY_TODOS_TO_CATEGORY(1, 'hSbJvOxIqyx2gTKwCuOe')
-            // TESTING_ONLY_REMOVE_ALL_TODOS_FROM_CATEGORY('hSbJvOxIqyx2gTKwCuOe')
-            // TESTING_ONLY_REMOVE_ALL_TODOS()
-            // TESTING_ONLY_REMOVE_ALL_CATEGORIES()
-            // TESTING_ONLY_ADD_MANY_TODOS(100)
-          } */
-          }
+          onPress={() => handleAddTodoModalActivation()}
           style={{
             container: styles.footerButton,
             text: styles.footerText,
@@ -160,7 +174,9 @@ const TodoScreen: React.FC<Props> = ({
         <Modal onBackdropPress={() => handleRemoveModalDismiss()}>
           <SafetyQuestion
             title={findTodoById(selectedTodoId, todos)?.title || ''}
-            acceptFunction={() => handleRemoveTodo(selectedTodoId)}
+            acceptFunction={() =>
+              handleRemoveTodo(findTodoById(selectedTodoId, todos))
+            }
             cancelFunction={() => handleRemoveModalDismiss()}
           />
         </Modal>
