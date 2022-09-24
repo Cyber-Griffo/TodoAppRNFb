@@ -112,9 +112,8 @@ export function MainStack() {
 
   function handleTodoModifiedChange(
     modifiedTodo: TodoLocal,
-    databaseTodo: boolean
+    databaseTodo: boolean = false
   ): void {
-    console.log('hallo')
     //handling Todos incoming from Database (Firebase)
     if (databaseTodo) {
       const refTodo = currTodos.current.find(
@@ -133,7 +132,9 @@ export function MainStack() {
     modifyLocalTodos(modifiedTodo)
 
     // If locally added ToDo -> Rerender Page
-    if (!databaseTodo) setRerender((currRerender) => !currRerender)
+    if (!databaseTodo) {
+      setRerender((currRerender) => !currRerender)
+    }
   }
 
   function handleTodoRemovedChange(removedTodo: TodoLocal): void {
@@ -267,6 +268,11 @@ export function MainStack() {
             todos={currTodos.current}
             key={'AllTodos#0'}
             categories={currCategories.current}
+            todoFunctions={{
+              handleTodoAddedChange,
+              handleTodoRemovedChange,
+              handleTodoModifiedChange,
+            }}
           />
         )}
       </Drawer.Screen>
@@ -286,6 +292,11 @@ export function MainStack() {
                   activeCategory={category}
                   key={category.id}
                   categories={currCategories.current}
+                  todoFunctions={{
+                    handleTodoAddedChange,
+                    handleTodoRemovedChange,
+                    handleTodoModifiedChange,
+                  }}
                 />
               )}
             </Drawer.Screen>

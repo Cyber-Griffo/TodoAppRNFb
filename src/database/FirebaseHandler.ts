@@ -3,16 +3,17 @@ import auth from '@react-native-firebase/auth'
 import { firestoreCategoryPath, firestoreTodoPath } from '../constants/Firebase'
 import { faker } from '@faker-js/faker'
 import { v4 } from 'uuid'
+import { TodoLocal } from '../types/GeneralTypes'
 
 const uid = auth().currentUser?.uid
 
-export async function toggleTodo(id: string, newValue: boolean) {
+export async function toggleTodoFirebase(todo: TodoLocal): Promise<void> {
   if (!uid) return
 
   await firestoreTodoPath
-    .doc(id)
+    .doc(todo.id)
     .update({
-      done: newValue,
+      done: !todo.done,
       lastChange: firestore.FieldValue.serverTimestamp(),
     })
     .catch((err) => {
@@ -22,20 +23,15 @@ export async function toggleTodo(id: string, newValue: boolean) {
   console.log('Updated Todo successfully')
 }
 
-export async function addTodo(title: string, categoryId: string) {
+export async function addTodoFirebase(todo: TodoLocal): Promise<void> {
   if (!uid) return
 
-  const id = v4()
-
   await firestoreTodoPath
-    .doc(id)
+    .doc(todo.id)
     .set({
-      title,
-      done: false,
+      ...todo,
       timestamp: firestore.FieldValue.serverTimestamp(),
       lastChange: firestore.FieldValue.serverTimestamp(),
-      categoryId,
-      id,
     })
     .catch((err) => {
       console.error(err)
@@ -44,11 +40,11 @@ export async function addTodo(title: string, categoryId: string) {
   console.log('Added Todo successfully')
 }
 
-export async function removeTodo(id: string) {
+export async function removeTodoFirebase(todo: TodoLocal): Promise<void> {
   if (!uid) return
 
   await firestoreTodoPath
-    .doc(id)
+    .doc(todo.id)
     .delete()
     .catch((err) => {
       console.error(err)

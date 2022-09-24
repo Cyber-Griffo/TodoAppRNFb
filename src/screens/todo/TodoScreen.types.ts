@@ -6,6 +6,14 @@ export type TodoScreenProps = {
   todos: TodoLocal[]
   activeCategory?: Category
   categories: Category[]
+  todoFunctions: {
+    handleTodoAddedChange: (newTodo: TodoLocal, databaseTodo?: boolean) => void
+    handleTodoModifiedChange: (
+      modifiedTodo: TodoLocal,
+      databaseTodo?: boolean
+    ) => void
+    handleTodoRemovedChange: (deletedTodo: TodoLocal) => void
+  }
 }
 
 export type TodoScreenStyleContext = {
