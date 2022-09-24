@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler'
 import 'react-native-console-time-polyfill'
+import 'react-native-get-random-values'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'react-native'
