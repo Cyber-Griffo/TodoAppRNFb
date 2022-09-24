@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth'
 import { firestoreCategoryPath, firestoreTodoPath } from '../constants/Firebase'
 import { faker } from '@faker-js/faker'
+import { v4 } from 'uuid'
 
 const uid = auth().currentUser?.uid
 
@@ -12,6 +13,7 @@ export async function toggleTodo(id: string, newValue: boolean) {
     .doc(id)
     .update({
       done: newValue,
+      lastChange: firestore.FieldValue.serverTimestamp(),
     })
     .catch((err) => {
       console.error(err)
@@ -23,12 +25,17 @@ export async function toggleTodo(id: string, newValue: boolean) {
 export async function addTodo(title: string, categoryId: string) {
   if (!uid) return
 
+  const id = v4()
+
   await firestoreTodoPath
-    .add({
+    .doc(id)
+    .set({
       title,
       done: false,
       timestamp: firestore.FieldValue.serverTimestamp(),
+      lastChange: firestore.FieldValue.serverTimestamp(),
       categoryId,
+      id,
     })
     .catch((err) => {
       console.error(err)
@@ -111,17 +118,20 @@ export async function TESTING_ONLY_ADD_MANY_TODOS_TO_CATEGORY(
   categoryId: string
 ) {
   let todos = []
+  let id = v4()
   for (let index = 0; index < count; index++) {
     todos.push({
       title: faker.lorem.sentence(Math.floor(Math.random() * 10) + 1),
       done: faker.datatype.boolean(),
       categoryId,
       timestamp: firestore.FieldValue.serverTimestamp(),
+      lastChange: firestore.FieldValue.serverTimestamp(),
+      id,
     })
   }
 
   todos.forEach((todo) => {
-    firestoreTodoPath.add(todo)
+    firestoreTodoPath.doc(id).set(todo)
   })
 }
 
@@ -176,4 +186,29 @@ export async function TESTING_ONLY_REMOVE_ALL_CATEGORIES_WITH_NO_TODOS() {
     // IF there are none -> delete Category
     if (todos.empty) firestoreCategoryPath.doc(v.id).delete()
   })
+}
+
+export async function TESTING_ONLY_ADD_LASTCHANGE_TO_ALL_TODOS() {
+  const todos = await firestoreTodoPath.get()
+
+  todos.forEach((todo) => {
+    firestoreTodoPath.doc(todo.id).update({
+      ...todo.data(),
+      lastChange: firestore.FieldValue.serverTimestamp(),
+    })
+  })
+}
+
+export async function TESTING_ONLY_CONVERT_TODOS() {
+  const todos = await firestoreTodoPath.get()
+
+  todos.forEach((todo) => {
+    const id = v4()
+    firestoreTodoPath.doc(id).set({ ...todo.data(), id })
+    firestoreTodoPath.doc(todo.id).delete()
+  })
+}
+
+export async function TESTING_ONLY_ADDING_CUSTOM_DOC_ID() {
+  firestore().collection('test').doc('123').set({ title: 'baum' })
 }

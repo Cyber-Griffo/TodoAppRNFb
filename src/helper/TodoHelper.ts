@@ -1,12 +1,18 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import { Category, CategoryCount, Todo } from '../types/GeneralTypes'
+import { Category, CategoryCount, TodoFirebase } from '../types/GeneralTypes'
 import { checkForTimestamp } from './GeneralHelper'
 
-export function findTodoById(id: string, todos: Todo[]): Todo | undefined {
+export function findTodoById(
+  id: string,
+  todos: TodoFirebase[]
+): TodoFirebase | undefined {
   return todos?.find((todo) => todo.id === id)
 }
 
-export function todoSortingConditions(a: Todo, b: Todo): number {
+export function todoSortingConditions(
+  a: TodoFirebase,
+  b: TodoFirebase
+): number {
   return a.done === b.done
     ? checkForTimestamp(a.timestamp, b.timestamp)
     : a.done
@@ -15,8 +21,8 @@ export function todoSortingConditions(a: Todo, b: Todo): number {
 }
 
 export function todoSortingConditionsMainScreen(
-  a: Todo,
-  b: Todo,
+  a: TodoFirebase,
+  b: TodoFirebase,
   categories: Category[]
 ): number {
   let categoryTitle = {
@@ -40,11 +46,11 @@ export function todoSortingConditionsMainScreen(
 
 export function handleTodoModifiedChange(
   doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-  list: Todo[]
-): Todo[] {
+  list: TodoFirebase[]
+): TodoFirebase[] {
   if (!list.find((todo) => todo.id === doc.id)) return list
 
-  const { title, done, timestamp, categoryId } = doc.data() as Todo
+  const { title, done, timestamp, categoryId } = doc.data() as TodoFirebase
   return list.map((todo) => {
     if (todo.id === doc.id) {
       return { id: doc.id, title, done, timestamp, categoryId }
@@ -56,10 +62,10 @@ export function handleTodoModifiedChange(
 
 export function handleTodoRemovedChange(
   id: string,
-  todos: Todo[],
+  todos: TodoFirebase[],
   categoryId: string,
   categoryCounts: CategoryCount[]
-): { todos: Todo[]; categoryCounts: CategoryCount[] } {
+): { todos: TodoFirebase[]; categoryCounts: CategoryCount[] } {
   // Return if Todo isn't contained in List
   if (!todos.find((todo) => todo.id === id)) return { todos, categoryCounts }
 
@@ -87,12 +93,12 @@ export function handleTodoRemovedChange(
 
 export function handleTodoAddedChange(
   doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-  todos: Todo[],
+  todos: TodoFirebase[],
   categoryCounts: CategoryCount[]
-): { todos: Todo[]; categoryCounts: CategoryCount[] } {
+): { todos: TodoFirebase[]; categoryCounts: CategoryCount[] } {
   if (todos.find((todo) => todo.id === doc.id)) return { todos, categoryCounts }
 
-  const { title, done, timestamp, categoryId } = doc.data() as Todo
+  const { title, done, timestamp, categoryId } = doc.data() as TodoFirebase
 
   // Update CategoryCountList
   if (categoryCounts) {
@@ -112,7 +118,7 @@ export function handleTodoAddedChange(
     } else {
       categoryCounts = [
         ...categoryCounts,
-        { categoryId: (doc.data() as Todo).categoryId, count: 1 },
+        { categoryId: (doc.data() as TodoFirebase).categoryId, count: 1 },
       ]
     }
   }
@@ -123,7 +129,9 @@ export function handleTodoAddedChange(
   }
 }
 
-export function sortTodosByDoneThenTimestamp(list: Todo[]): Todo[] {
+export function sortTodosByDoneThenTimestamp(
+  list: TodoFirebase[]
+): TodoFirebase[] {
   console.log('h')
   return list.sort((a, b) => {
     return todoSortingConditions(a, b)

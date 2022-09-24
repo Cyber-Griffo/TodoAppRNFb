@@ -8,7 +8,12 @@ import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInpu
 import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
 import TodoList from '../../components/todoList/TodoList'
-import { addTodo, removeTodo, toggleTodo } from '../../database/FirebaseHandler'
+import {
+  TESTING_ONLY_ADD_MANY_TODOS,
+  addTodo,
+  removeTodo,
+  toggleTodo,
+} from '../../database/FirebaseHandler'
 import {
   findTodoById,
   todoSortingConditions,
@@ -26,6 +31,7 @@ const TodoScreen: React.FC<Props> = ({
   activeCategory: category,
   categories,
 }: Props) => {
+  console.log(rawTodos)
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
@@ -118,18 +124,16 @@ const TodoScreen: React.FC<Props> = ({
         <Button
           value={'Add new Todo'}
           variant={'secondary'}
-          onPress={
-            () => handleAddTodoModalActivation() /* {
-            //
+          onPress={() => /* handleAddTodoModalActivation() */ {
+            // TESTING_ONLY_CONVERT_TODOS()
             // TESTING_ONLY_REMOVE_ALL_CATEGORIES_WITH_NO_TODOS()
             // TESTING_ONLY_ADD_MANY_CATEGORIES(5)
             // TESTING_ONLY_ADD_MANY_TODOS_TO_CATEGORY(1, 'hSbJvOxIqyx2gTKwCuOe')
             // TESTING_ONLY_REMOVE_ALL_TODOS_FROM_CATEGORY('hSbJvOxIqyx2gTKwCuOe')
             // TESTING_ONLY_REMOVE_ALL_TODOS()
             // TESTING_ONLY_REMOVE_ALL_CATEGORIES()
-            // TESTING_ONLY_ADD_MANY_TODOS(100)
-          } */
-          }
+            TESTING_ONLY_ADD_MANY_TODOS(1)
+          }}
           style={{
             container: styles.footerButton,
             text: styles.footerText,
