@@ -1,8 +1,8 @@
 import { StyleProp, ViewStyle } from 'react-native'
-import { Category, TodoFirebase } from '../../types/GeneralTypes'
+import { Category, TodoLocal } from '../../types/GeneralTypes'
 
 export type Props = {
-  todos: TodoFirebase[]
+  todos: TodoLocal[]
   categories: Category[]
   todoOnPress: (id: string, done: boolean) => void
   todoOnLongPress: (id: string) => void

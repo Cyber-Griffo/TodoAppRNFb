@@ -1,9 +1,9 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
-import { Category, TodoFirebase } from '../../types/GeneralTypes'
+import { Category, TodoLocal } from '../../types/GeneralTypes'
 import { Theme } from '../../utils/ThemeContext'
 
 export type TodoScreenProps = {
-  todos: TodoFirebase[]
+  todos: TodoLocal[]
   activeCategory?: Category
   categories: Category[]
 }

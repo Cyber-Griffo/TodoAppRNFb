@@ -125,13 +125,9 @@ const TodoScreen: React.FC<Props> = ({
           value={'Add new Todo'}
           variant={'secondary'}
           onPress={() => /* handleAddTodoModalActivation() */ {
-            // TESTING_ONLY_CONVERT_TODOS()
-            // TESTING_ONLY_REMOVE_ALL_CATEGORIES_WITH_NO_TODOS()
             // TESTING_ONLY_ADD_MANY_CATEGORIES(5)
-            // TESTING_ONLY_ADD_MANY_TODOS_TO_CATEGORY(1, 'hSbJvOxIqyx2gTKwCuOe')
-            // TESTING_ONLY_REMOVE_ALL_TODOS_FROM_CATEGORY('hSbJvOxIqyx2gTKwCuOe')
-            // TESTING_ONLY_REMOVE_ALL_TODOS()
             // TESTING_ONLY_REMOVE_ALL_CATEGORIES()
+            // TESTING_ONLY_REMOVE_ALL_TODOS()
             TESTING_ONLY_ADD_MANY_TODOS(1)
           }}
           style={{

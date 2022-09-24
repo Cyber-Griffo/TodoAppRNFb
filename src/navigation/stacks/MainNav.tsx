@@ -68,18 +68,8 @@ export function MainStack() {
     }
   }
 
-  function takeDatabaseChange(newTodo: TodoLocal): boolean {
-    const refTodo = currTodos.current.find((todo) => todo.id === newTodo.id)
-    if (refTodo) {
-      // If Todo is already in List -> Check for LastChange
-      // If Todo is older than the Todo in List -> return
-      if (newTodo.lastChange.getTime() <= refTodo.lastChange.getTime()) {
-        return false
-      }
-      // If LastChange of newTodo is newer -> Update Todo in List
-      return true
-    }
-    return false
+  function addLocalTodo(newTodo: TodoLocal) {
+    currTodos.current.push(newTodo)
   }
 
   function modifyLocalTodos(newTodo: TodoLocal) {
@@ -91,17 +81,13 @@ export function MainStack() {
     })
   }
 
-  function addLocalTodo(newTodo: TodoLocal) {
-    currTodos.current.push(newTodo)
-  }
-
   function removeLocalTodo(removeTodo: TodoLocal) {
     currTodos.current = currTodos.current.filter(
       (todo) => todo.id !== removeTodo.id
     )
   }
 
-  function handleTodoAddedChangeLocal(
+  function handleTodoAddedChange(
     newTodo: TodoLocal,
     databaseTodo: boolean = false
   ): void {
@@ -124,10 +110,11 @@ export function MainStack() {
     if (!databaseTodo) setRerender((currRerender) => !currRerender)
   }
 
-  function handleTodoModifiedChangeLocal(
+  function handleTodoModifiedChange(
     modifiedTodo: TodoLocal,
     databaseTodo: boolean
   ): void {
+    console.log('hallo')
     //handling Todos incoming from Database (Firebase)
     if (databaseTodo) {
       const refTodo = currTodos.current.find(
@@ -137,9 +124,7 @@ export function MainStack() {
       if (
         !refTodo ||
         !modifiedTodo.lastChange ||
-        (refTodo.lastChange
-          ? modifiedTodo.lastChange <= refTodo.lastChange
-          : true)
+        (refTodo.lastChange && modifiedTodo.lastChange <= refTodo.lastChange)
       ) {
         return
       }
@@ -151,63 +136,13 @@ export function MainStack() {
     if (!databaseTodo) setRerender((currRerender) => !currRerender)
   }
 
-  function handleTodoRemovedChangeLocal(removedTodo: TodoLocal): void {
+  function handleTodoRemovedChange(removedTodo: TodoLocal): void {
     if (!currTodos.current.find((todo) => todo.id === removedTodo.id)) return
+
+    updateCategoryCounts(removedTodo.categoryId, 'remove')
 
     removeLocalTodo(removedTodo)
   }
-
-  //#region Todo Handlers
-  /* function handleTodoRemovedChange(
-    id: string,
-    list: TodoFirebase[],
-    categoryId: string
-  ): TodoFirebase[] {
-    // Return if Todo isn't contained in List
-    if (!list.find((todo) => todo.id === id)) return list
-
-    // Update CategoryCountList
-    updateCategoryCounts(categoryId, 'remove')
-
-    // Filter Todo List
-    return list.filter((todo) => todo.id !== id)
-  }
-
-  function handleTodoAddedChange(
-    doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-    list: TodoFirebase[]
-  ): TodoFirebase[] {
-    if (list.find((todo) => todo.id === doc.id)) return list
-
-    const { title, done, timestamp, categoryId } = doc.data() as TodoFirebase
-
-    // Update CategoryCountList
-    if (categoryCounts.current) {
-      let categoryCountExists = categoryCounts.current.find(
-        (cc) => cc.categoryId === categoryId
-      )
-      if (categoryCountExists) {
-        categoryCounts.current.map((categoryCount) => {
-          if (categoryCount.categoryId === categoryId) {
-            return {
-              categoryId: categoryCount.categoryId,
-              count: categoryCount.count++,
-            }
-          }
-          return categoryCount
-        })
-      } else {
-        categoryCounts.current = [
-          ...categoryCounts.current,
-          { categoryId: (doc.data() as TodoFirebase).categoryId, count: 1 },
-        ]
-      }
-    }
-
-    return [...list, { id: doc.id, title, done, timestamp, categoryId }]
-  } */
-
-  //#endregion
 
   // Listen to changes on the FirestoreTodoPath
   useEffect(() => {
@@ -221,12 +156,12 @@ export function MainStack() {
           timestamp: firebaseTodo.timestamp?.toDate(),
           lastChange: firebaseTodo.lastChange?.toDate(),
         }
-        if (docChange.type === 'removed') {
-          handleTodoRemovedChangeLocal(localTodo)
-        } else if (docChange.type === 'added') {
-          handleTodoAddedChangeLocal(localTodo, true)
+        if (docChange.type === 'added') {
+          handleTodoAddedChange(localTodo, true)
         } else if (docChange.type === 'modified') {
-          handleTodoModifiedChangeLocal(localTodo, true)
+          handleTodoModifiedChange(localTodo, true)
+        } else if (docChange.type === 'removed') {
+          handleTodoRemovedChange(localTodo)
         } else {
           console.error(
             'Unexpected Error accured while processing incoming Firebase Data: \n' +

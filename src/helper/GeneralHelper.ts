@@ -1,10 +1,5 @@
-import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-
-export function checkForTimestamp(
-  a: FirebaseFirestoreTypes.Timestamp,
-  b: FirebaseFirestoreTypes.Timestamp
-) {
-  if (a?.valueOf() < b?.valueOf()) {
+export function checkForTimestamp(a: Date, b: Date) {
+  if (a?.getTime() < b?.getTime()) {
     return -1
   }
   return 1

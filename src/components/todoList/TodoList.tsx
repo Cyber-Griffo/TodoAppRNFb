@@ -30,7 +30,7 @@ const TodoList = (props: TodoListProps) => {
               : undefined
           }
           onPress={() => todoOnPress(todo.id, todo.done)}
-          onLongPress={todoOnLongPress}
+          onLongPress={() => todoOnLongPress(todo.id)}
           key={todo.id}
         />
       )}
