@@ -82,23 +82,40 @@ export function MainStack() {
     return false
   }
 
+  function modifyLocalTodos(newTodo: TodoLocal) {
+    currTodos.current = currTodos.current.map((todo) => {
+      if (todo.id === newTodo.id) {
+        return newTodo
+      }
+      return todo
+    })
+  }
+
+  function addLocalTodo(newTodo: TodoLocal) {
+    currTodos.current.push(newTodo)
+  }
+
+  function removeLocalTodo(removeTodo: TodoLocal) {
+    currTodos.current = currTodos.current.filter(
+      (todo) => todo.id !== removeTodo.id
+    )
+  }
+
   function handleTodoAddedChangeLocal(
     newTodo: TodoLocal,
     databaseTodo: boolean = false
   ): void {
     const refTodo = currTodos.current.find((todo) => todo.id === newTodo.id)
     if (refTodo) {
-      if (!newTodo.lastChange || newTodo.lastChange <= refTodo.lastChange) {
+      if (
+        !newTodo.lastChange ||
+        (refTodo.lastChange ? newTodo.lastChange <= refTodo.lastChange : true)
+      ) {
         return
       }
-      currTodos.current = currTodos.current.map((todo) => {
-        if (todo.id === newTodo.id) {
-          return newTodo
-        }
-        return todo
-      })
+      modifyLocalTodos(newTodo)
     } else {
-      currTodos.current.push(newTodo)
+      addLocalTodo(newTodo)
       // Update CategoryCountList
       updateCategoryCounts(newTodo.categoryId, 'add')
     }
@@ -128,12 +145,7 @@ export function MainStack() {
       }
     }
 
-    currTodos.current = currTodos.current.map((todo) => {
-      if (todo.id === modifiedTodo.id) {
-        return modifiedTodo
-      }
-      return todo
-    })
+    modifyLocalTodos(modifiedTodo)
 
     // If locally added ToDo -> Rerender Page
     if (!databaseTodo) setRerender((currRerender) => !currRerender)
@@ -142,7 +154,7 @@ export function MainStack() {
   function handleTodoRemovedChangeLocal(removedTodo: TodoLocal): void {
     if (!currTodos.current.find((todo) => todo.id === removedTodo.id)) return
 
-    currTodos.current.filter((todo) => todo.id !== removedTodo.id)
+    removeLocalTodo(removedTodo)
   }
 
   //#region Todo Handlers
