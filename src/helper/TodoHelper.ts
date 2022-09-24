@@ -1,10 +1,10 @@
-import { Category, TodoFirebase, TodoLocal } from '../types/GeneralTypes'
+import { Category, TodoLocal } from '../types/GeneralTypes'
 import { checkForTimestamp } from './GeneralHelper'
 
 export function findTodoById(
   id: string,
-  todos: TodoFirebase[]
-): TodoFirebase | undefined {
+  todos: TodoLocal[]
+): TodoLocal | undefined {
   return todos?.find((todo) => todo.id === id)
 }
 
