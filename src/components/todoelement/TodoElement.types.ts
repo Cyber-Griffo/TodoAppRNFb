@@ -1,12 +1,12 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
-import { Category, TodoLocal } from '../../types/GeneralTypes'
+import { CategoryLocal, TodoLocal } from '../../types/GeneralTypes'
 import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
   todo: TodoLocal
   onPress: (...args: any) => any
   onLongPress: (...args: any) => any
-  category?: Category
+  category?: CategoryLocal
 }
 
 export type TodoElementStyleContext = {

@@ -9,7 +9,7 @@ import CustomDrawerItemList from '../itemlist/CustomDrawerItemList'
 import { getStyles } from './CustomDrawerContent.styles'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { addCategory } from '../../../database/FirebaseHandler'
+import { addCategoryFirebase } from '../../../database/FirebaseHandler'
 import SectionHeader from '../sectionheader/CustomDrawerSectionHeader'
 import { ThemeContext } from '../../../utils/ThemeContext'
 import { Props as CustomDrawerContentProps } from './CustomDrawerContent.types'
@@ -41,7 +41,7 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
       setPlaceholderObj(errorPlaceholder)
       return
     }
-    addCategory(categoryTitle)
+    addCategoryFirebase(categoryTitle)
     setCategoryTitle('')
   }
 
@@ -100,10 +100,7 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <CustomDrawerItemList
-          {...props.drawerProps}
-          categoryCounts={props.categoryCounts}
-        />
+        <CustomDrawerItemList {...props.drawerProps} />
       </DrawerContentScrollView>
       <View style={styles.footerContainer}>
         <SectionHeader text="Others" />

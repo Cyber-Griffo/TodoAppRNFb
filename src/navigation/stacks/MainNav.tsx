@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import TodoScreen from '../../screens/todo/TodoScreen'
 import { StyleSheet, Text, View } from 'react-native'
@@ -10,140 +10,34 @@ import {
 import { CustomDrawerContent } from '../../components/customdrawer/content/CustomDrawerContent'
 import { ThemeContext } from '../../utils/ThemeContext'
 import {
-  Category,
-  CategoryCount,
+  CategoryFirebase,
+  CategoryLocal,
   TodoFirebase,
   TodoLocal,
 } from '../../types/GeneralTypes'
-import {
-  handleCategoryAddedChange,
-  handleCategoryModifiedChange,
-  handleCategoryRemovedChange,
-  sortCategoriesByCategoryString,
-} from '../../helper/CategoryHelper'
 import { TESTING_ONLY_REMOVE_ALL_TODOS } from '../../database/FirebaseHandler'
 import Button from '../../components/button/Button'
+import { useTodoStore } from '../../zustand/TodoStore'
 
 const Drawer = createDrawerNavigator()
 
 export function MainStack() {
   const uid = auth().currentUser?.uid
-  const currTodos = useRef<TodoLocal[]>([])
-  const currCategories = useRef<Category[]>([])
-  const categoryCounts = useRef<CategoryCount[]>([])
-  const [_r, setRerender] = useState<boolean>(false)
+  const todos = useTodoStore((state) => state.todos)
+  const categoryCounts = useTodoStore((state) => state.categoryCounts)
+  const addTodo = useTodoStore((state) => state.addTodo)
+  const modifyTodo = useTodoStore((state) => state.modifyTodo)
+  const removeTodo = useTodoStore((state) => state.removeTodo)
+  const categories = useTodoStore((state) => state.categories)
+  const addCategory = useTodoStore((state) => state.addCategory)
+  const modifyCategory = useTodoStore((state) => state.modifyCategory)
+  const removeCategory = useTodoStore((state) => state.removeCategory)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isLoadingTodos, setIsLoadingTodos] = useState<boolean>(true)
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true)
 
   const { theme } = useContext(ThemeContext)
-
-  function updateCategoryCounts(categoryId: string, action: 'add' | 'remove') {
-    if (categoryCounts.current) {
-      let categoryCountExists = categoryCounts.current.find(
-        (cc) => cc.categoryId === categoryId
-      )
-      if (categoryCountExists) {
-        categoryCounts.current.map((categoryCount) => {
-          if (categoryCount.categoryId === categoryId) {
-            return {
-              categoryId: categoryCount.categoryId,
-              count:
-                action === 'add'
-                  ? categoryCount.count++
-                  : categoryCount.count--,
-            }
-          }
-          return categoryCount
-        })
-      } else {
-        if (action === 'add') {
-          categoryCounts.current = [
-            ...categoryCounts.current,
-            { categoryId, count: 1 },
-          ]
-        }
-      }
-    }
-  }
-
-  function addLocalTodo(newTodo: TodoLocal) {
-    currTodos.current.push(newTodo)
-  }
-
-  function modifyLocalTodos(newTodo: TodoLocal) {
-    currTodos.current = currTodos.current.map((todo) => {
-      if (todo.id === newTodo.id) {
-        return newTodo
-      }
-      return todo
-    })
-  }
-
-  function removeLocalTodo(removeTodo: TodoLocal) {
-    currTodos.current = currTodos.current.filter(
-      (todo) => todo.id !== removeTodo.id
-    )
-  }
-
-  function handleTodoAddedChange(
-    newTodo: TodoLocal,
-    databaseTodo: boolean = false
-  ): void {
-    const refTodo = currTodos.current.find((todo) => todo.id === newTodo.id)
-    if (refTodo) {
-      if (
-        !newTodo.lastChange ||
-        (refTodo.lastChange ? newTodo.lastChange <= refTodo.lastChange : true)
-      ) {
-        return
-      }
-      modifyLocalTodos(newTodo)
-    } else {
-      addLocalTodo(newTodo)
-      // Update CategoryCountList
-      updateCategoryCounts(newTodo.categoryId, 'add')
-    }
-
-    // If locally added ToDo -> Rerender Page
-    if (!databaseTodo) setRerender((currRerender) => !currRerender)
-  }
-
-  function handleTodoModifiedChange(
-    modifiedTodo: TodoLocal,
-    databaseTodo: boolean = false
-  ): void {
-    //handling Todos incoming from Database (Firebase)
-    if (databaseTodo) {
-      const refTodo = currTodos.current.find(
-        (todo) => todo.id === modifiedTodo.id
-      )
-
-      if (
-        !refTodo ||
-        !modifiedTodo.lastChange ||
-        (refTodo.lastChange && modifiedTodo.lastChange <= refTodo.lastChange)
-      ) {
-        return
-      }
-    }
-
-    modifyLocalTodos(modifiedTodo)
-
-    // If locally added ToDo -> Rerender Page
-    if (!databaseTodo) {
-      setRerender((currRerender) => !currRerender)
-    }
-  }
-
-  function handleTodoRemovedChange(removedTodo: TodoLocal): void {
-    if (!currTodos.current.find((todo) => todo.id === removedTodo.id)) return
-
-    updateCategoryCounts(removedTodo.categoryId, 'remove')
-
-    removeLocalTodo(removedTodo)
-  }
 
   // Listen to changes on the FirestoreTodoPath
   useEffect(() => {
@@ -158,11 +52,11 @@ export function MainStack() {
           lastChange: firebaseTodo.lastChange?.toDate(),
         }
         if (docChange.type === 'added') {
-          handleTodoAddedChange(localTodo, true)
+          addTodo(localTodo)
         } else if (docChange.type === 'modified') {
-          handleTodoModifiedChange(localTodo, true)
+          modifyTodo(localTodo, true)
         } else if (docChange.type === 'removed') {
-          handleTodoRemovedChange(localTodo)
+          removeTodo(localTodo)
         } else {
           console.error(
             'Unexpected Error accured while processing incoming Firebase Data: \n' +
@@ -170,8 +64,6 @@ export function MainStack() {
           )
         }
       })
-
-      setRerender((currRerender) => !currRerender)
 
       if (isLoadingTodos) setIsLoadingTodos(false)
     })
@@ -182,25 +74,19 @@ export function MainStack() {
     if (!uid) return
 
     return firestoreCategoryPath.onSnapshot((querySnapshot) => {
-      let resortCategories = false
       querySnapshot.docChanges().forEach((docChange) => {
-        if (docChange.type === 'removed') {
-          currCategories.current = handleCategoryRemovedChange(
-            docChange.doc.id,
-            currCategories.current
-          )
-        } else if (docChange.type === 'added') {
-          currCategories.current = handleCategoryAddedChange(
-            docChange.doc,
-            currCategories.current
-          )
-          resortCategories = true
+        const firebaseCategory: CategoryFirebase =
+          docChange.doc.data() as CategoryFirebase
+        const localCategory: CategoryLocal = {
+          ...firebaseCategory,
+          lastChange: firebaseCategory.lastChange?.toDate(),
+        }
+        if (docChange.type === 'added') {
+          addCategory(localCategory)
         } else if (docChange.type === 'modified') {
-          currCategories.current = handleCategoryModifiedChange(
-            docChange.doc,
-            currCategories.current
-          )
-          resortCategories = true
+          modifyCategory(localCategory, true)
+        } else if (docChange.type === 'removed') {
+          removeCategory(localCategory)
         } else {
           console.error(
             'Unexpected Error accured while processing incoming Firebase Data: \n' +
@@ -208,14 +94,6 @@ export function MainStack() {
           )
         }
       })
-
-      if (resortCategories) {
-        currCategories.current = sortCategoriesByCategoryString(
-          currCategories.current
-        )
-      }
-
-      setRerender((currRerender) => !currRerender)
 
       if (isLoadingCategories) setIsLoadingCategories(false)
     })
@@ -251,32 +129,16 @@ export function MainStack() {
         drawerLabelStyle: { fontSize: 14 },
       }}
       drawerContent={(props) => {
-        return (
-          <CustomDrawerContent
-            drawerProps={props}
-            categoryCounts={categoryCounts.current}
-          />
-        )
+        return <CustomDrawerContent drawerProps={props} />
       }}
     >
       <Drawer.Screen
         name=" "
         options={{ title: "All Todo's" }}
       >
-        {() => (
-          <TodoScreen
-            todos={currTodos.current}
-            key={'AllTodos#0'}
-            categories={currCategories.current}
-            todoFunctions={{
-              handleTodoAddedChange,
-              handleTodoRemovedChange,
-              handleTodoModifiedChange,
-            }}
-          />
-        )}
+        {() => <TodoScreen key={'AllTodos#0'} />}
       </Drawer.Screen>
-      {currCategories.current.map((category) => {
+      {categories.map((category) => {
         if (category.id && category.id !== '') {
           return (
             <Drawer.Screen
@@ -286,17 +148,8 @@ export function MainStack() {
             >
               {() => (
                 <TodoScreen
-                  todos={currTodos.current.filter(
-                    (todo) => todo.categoryId === category.id
-                  )}
-                  activeCategory={category}
                   key={category.id}
-                  categories={currCategories.current}
-                  todoFunctions={{
-                    handleTodoAddedChange,
-                    handleTodoRemovedChange,
-                    handleTodoModifiedChange,
-                  }}
+                  activeCategory={category}
                 />
               )}
             </Drawer.Screen>

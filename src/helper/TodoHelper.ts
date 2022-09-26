@@ -1,4 +1,4 @@
-import { Category, TodoLocal } from '../types/GeneralTypes'
+import { CategoryLocal, TodoLocal } from '../types/GeneralTypes'
 import { checkForTimestamp } from './GeneralHelper'
 
 export function findTodoById(
@@ -19,7 +19,7 @@ export function todoSortingConditions(a: TodoLocal, b: TodoLocal): number {
 export function todoSortingConditionsMainScreen(
   a: TodoLocal,
   b: TodoLocal,
-  categories: Category[]
+  categories: CategoryLocal[]
 ): number {
   let categoryTitle = {
     a:

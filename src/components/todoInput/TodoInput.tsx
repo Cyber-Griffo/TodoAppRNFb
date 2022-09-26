@@ -11,13 +11,17 @@ import { getStyles } from './TodoInput.styles'
 import { RefFunctions, Props as TodoInputProps } from './TodoInput.types'
 import { faker } from '@faker-js/faker'
 import { ThemeContext } from '../../utils/ThemeContext'
+import { addTodoFirebase } from '../../database/FirebaseHandler'
+import { useTodoStore } from '../../zustand/TodoStore'
+import { v4 } from 'uuid'
 
 const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
   TodoInputProps
 > = (props: TodoInputProps, ref) => {
-  const { cancelFunction, createFunction, /* categories, */ activeCategory } =
-    props
+  const { cancelFunction, activeCategory } = props
+  // const categories = useTodoStore((state) => state.categories)
+  const addTodo = useTodoStore((state) => state.addTodo)
 
   //! PLACEHOLDER STRING ONLY FOR DEV-STAGE
   const [title, setTitle] = useState<string>(
@@ -39,7 +43,16 @@ const TodoInput: React.ForwardRefRenderFunction<
   const handleSubmitting = () => {
     // just create a new Todo if Title is provided
     if (title) {
-      createFunction(title, activeCategory ? activeCategory.id : '')
+      const todo = {
+        categoryId: activeCategory ? activeCategory.id : '',
+        title,
+        timestamp: new Date(Date.now()),
+        lastChange: new Date(Date.now()),
+        done: false,
+        id: v4(),
+      }
+      addTodo(todo)
+      addTodoFirebase(todo)
     } else {
       setErrorMessage('Please enter a Title!')
     }

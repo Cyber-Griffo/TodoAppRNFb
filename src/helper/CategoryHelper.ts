@@ -1,23 +1,23 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
-import { Category } from '../types/GeneralTypes'
+import { CategoryLocal } from '../types/GeneralTypes'
 
 export function handleCategoryRemovedChange(
   id: string,
-  list: Category[]
-): Category[] {
+  list: CategoryLocal[]
+): CategoryLocal[] {
   return list.filter((category) => id !== category.id)
 }
 export function handleCategoryAddedChange(
   doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-  list: Category[]
-): Category[] {
+  list: CategoryLocal[]
+): CategoryLocal[] {
   if (list.find((category) => doc.id === category.id)) return list
   return [...list, { id: doc.id, title: doc.data().title }]
 }
 export function handleCategoryModifiedChange(
   doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-  list: Category[]
-): Category[] {
+  list: CategoryLocal[]
+): CategoryLocal[] {
   if (!list.find((category) => doc.id === category.id)) return list
   return list.map((category) => {
     if (category.id === doc.id) {
@@ -30,7 +30,9 @@ export function handleCategoryModifiedChange(
   })
 }
 
-export function sortCategoriesByCategoryString(list: Category[]): Category[] {
+export function sortCategoriesByCategoryString(
+  list: CategoryLocal[]
+): CategoryLocal[] {
   return list.sort((a, b) => {
     return a.title
       .toLocaleLowerCase()
