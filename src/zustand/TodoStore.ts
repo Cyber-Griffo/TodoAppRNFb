@@ -26,8 +26,6 @@ export const useTodoStore = create<TodoState>()((set) => ({
   categoryCounts: [{ categoryId: STRING_ALL_TODOS, count: 0 }],
   addTodo: (addedTodo: TodoLocal) => {
     set((state) => {
-      const categoryId = addedTodo.categoryId
-
       const refTodo = state.todos.find((todo) => todo.id === addedTodo.id)
       if (refTodo) {
         if (
@@ -54,8 +52,11 @@ export const useTodoStore = create<TodoState>()((set) => ({
           (categryCount) => categryCount.categoryId === addedTodo.categoryId
         )
           ? state.categoryCounts.map((categoryCount) => {
-              if (categoryCount.categoryId === categoryId) {
-                return { categoryId, count: categoryCount.count++ }
+              if (categoryCount.categoryId === addedTodo.categoryId) {
+                return {
+                  categoryId: addedTodo.categoryId,
+                  count: categoryCount.count++,
+                }
               }
               return categoryCount
             })
@@ -68,6 +69,7 @@ export const useTodoStore = create<TodoState>()((set) => ({
   },
   modifyTodo: (modifiedTodo: TodoLocal, databaseTodo: boolean = false) => {
     set((state) => {
+      console.log('hallo')
       if (databaseTodo) {
         const refTodo = state.todos.find((todo) => todo.id === modifiedTodo.id)
 
@@ -92,17 +94,27 @@ export const useTodoStore = create<TodoState>()((set) => ({
   },
   removeTodo: (removedTodo: TodoLocal) => {
     set((state) => {
-      return {
-        todos: state.todos.filter((todo) => todo.id !== removedTodo.id),
-        categoryCounts: state.categoryCounts.map((categoryCount) => {
-          if (categoryCount.categoryId === removedTodo.categoryId) {
-            return {
-              ...categoryCount,
-              count: categoryCount.count - 1,
-            }
+      if (!state.todos.find((todo) => todo.id === removedTodo.id)) return {}
+
+      const helperTodos = state.todos.filter(
+        (todo) => todo.id !== removedTodo.id
+      )
+
+      const helperCategoryCount = state.categoryCounts.map((categoryCount) => {
+        if (categoryCount.categoryId === removedTodo.categoryId) {
+          return {
+            ...categoryCount,
+            count: categoryCount.count - 1,
           }
-          return categoryCount
-        }),
+        }
+        return categoryCount
+      })
+
+      console.log(helperCategoryCount)
+
+      return {
+        todos: helperTodos,
+        categoryCounts: helperCategoryCount,
       }
     })
   },
@@ -130,12 +142,17 @@ export const useTodoStore = create<TodoState>()((set) => ({
         state.categories = [...state.categories, addedCategory]
       }
 
+      const helperCategoryCounts = state.categoryCounts.find(
+        (categryCount) => categryCount.categoryId === addedCategory.id
+      )
+        ? state.categoryCounts
+        : [...state.categoryCounts, { categoryId: addedCategory.id, count: 0 }]
+
+      console.log(helperCategoryCounts)
+
       return {
         categories: state.categories,
-        categoryCounts: [
-          ...state.categoryCounts,
-          { categoryId: addedCategory.id, count: 0 },
-        ],
+        categoryCounts: helperCategoryCounts,
       }
     })
   },
