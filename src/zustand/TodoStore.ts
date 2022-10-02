@@ -48,22 +48,22 @@ export const useTodoStore = create<TodoState>()((set) => ({
 
       return {
         todos: state.todos,
-        categoryCounts: state.categoryCounts.find(
-          (categryCount) => categryCount.categoryId === addedTodo.categoryId
-        )
-          ? state.categoryCounts.map((categoryCount) => {
-              if (categoryCount.categoryId === addedTodo.categoryId) {
-                return {
-                  categoryId: addedTodo.categoryId,
-                  count: categoryCount.count++,
-                }
-              }
-              return categoryCount
-            })
-          : [
-              ...state.categoryCounts,
-              { categoryId: addedTodo.categoryId, count: 1 },
-            ],
+        // categoryCounts: state.categoryCounts.find(
+        //   (categryCount) => categryCount.categoryId === addedTodo.categoryId
+        // )
+        //   ? state.categoryCounts.map((categoryCount) => {
+        //       if (categoryCount.categoryId === addedTodo.categoryId) {
+        //         return {
+        //           categoryId: addedTodo.categoryId,
+        //           count: categoryCount.count++,
+        //         }
+        //       }
+        //       return categoryCount
+        //     })
+        //   : [
+        //       ...state.categoryCounts,
+        //       { categoryId: addedTodo.categoryId, count: 1 },
+        //     ],
       }
     })
   },
@@ -133,7 +133,7 @@ export const useTodoStore = create<TodoState>()((set) => ({
           return {}
         }
         state.categories = state.categories.map((category) => {
-          if (category.id === addedCategory.id) {
+          if (category.id === refCategory.id) {
             return addedCategory
           }
           return category
@@ -142,17 +142,20 @@ export const useTodoStore = create<TodoState>()((set) => ({
         state.categories = [...state.categories, addedCategory]
       }
 
-      const helperCategoryCounts = state.categoryCounts.find(
-        (categryCount) => categryCount.categoryId === addedCategory.id
-      )
-        ? state.categoryCounts
-        : [...state.categoryCounts, { categoryId: addedCategory.id, count: 0 }]
-
-      console.log(helperCategoryCounts)
+      if (
+        !state.categoryCounts.find(
+          (categryCount) => categryCount.categoryId === addedCategory.id
+        )
+      ) {
+        state.categoryCounts = [
+          ...state.categoryCounts,
+          { categoryId: addedCategory.id, count: 0 },
+        ]
+      }
 
       return {
         categories: state.categories,
-        categoryCounts: helperCategoryCounts,
+        categoryCounts: state.categoryCounts,
       }
     })
   },

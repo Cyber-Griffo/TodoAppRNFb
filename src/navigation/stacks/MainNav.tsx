@@ -23,8 +23,6 @@ const Drawer = createDrawerNavigator()
 
 export function MainStack() {
   const uid = auth().currentUser?.uid
-  const todos = useTodoStore((state) => state.todos)
-  const categoryCounts = useTodoStore((state) => state.categoryCounts)
   const addTodo = useTodoStore((state) => state.addTodo)
   const modifyTodo = useTodoStore((state) => state.modifyTodo)
   const removeTodo = useTodoStore((state) => state.removeTodo)
