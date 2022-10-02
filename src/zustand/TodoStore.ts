@@ -20,6 +20,40 @@ interface TodoState {
   ) => void
 }
 
+function deleteTodo(todos: TodoLocal[], removedTodo: TodoLocal): TodoLocal[] {
+  return todos.filter((todo) => todo.id !== removedTodo.id)
+}
+
+function updateCategoryCounts(
+  categoryCounts: CategoryCount[],
+  categoryId: string,
+  action: 'add' | 'remove'
+): CategoryCount[] {
+  console.log(categoryId)
+  let categoryCountExists = categoryCounts.find(
+    (cc) => cc.categoryId === categoryId
+  )
+  if (categoryCountExists) {
+    return categoryCounts.map((categoryCount) => {
+      if (categoryCount.categoryId === categoryId) {
+        return {
+          categoryId: categoryCount.categoryId,
+          count:
+            action === 'add'
+              ? categoryCount.count + 1
+              : categoryCount.count - 1,
+        }
+      }
+      return categoryCount
+    })
+  } else {
+    if (action === 'add') {
+      return [...categoryCounts, { categoryId, count: 1 }]
+    }
+  }
+  return categoryCounts
+}
+
 export const useTodoStore = create<TodoState>()((set) => ({
   todos: [],
   categories: [],
@@ -46,40 +80,26 @@ export const useTodoStore = create<TodoState>()((set) => ({
         state.todos = [...state.todos, addedTodo]
       }
 
+      state.categoryCounts = refTodo
+        ? state.categoryCounts
+        : updateCategoryCounts(
+            state.categoryCounts,
+            addedTodo.categoryId,
+            'add'
+          )
+
       return {
         todos: state.todos,
-        // categoryCounts: state.categoryCounts.find(
-        //   (categryCount) => categryCount.categoryId === addedTodo.categoryId
-        // )
-        //   ? state.categoryCounts.map((categoryCount) => {
-        //       if (categoryCount.categoryId === addedTodo.categoryId) {
-        //         return {
-        //           categoryId: addedTodo.categoryId,
-        //           count: categoryCount.count++,
-        //         }
-        //       }
-        //       return categoryCount
-        //     })
-        //   : [
-        //       ...state.categoryCounts,
-        //       { categoryId: addedTodo.categoryId, count: 1 },
-        //     ],
+        categoryCounts: state.categoryCounts,
       }
     })
   },
-  modifyTodo: (modifiedTodo: TodoLocal, databaseTodo: boolean = false) => {
+  modifyTodo: (modifiedTodo: TodoLocal) => {
     set((state) => {
-      console.log('hallo')
-      if (databaseTodo) {
-        const refTodo = state.todos.find((todo) => todo.id === modifiedTodo.id)
+      const refTodo = state.todos.find((todo) => todo.id === modifiedTodo.id)
 
-        if (
-          !refTodo ||
-          !modifiedTodo.lastChange ||
-          (refTodo.lastChange && modifiedTodo.lastChange <= refTodo.lastChange)
-        ) {
-          return {}
-        }
+      if (!refTodo || modifiedTodo.lastChange <= refTodo.lastChange) {
+        return {}
       }
 
       return {
@@ -110,10 +130,8 @@ export const useTodoStore = create<TodoState>()((set) => ({
         return categoryCount
       })
 
-      console.log(helperCategoryCount)
-
       return {
-        todos: helperTodos,
+        todos: deleteTodo(state.todos, removedTodo),
         categoryCounts: helperCategoryCount,
       }
     })
@@ -159,24 +177,14 @@ export const useTodoStore = create<TodoState>()((set) => ({
       }
     })
   },
-  modifyCategory: (
-    modifiedCategory: CategoryLocal,
-    databaseCategory: boolean = false
-  ) => {
+  modifyCategory: (modifiedCategory: CategoryLocal) => {
     set((state) => {
-      if (databaseCategory) {
-        const refTodo = state.todos.find(
-          (todo) => todo.id === modifiedCategory.id
-        )
+      const refTodo = state.todos.find(
+        (todo) => todo.id === modifiedCategory.id
+      )
 
-        if (
-          !refTodo ||
-          !modifiedCategory.lastChange ||
-          (refTodo.lastChange &&
-            modifiedCategory.lastChange <= refTodo.lastChange)
-        ) {
-          return {}
-        }
+      if (!refTodo || modifiedCategory.lastChange <= refTodo.lastChange) {
+        return {}
       }
 
       return {

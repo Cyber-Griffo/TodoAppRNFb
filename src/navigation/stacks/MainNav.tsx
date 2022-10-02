@@ -46,13 +46,13 @@ export function MainStack() {
         const firebaseTodo: TodoFirebase = docChange.doc.data() as TodoFirebase
         const localTodo: TodoLocal = {
           ...firebaseTodo,
-          timestamp: firebaseTodo.timestamp?.toDate(),
-          lastChange: firebaseTodo.lastChange?.toDate(),
+          timestamp: firebaseTodo.timestamp?.toDate() || new Date(Date.now()),
+          lastChange: firebaseTodo.lastChange?.toDate() || new Date(Date.now()),
         }
         if (docChange.type === 'added') {
           addTodo(localTodo)
         } else if (docChange.type === 'modified') {
-          modifyTodo(localTodo, true)
+          modifyTodo(localTodo)
         } else if (docChange.type === 'removed') {
           removeTodo(localTodo)
         } else {
@@ -82,7 +82,7 @@ export function MainStack() {
         if (docChange.type === 'added') {
           addCategory(localCategory)
         } else if (docChange.type === 'modified') {
-          modifyCategory(localCategory, true)
+          modifyCategory(localCategory)
         } else if (docChange.type === 'removed') {
           removeCategory(localCategory)
         } else {

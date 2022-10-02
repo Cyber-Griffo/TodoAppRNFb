@@ -14,6 +14,7 @@ import { ThemeContext } from '../../utils/ThemeContext'
 import { addTodoFirebase } from '../../database/FirebaseHandler'
 import { useTodoStore } from '../../zustand/TodoStore'
 import { v4 } from 'uuid'
+import { STRING_ALL_TODOS } from '../../constants/Firebase'
 
 const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
@@ -44,7 +45,7 @@ const TodoInput: React.ForwardRefRenderFunction<
     // just create a new Todo if Title is provided
     if (title) {
       const todo = {
-        categoryId: activeCategory ? activeCategory.id : '',
+        categoryId: activeCategory ? activeCategory.id : STRING_ALL_TODOS,
         title,
         timestamp: new Date(Date.now()),
         lastChange: new Date(Date.now()),
