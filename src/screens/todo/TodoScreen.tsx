@@ -135,9 +135,8 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
             container: styles.footerButton,
             text: styles.footerText,
           }}
-          touchableProps={{
-            activeOpacity: 1,
-          }}
+          pressEffectColor={false}
+          pressEffectSize={false}
         />
       </View>
       {isAddTodoModalShowing && (

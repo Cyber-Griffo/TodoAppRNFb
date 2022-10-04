@@ -10,6 +10,7 @@ const theme: Theme = {
   accentColor: '#A0616A',
   accentGreyColor: '#B79B9F',
   errorColor: '#DE5950',
+  errorGreyColor: '#F59993',
 }
 
 export default theme

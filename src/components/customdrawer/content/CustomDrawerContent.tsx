@@ -125,7 +125,6 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
             </View>
           }
           showIconRight
-          touchableProps={{ activeOpacity: 0.95 }}
         />
         <Button
           value={'Sign Out'}

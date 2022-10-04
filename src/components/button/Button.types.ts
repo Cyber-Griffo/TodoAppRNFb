@@ -1,9 +1,10 @@
 import React from 'react'
 import {
+  ColorValue,
   GestureResponderEvent,
+  PressableProps,
   StyleProp,
   TextStyle,
-  TouchableHighlightProps,
   ViewStyle,
 } from 'react-native'
 import { Theme } from '../../utils/ThemeContext'
@@ -11,7 +12,7 @@ import { Theme } from '../../utils/ThemeContext'
 export type Props = {
   children?: React.ReactNode
   value: string
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'error'
   rounded?: boolean
   iconButton?: boolean
   onPress?: ((event: GestureResponderEvent) => void) | undefined
@@ -20,24 +21,29 @@ export type Props = {
     container?: StyleProp<ViewStyle>
     wrapper?: StyleProp<ViewStyle>
   }
-  touchableProps?: TouchableHighlightProps
+  pressableProps?: PressableProps
   borderRadius?: number
   iconLeft?: React.ReactNode
   iconRight?: React.ReactNode
   showIconLeft?: boolean
   showIconRight?: boolean
+  pressEffectSize?: boolean
+  pressEffectColor?: boolean
+  inverted?: boolean
 }
 
 export type ButtonStyleContext = {
   theme: Theme
-  variant: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'error'
   rounded: boolean
   borderRadius: number
   iconButton: boolean
+  backgroundColor: ColorValue
+  textColor: ColorValue
 }
 
 export type ButtonStyles = {
-  buttonTouchable: StyleProp<ViewStyle>
-  buttonView: StyleProp<ViewStyle>
+  buttonWrapper: StyleProp<ViewStyle>
+  buttonContainer: StyleProp<ViewStyle>
   text: StyleProp<TextStyle>
 }

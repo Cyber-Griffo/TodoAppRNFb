@@ -77,7 +77,7 @@ const TodoInput: React.ForwardRefRenderFunction<
           }}
           style={styles.textInput}
           placeholder={INPUT_PLACEHOLDER}
-          placeholderTextColor={theme.placeholderColor}
+          placeholderTextColor={theme.primaryGreyColor}
           onSubmitEditing={() => handleSubmitting()}
           blurOnSubmit={false}
           autoFocus
@@ -94,13 +94,14 @@ const TodoInput: React.ForwardRefRenderFunction<
           />
           <Button
             value={'Cancel'}
-            variant={'secondary'}
+            variant={'error'}
             rounded
             onPress={() => cancelFunction()}
             style={{
               wrapper: styles.touchableWrapper,
-              text: [styles.buttonText, { color: theme.errorColor }],
+              text: styles.buttonText,
             }}
+            inverted
           />
         </View>
       </View>

@@ -13,6 +13,7 @@ export type Theme = {
   accentColor: ColorValue
   accentGreyColor: ColorValue
   errorColor: ColorValue
+  errorGreyColor: ColorValue
 }
 
 type ThemeContextValue = {

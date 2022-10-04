@@ -17,6 +17,7 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
       <Text style={styles.title}>{displayMessage}</Text>
       <View style={styles.buttonWrapper}>
         <Button
+          variant={'error'}
           value={'Delete'}
           rounded
           onPress={() => acceptFunction()}

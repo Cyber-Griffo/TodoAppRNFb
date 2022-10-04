@@ -1,22 +1,20 @@
+import { FOOTER_HEIGHT } from '../../constants/StyleGuides'
 import { ButtonStyleContext, ButtonStyles } from './Button.types'
 
 export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
   return {
-    buttonTouchable: [
-      {},
-      ctx.rounded && {
-        borderRadius: ctx.borderRadius + 1,
-      },
+    buttonWrapper: [
+      { width: '100%', height: FOOTER_HEIGHT },
       ctx.variant === 'secondary' && {
-        borderColor: ctx.theme.backgroundColor,
+        borderColor: ctx.backgroundColor,
       },
     ],
-    buttonView: [
+    buttonContainer: [
       {
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: ctx.theme.primaryColor,
+        backgroundColor: ctx.backgroundColor,
         flexDirection: 'row',
       },
       ctx.iconButton && {
@@ -25,19 +23,13 @@ export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
       !ctx.iconButton && {
         paddingVertical: 12,
       },
-      ctx.variant === 'secondary' && {
-        backgroundColor: ctx.theme.backgroundColor,
-      },
       ctx.rounded && {
         borderRadius: ctx.borderRadius,
       },
     ],
     text: [
       {
-        color: ctx.theme.backgroundColor,
-      },
-      ctx.variant === 'secondary' && {
-        color: ctx.theme.primaryColor,
+        color: ctx.textColor,
       },
     ],
   }
