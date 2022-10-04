@@ -9,9 +9,8 @@ import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
 import TodoList from '../../components/todoList/TodoList'
 import {
-  addTodoFirebase,
+  modifyTodoFirebase,
   removeTodoFirebase,
-  toggleTodoFirebase,
 } from '../../database/FirebaseHandler'
 import {
   findTodoById,
@@ -24,16 +23,10 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
-import { v4 } from 'uuid'
 import { TodoLocal } from '../../types/GeneralTypes'
+import { useTodoStore } from '../../zustand/TodoStore'
 
-const TodoScreen: React.FC<Props> = ({
-  todos: rawTodos,
-  activeCategory: category,
-  categories,
-  todoFunctions,
-}: Props) => {
-  // console.log(rawTodos)
+const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
@@ -41,13 +34,20 @@ const TodoScreen: React.FC<Props> = ({
   // State for managing Todos
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
 
-  const todos = category
-    ? rawTodos.sort((a, b) => {
-        return todoSortingConditions(a, b)
-      })
-    : rawTodos.sort((a, b) => {
-        return todoSortingConditionsMainScreen(a, b, categories)
-      })
+  const categories = useTodoStore((state) => state.categories)
+  const todos = useTodoStore((state) =>
+    category
+      ? state.todos
+          .filter((todo) => todo.categoryId === category.id)
+          .sort((a, b) => {
+            return todoSortingConditions(a, b)
+          })
+      : state.todos.sort((a, b) => {
+          return todoSortingConditionsMainScreen(a, b, categories)
+        })
+  )
+  const modifyTodo = useTodoStore((state) => state.modifyTodo)
+  const removeTodo = useTodoStore((state) => state.removeTodo)
 
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
@@ -76,32 +76,20 @@ const TodoScreen: React.FC<Props> = ({
     setIsRemoveTodoModalShowing(false)
   }
 
+  function handleToggleTodo(todo?: TodoLocal): void {
+    if (todo) {
+      modifyTodo({ ...todo, done: !todo.done })
+      modifyTodoFirebase(todo)
+    } else console.error('Toggle Fehler')
+  }
   function handleRemoveTodo(todo?: TodoLocal): void {
     if (todo) {
-      todoFunctions.handleTodoRemovedChange(todo)
+      removeTodo(todo)
       removeTodoFirebase(todo)
       setIsRemoveTodoModalShowing(false)
     } else {
       console.error('Removing Error')
     }
-  }
-  function handleAddTodo(title: string, categoryId: string): void {
-    const todo = {
-      categoryId,
-      title,
-      timestamp: new Date(Date.now()),
-      lastChange: new Date(Date.now()),
-      done: false,
-      id: v4(),
-    }
-    todoFunctions.handleTodoAddedChange(todo)
-    addTodoFirebase(todo)
-  }
-  function handleToggleTodo(todo?: TodoLocal): void {
-    if (todo) {
-      todoFunctions.handleTodoModifiedChange({ ...todo, done: !todo.done })
-      toggleTodoFirebase(todo)
-    } else console.error('Toggle Fehler')
   }
   //#endregion
 
@@ -135,7 +123,6 @@ const TodoScreen: React.FC<Props> = ({
         </View>
         <TodoList
           todos={todos}
-          categories={categories}
           todoOnPress={(id) => handleToggleTodo(findTodoById(id, todos))}
           todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
           displayTodoCategory={category ? false : true}
@@ -163,9 +150,7 @@ const TodoScreen: React.FC<Props> = ({
         >
           <TodoInput
             ref={todoInputRef}
-            createFunction={handleAddTodo}
             cancelFunction={() => handleAddTodoModalDismiss()}
-            categories={categories}
             activeCategory={category}
           />
         </Modal>

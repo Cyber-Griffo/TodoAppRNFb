@@ -1,12 +1,10 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
-import { Category } from '../../types/GeneralTypes'
+import { CategoryLocal } from '../../types/GeneralTypes'
 import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
-  createFunction: (title: string, categoryId: string) => void
   cancelFunction: () => void
-  categories: Category[]
-  activeCategory?: Category
+  activeCategory?: CategoryLocal
 }
 
 export type RefFunctions = {

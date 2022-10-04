@@ -7,7 +7,7 @@ import { TodoLocal } from '../types/GeneralTypes'
 
 const uid = auth().currentUser?.uid
 
-export async function toggleTodoFirebase(todo: TodoLocal): Promise<void> {
+export async function modifyTodoFirebase(todo: TodoLocal): Promise<void> {
   if (!uid) return
 
   await firestoreTodoPath
@@ -53,22 +53,21 @@ export async function removeTodoFirebase(todo: TodoLocal): Promise<void> {
   console.log('Removed Todo successfully')
 }
 
-export async function addCategory(title: string) {
+export async function addCategoryFirebase(title: string) {
   if (!uid) return
 
-  await firestoreCategoryPath.add({
+  const id = v4()
+
+  await firestoreCategoryPath.doc(id).set({
+    id,
     title,
+    lastChange: firestore.FieldValue.serverTimestamp(),
   })
 
   console.log('Added Category successfully')
 }
 
-/**
- * @param  {string} category
- * removes Category and all asigned Todos
- * So be sure you want to delete all before calling this funciton!
- */
-export async function removeCategory(category: string) {
+export async function removeCategoryFirebase(category: string) {
   if (!uid) return
 
   const categoryRef = await firestoreCategoryPath

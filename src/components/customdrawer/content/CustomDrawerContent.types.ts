@@ -1,6 +1,5 @@
 import { DrawerContentComponentProps } from '@react-navigation/drawer'
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
-import { CategoryCount } from '../../../types/GeneralTypes'
 import { Theme } from '../../../utils/ThemeContext'
 
 export type CustomDrawerContentStylesContext = {
@@ -9,7 +8,6 @@ export type CustomDrawerContentStylesContext = {
 
 export type Props = {
   drawerProps: DrawerContentComponentProps
-  categoryCounts: CategoryCount[]
 }
 
 export type CustomDrawerContentStyles = {

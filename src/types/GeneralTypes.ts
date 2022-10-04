@@ -18,9 +18,16 @@ export type TodoLocal = {
   lastChange: Date
 }
 
-export type Category = {
+export type CategoryLocal = {
   title: string
   id: string
+  lastChange: Date
+}
+
+export type CategoryFirebase = {
+  title: string
+  id: string
+  lastChange: FirebaseFirestoreTypes.Timestamp
 }
 
 export type CategoryCount = {

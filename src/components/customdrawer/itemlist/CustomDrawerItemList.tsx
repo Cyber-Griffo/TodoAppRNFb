@@ -9,14 +9,13 @@ import {
   ParamListBase,
 } from '@react-navigation/native'
 import * as React from 'react'
-import { CategoryCount } from '../../../types/GeneralTypes'
+import { useTodoStore } from '../../../zustand/TodoStore'
 import CustomDrawerItemListElemtent from '../itemlistelement/CustomDrawerItemListElemtent'
 
 type Props = {
   state: DrawerNavigationState<ParamListBase>
   navigation: DrawerNavigationHelpers
   descriptors: DrawerDescriptorMap
-  categoryCounts: CategoryCount[]
 }
 
 /**
@@ -26,7 +25,6 @@ export default function CustomDrawerItemList({
   state,
   navigation,
   descriptors,
-  categoryCounts,
 }: Props) {
   const focusedRoute = state.routes[state.index]
   const focusedDescriptor = descriptors[focusedRoute.key]
@@ -38,6 +36,10 @@ export default function CustomDrawerItemList({
     drawerActiveBackgroundColor,
     drawerInactiveBackgroundColor,
   } = focusedOptions
+
+  const categoryCounts = useTodoStore(
+    (todoStoreState) => todoStoreState.categoryCounts
+  )
 
   return state.routes.map((route, i) => {
     const focused = i === state.index

@@ -1,6 +1,8 @@
 import firestore from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth'
 
+export const STRING_ALL_TODOS = ' '
+
 export const firestoreCategoryPath = firestore()
   .collection('users')
   .doc(auth().currentUser?.uid)
