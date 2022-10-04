@@ -27,9 +27,9 @@ function deleteTodo(todos: TodoLocal[], removedTodo: TodoLocal): TodoLocal[] {
 function updateCategoryCounts(
   categoryCounts: CategoryCount[],
   categoryId: string,
-  action: 'add' | 'remove'
+  action: 'add' | 'remove',
+  initialCount: number = 0
 ): CategoryCount[] {
-  console.log(categoryId)
   let categoryCountExists = categoryCounts.find(
     (cc) => cc.categoryId === categoryId
   )
@@ -41,14 +41,16 @@ function updateCategoryCounts(
           count:
             action === 'add'
               ? categoryCount.count + 1
-              : categoryCount.count - 1,
+              : action === 'remove'
+              ? categoryCount.count - 1
+              : categoryCount.count,
         }
       }
       return categoryCount
     })
   } else {
     if (action === 'add') {
-      return [...categoryCounts, { categoryId, count: 1 }]
+      return [...categoryCounts, { categoryId, count: initialCount }]
     }
   }
   return categoryCounts
@@ -62,12 +64,7 @@ export const useTodoStore = create<TodoState>()((set) => ({
     set((state) => {
       const refTodo = state.todos.find((todo) => todo.id === addedTodo.id)
       if (refTodo) {
-        if (
-          !addedTodo.lastChange ||
-          (refTodo.lastChange
-            ? addedTodo.lastChange <= refTodo.lastChange
-            : true)
-        ) {
+        if (refTodo.lastChange && addedTodo.lastChange <= refTodo.lastChange) {
           return {}
         }
         state.todos = state.todos.map((todo) => {
@@ -85,7 +82,8 @@ export const useTodoStore = create<TodoState>()((set) => ({
         : updateCategoryCounts(
             state.categoryCounts,
             addedTodo.categoryId,
-            'add'
+            'add',
+            1
           )
 
       return {
@@ -116,23 +114,17 @@ export const useTodoStore = create<TodoState>()((set) => ({
     set((state) => {
       if (!state.todos.find((todo) => todo.id === removedTodo.id)) return {}
 
-      const helperTodos = state.todos.filter(
-        (todo) => todo.id !== removedTodo.id
-      )
-
-      const helperCategoryCount = state.categoryCounts.map((categoryCount) => {
-        if (categoryCount.categoryId === removedTodo.categoryId) {
-          return {
-            ...categoryCount,
-            count: categoryCount.count - 1,
-          }
-        }
-        return categoryCount
-      })
-
       return {
         todos: deleteTodo(state.todos, removedTodo),
-        categoryCounts: helperCategoryCount,
+        categoryCounts: state.categoryCounts.map((categoryCount) => {
+          if (categoryCount.categoryId === removedTodo.categoryId) {
+            return {
+              ...categoryCount,
+              count: categoryCount.count - 1,
+            }
+          }
+          return categoryCount
+        }),
       }
     })
   },
@@ -143,10 +135,8 @@ export const useTodoStore = create<TodoState>()((set) => ({
       )
       if (refCategory) {
         if (
-          !addedCategory.lastChange ||
-          (refCategory.lastChange
-            ? addedCategory.lastChange <= refCategory.lastChange
-            : true)
+          refCategory.lastChange &&
+          addedCategory.lastChange <= refCategory.lastChange
         ) {
           return {}
         }
@@ -165,10 +155,11 @@ export const useTodoStore = create<TodoState>()((set) => ({
           (categryCount) => categryCount.categoryId === addedCategory.id
         )
       ) {
-        state.categoryCounts = [
-          ...state.categoryCounts,
-          { categoryId: addedCategory.id, count: 0 },
-        ]
+        state.categoryCounts = updateCategoryCounts(
+          state.categoryCounts,
+          addedCategory.id,
+          'add'
+        )
       }
 
       return {
@@ -202,36 +193,47 @@ export const useTodoStore = create<TodoState>()((set) => ({
     categoryIdToAddRemainingTodos: string = STRING_ALL_TODOS
   ) => {
     set((state) => {
+      const refCategory = state.categories.find(
+        (category) => category.id === removedCategory.id
+      )
+      if (!refCategory) return {}
+
+      state.categories = state.categories.filter(
+        (category) => category.id !== removedCategory.id
+      )
+
       const categoryCountAdding =
         state.categoryCounts.find(
           (categoryCount) => categoryCount.categoryId === removedCategory.id
         )?.count || 0
 
-      const categoryCounts = state.categoryCounts
-        .map((categoryCount) => {
-          if (categoryCount.categoryId === categoryIdToAddRemainingTodos) {
-            return {
-              ...categoryCount,
-              count: categoryCount.count + categoryCountAdding,
+      if (categoryCountAdding !== 0) {
+        state.categoryCounts = state.categoryCounts
+          .map((categoryCount) => {
+            if (categoryCount.categoryId === categoryIdToAddRemainingTodos) {
+              return {
+                ...categoryCount,
+                count: categoryCount.count + categoryCountAdding,
+              }
             }
-          }
-          return categoryCount
-        })
-        .filter(
-          (categoryCount) => categoryCount.categoryId !== removedCategory.id
-        )
+            return categoryCount
+          })
+          .filter(
+            (categoryCount) => categoryCount.categoryId !== removedCategory.id
+          )
+      }
+
+      state.todos = state.todos.map((todo) => {
+        if (todo.categoryId === removedCategory.id) {
+          return { ...todo, categoryId: categoryIdToAddRemainingTodos }
+        }
+        return todo
+      })
 
       return {
-        categories: state.categories.filter(
-          (category) => category.id !== removedCategory.id
-        ),
-        todos: state.todos.map((todo) => {
-          if (todo.categoryId === removedCategory.id) {
-            return { ...todo, categoryId: categoryIdToAddRemainingTodos }
-          }
-          return todo
-        }),
-        categoryCounts,
+        todos: state.todos,
+        categories: state.categories,
+        categoryCounts: state.categoryCounts,
       }
     })
   },

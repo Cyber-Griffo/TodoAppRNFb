@@ -15,8 +15,6 @@ import {
   TodoFirebase,
   TodoLocal,
 } from '../../types/GeneralTypes'
-import { TESTING_ONLY_REMOVE_ALL_TODOS } from '../../database/FirebaseHandler'
-import Button from '../../components/button/Button'
 import { useTodoStore } from '../../zustand/TodoStore'
 
 const Drawer = createDrawerNavigator()
@@ -105,12 +103,6 @@ export function MainStack() {
     return (
       <View style={styles.loadginScreenContainer}>
         <Text>Loading...</Text>
-        <Button
-          value={'as'}
-          onPress={() => {
-            TESTING_ONLY_REMOVE_ALL_TODOS()
-          }}
-        />
       </View>
     )
   }
