@@ -29,6 +29,7 @@ export const getStyles = (
     text: [
       {
         color: ctx.theme.darkGreyColor,
+        fontSize: 14,
       },
       ctx.textColor !== undefined && {
         color: ctx.textColor,

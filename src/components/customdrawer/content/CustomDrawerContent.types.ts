@@ -17,7 +17,6 @@ export type CustomDrawerContentStyles = {
   headerContainer: StyleProp<ViewStyle>
   headerHeading: StyleProp<TextStyle>
   headerTextInput: StyleProp<TextStyle>
-  headerIconButtonContainer: StyleProp<ViewStyle>
   headerIconButtonWrapper: StyleProp<ViewStyle>
   headerIcon: StyleProp<TextStyle>
   drawerContentScrollView: StyleProp<ViewStyle>

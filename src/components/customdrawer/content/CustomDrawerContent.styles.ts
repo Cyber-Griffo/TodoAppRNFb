@@ -24,7 +24,7 @@ export const getStyles = (
       },
     ],
     headerContainer: {
-      height: HEADER_HEIGHT + 6,
+      height: HEADER_HEIGHT * 1.25,
       width: '100%',
       justifyContent: 'space-around',
       alignItems: 'center',
@@ -40,23 +40,21 @@ export const getStyles = (
     headerTextInput: [
       {
         flex: 1,
-        fontSize: 14,
         backgroundColor: ctx.theme.backgroundColor,
-        paddingVertical: 0,
+        height: 42,
         color: ctx.theme.darkColor,
-        height: 34,
         borderRadius: 8,
         marginLeft: 10,
         paddingHorizontal: 12,
         borderWidth: 1,
         borderColor: ctx.theme.primaryLightColor,
+        fontSize: 16,
       },
     ],
-    headerIconButtonContainer: {
-      width: 34,
-    },
     headerIconButtonWrapper: {
       marginHorizontal: 12,
+      width: 42,
+      aspectRatio: 1,
     },
     headerIcon: {
       textAlign: 'center',
@@ -87,7 +85,7 @@ export const getStyles = (
       paddingVertical: 10,
     },
     footerButtonText: {
-      fontSize: 14,
+      fontSize: 16,
       color: ctx.theme.darkColor,
     },
   }

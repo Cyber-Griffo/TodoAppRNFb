@@ -1,3 +1,4 @@
+import { STRING_ALL_TODOS } from '../../constants/Firebase'
 import { TodoElementStyleContext, TodoElementStyles } from './TodoElement.types'
 
 export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
@@ -32,11 +33,11 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     title: [
       {
         color: ctx.theme.darkColor,
-        fontSize: 14,
+        fontSize: 16,
         marginRight: 12,
       },
       ctx.todo.done && { color: ctx.theme.darkGreyColor },
-      ctx.todo.category !== '' && {
+      ctx.todo.categoryId !== STRING_ALL_TODOS && {
         marginTop: 1,
       },
     ],
@@ -47,7 +48,7 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         marginRight: 12,
       },
       ctx.todo.done && { color: ctx.theme.primaryGreyColor },
-      ctx.todo.category !== '' && {
+      ctx.todo.categoryId !== STRING_ALL_TODOS && {
         marginBottom: 1,
       },
     ],

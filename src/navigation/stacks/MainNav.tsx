@@ -116,7 +116,7 @@ export function MainStack() {
         drawerInactiveBackgroundColor: theme.backgroundColor as string,
         drawerInactiveTintColor: theme.darkColor as string,
         drawerItemStyle: { borderRadius: 12 },
-        drawerLabelStyle: { fontSize: 14 },
+        drawerLabelStyle: { fontSize: 16 },
       }}
       drawerContent={(props) => {
         return <CustomDrawerContent drawerProps={props} />

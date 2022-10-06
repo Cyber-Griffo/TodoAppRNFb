@@ -30,7 +30,7 @@ export const getStyles = (ctx: TodoInputStylesContext): TodoInputStyles => {
       fontWeight: '600',
     },
     textInput: {
-      borderColor: ctx.theme.placeholderColor,
+      borderColor: ctx.theme.primaryGreyColor,
       borderWidth: 1,
       borderRadius: 10,
       padding: 10,

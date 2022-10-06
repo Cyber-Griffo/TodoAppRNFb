@@ -1,6 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { DrawerContentScrollView } from '@react-navigation/drawer'
-import { ColorValue, Linking, Text, TextInput, View } from 'react-native'
+import {
+  ColorValue,
+  Linking,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from 'react-native'
 import Button from '../../button/Button'
 import auth from '@react-native-firebase/auth'
 import { HEADER_HEIGHT } from '../../../constants/StyleGuides'
@@ -50,7 +57,7 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
       <View
         style={[
           styles.headerWrapper,
-          { height: HEADER_HEIGHT * 2 + insets.top },
+          { height: HEADER_HEIGHT * 2.25 + insets.top },
         ]}
       >
         <Text style={styles.headerHeading}>Your Categories</Text>
@@ -64,26 +71,22 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
             onChangeText={(text) => setCategoryTitle(text)}
             onSubmitEditing={() => handleSubmitting()}
           />
-          <Button
-            value={''}
-            variant="secondary"
-            style={{
-              container: styles.headerIconButtonContainer,
-              wrapper: styles.headerIconButtonWrapper,
-            }}
-            rounded
+          <Pressable
+            style={{ marginHorizontal: 12 }}
             onPress={() => handleSubmitting()}
-            iconButton
-            iconLeft={
+          >
+            {({ pressed }) => (
               <MaterialIcon
                 name="add"
-                size={34}
+                size={42}
                 color={theme.accentColor}
-                style={styles.headerIcon}
+                style={[
+                  styles.headerIcon,
+                  pressed && { transform: [{ scale: 0.95 }] },
+                ]}
               />
-            }
-            showIconLeft
-          />
+            )}
+          </Pressable>
         </View>
       </View>
       <SectionHeader

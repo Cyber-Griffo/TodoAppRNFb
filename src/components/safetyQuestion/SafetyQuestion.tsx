@@ -29,13 +29,14 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
         />
         <Button
           value={'Cancel'}
-          variant={'secondary'}
+          variant={'primary'}
           rounded
           onPress={() => cancelFunction()}
           style={{
             wrapper: styles.touchableWrapper,
             text: styles.buttonText,
           }}
+          inverted
         />
       </View>
     </View>
