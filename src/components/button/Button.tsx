@@ -85,7 +85,7 @@ const Button = (props: ButtonProps) => {
             style={[
               styles.buttonContainer,
               props.style?.container,
-              pressed && pressEffectSize && { transform: [{ scale: 0.95 }] },
+              pressed && pressEffectSize && { transform: [{ scale: 0.975 }] },
               pressed &&
                 pressEffectColor &&
                 !inverted && {
