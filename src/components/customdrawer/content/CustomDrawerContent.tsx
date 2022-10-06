@@ -82,7 +82,9 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
                 color={theme.accentColor}
                 style={[
                   styles.headerIcon,
-                  pressed && { transform: [{ scale: 0.95 }] },
+                  pressed && {
+                    transform: [{ scale: 0.95 }],
+                  },
                 ]}
               />
             )}

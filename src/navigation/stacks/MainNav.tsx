@@ -24,7 +24,11 @@ export function MainStack() {
   const addTodo = useTodoStore((state) => state.addTodo)
   const modifyTodo = useTodoStore((state) => state.modifyTodo)
   const removeTodo = useTodoStore((state) => state.removeTodo)
-  const categories = useTodoStore((state) => state.categories)
+  const categories = useTodoStore((state) =>
+    state.categories.sort((a, b) =>
+      a.title.toLocaleLowerCase().localeCompare(b.title.toLocaleLowerCase())
+    )
+  )
   const addCategory = useTodoStore((state) => state.addCategory)
   const modifyCategory = useTodoStore((state) => state.modifyCategory)
   const removeCategory = useTodoStore((state) => state.removeCategory)
