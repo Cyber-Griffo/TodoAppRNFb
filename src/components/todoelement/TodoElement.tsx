@@ -21,7 +21,10 @@ const TodoElement = (props: TodoElementProps) => {
           <View
             style={[
               styles.container,
-              pressed && { backgroundColor: theme.primaryLightColor },
+              pressed && {
+                backgroundColor: theme.primaryLightColor,
+                transform: [{ scale: 1 }],
+              },
             ]}
           >
             <View style={styles.mark}>
@@ -29,7 +32,7 @@ const TodoElement = (props: TodoElementProps) => {
                 <FontAwesome
                   name="check"
                   color={theme.backgroundColor}
-                  size={9}
+                  size={12}
                 />
               )}
             </View>

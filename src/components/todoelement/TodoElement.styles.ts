@@ -14,10 +14,9 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
       {
         backgroundColor: ctx.theme.backgroundColor,
         padding: 12,
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        flex: 1,
         borderRadius: 12,
       },
       ctx.todo.done && {
@@ -54,11 +53,11 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     ],
     mark: [
       {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
+        width: 16,
+        height: 16,
+        borderRadius: 8,
         backgroundColor: ctx.theme.backgroundColor,
-        borderWidth: 1.5,
+        borderWidth: 2,
         borderColor: ctx.theme.accentColor,
         marginRight: 12,
         justifyContent: 'center',

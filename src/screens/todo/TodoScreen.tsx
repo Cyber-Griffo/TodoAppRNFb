@@ -85,7 +85,9 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
       }
       modifyTodo(newTodo)
       modifyTodoFirebase(newTodo)
-    } else console.error('Toggle Fehler')
+    } else {
+      console.error('Fehler beim Toggeln eines Todos')
+    }
   }
   function handleRemoveTodo(todo?: TodoLocal): void {
     if (todo) {
