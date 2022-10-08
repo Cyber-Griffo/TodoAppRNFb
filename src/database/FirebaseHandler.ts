@@ -13,8 +13,7 @@ export async function modifyTodoFirebase(todo: TodoLocal): Promise<void> {
   await firestoreTodoPath
     .doc(todo.id)
     .update({
-      done: !todo.done,
-      lastChange: firestore.FieldValue.serverTimestamp(),
+      ...todo,
     })
     .catch((err) => {
       console.error(err)

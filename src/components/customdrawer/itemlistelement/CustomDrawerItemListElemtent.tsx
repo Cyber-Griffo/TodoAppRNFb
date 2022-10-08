@@ -44,6 +44,7 @@ const CustomDrawerItemListElemtent = (
               },
               pressed && {
                 backgroundColor: '#DBE7F0',
+                transform: [{ scale: 0.99 }],
               },
             ]}
           >

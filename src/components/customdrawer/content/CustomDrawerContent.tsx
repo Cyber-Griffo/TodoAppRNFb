@@ -63,12 +63,12 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
         <Text style={styles.headerHeading}>Your Categories</Text>
         <View style={styles.headerContainer}>
           <TextInput
+            value={categoryTitle}
+            onChangeText={(text) => setCategoryTitle(text)}
             style={styles.headerTextInput}
             placeholder={placeholderObj.text}
             placeholderTextColor={placeholderObj.color}
-            value={categoryTitle}
             onFocus={() => setPlaceholderObj(defautlPlaceholder)}
-            onChangeText={(text) => setCategoryTitle(text)}
             onSubmitEditing={() => handleSubmitting()}
           />
           <Pressable
