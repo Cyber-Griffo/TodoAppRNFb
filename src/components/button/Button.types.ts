@@ -31,6 +31,7 @@ export type Props = {
   pressEffectColor?: boolean
   inverted?: boolean
   pressEffectViewStyles?: StyleProp<ViewStyle>
+  pressEffectTextStyles?: StyleProp<TextStyle>
 }
 
 export type ButtonStyleContext = {

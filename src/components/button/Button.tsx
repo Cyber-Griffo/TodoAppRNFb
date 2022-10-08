@@ -76,7 +76,7 @@ const Button = (props: ButtonProps) => {
   return (
     <View style={[styles.buttonWrapper, props.style?.wrapper]}>
       <Pressable
-        style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}
+        style={{ justifyContent: 'center', alignContent: 'center' }}
         onPress={props.onPress}
         {...props.pressableProps}
       >
@@ -105,6 +105,7 @@ const Button = (props: ButtonProps) => {
                 pressed &&
                   pressEffectColor &&
                   inverted && { color: pressedColor },
+                pressed && pressEffectColor && props.pressEffectTextStyles,
               ]}
             >
               {props.value}

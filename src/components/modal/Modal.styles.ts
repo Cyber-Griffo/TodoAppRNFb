@@ -1,6 +1,6 @@
-import { ModalStyleContext, ModalStyles } from './Modal.types'
+import { ModalStyles } from './Modal.types'
 
-export const getStyles = (ctx: ModalStyleContext): ModalStyles => {
+export const getStyles = (): ModalStyles => {
   return {
     container: [
       {
@@ -20,7 +20,6 @@ export const getStyles = (ctx: ModalStyleContext): ModalStyles => {
         position: 'absolute',
         top: 0,
       },
-      ctx.containerStyles !== undefined && ctx.containerStyles,
     ],
   }
 }

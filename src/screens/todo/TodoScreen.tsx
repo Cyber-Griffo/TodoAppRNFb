@@ -25,11 +25,13 @@ import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
 import { TodoLocal } from '../../types/GeneralTypes'
 import { useTodoStore } from '../../zustand/TodoStore'
+import TodoEdit from '../../components/todoedit/TodoEdit'
 
 const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
+  const insets = useSafeAreaInsets()
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
   const [selectedTodoId, setSelectedTodoId] = useState<string>('')
@@ -54,6 +56,8 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
     useState<boolean>(false)
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
     useState<boolean>(false)
+  const [isTodoEditModalShowing, setIsTodoEditModalShowing] =
+    useState<boolean>(false)
 
   // Refs
   const todoInputRef = useRef<TodoInputRefFunctions>(null)
@@ -74,6 +78,13 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   }
   function handleRemoveModalDismiss(): void {
     setIsRemoveTodoModalShowing(false)
+  }
+  function handleTodoEditModalActivation(id: string): void {
+    setSelectedTodoId(id)
+    setIsTodoEditModalShowing(true)
+  }
+  function handleTodoEditModalDismiss(): void {
+    setIsTodoEditModalShowing(false)
   }
 
   function handleToggleTodo(todo?: TodoLocal): void {
@@ -131,7 +142,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
         <TodoList
           todos={todos}
           todoOnPress={(id) => handleToggleTodo(findTodoById(id, todos))}
-          todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
+          todoOnLongPress={(id) => handleTodoEditModalActivation(id)}
           displayTodoCategory={category ? false : true}
         />
         <Button
@@ -170,6 +181,17 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
             }
             cancelFunction={() => handleRemoveModalDismiss()}
           />
+        </Modal>
+      )}
+      {isTodoEditModalShowing && (
+        <Modal
+          onBackdropPress={() => handleTodoEditModalDismiss()}
+          containerStyles={{
+            justifyContent: 'flex-end',
+            paddingBottom: 12 + insets.bottom,
+          }}
+        >
+          <TodoEdit todo={findTodoById(selectedTodoId, todos)} />
         </Modal>
       )}
     </>
