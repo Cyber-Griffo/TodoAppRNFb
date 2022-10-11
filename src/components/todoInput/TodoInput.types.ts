@@ -4,7 +4,10 @@ import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
   cancelFunction: () => void
+  submitFunction: (value: string, activeCategory?: CategoryLocal) => void
+  submitButtonText?: string
   activeCategory?: CategoryLocal
+  initialValue?: string
 }
 
 export type RefFunctions = {

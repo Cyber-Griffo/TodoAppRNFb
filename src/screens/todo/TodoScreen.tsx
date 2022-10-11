@@ -9,6 +9,7 @@ import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
 import TodoList from '../../components/todoList/TodoList'
 import {
+  addTodoFirebase,
   modifyTodoFirebase,
   removeTodoFirebase,
 } from '../../database/FirebaseHandler'
@@ -26,6 +27,9 @@ import { ThemeContext } from '../../utils/ThemeContext'
 import { TodoLocal } from '../../types/GeneralTypes'
 import { useTodoStore } from '../../zustand/TodoStore'
 import TodoEdit from '../../components/todoedit/TodoEdit'
+import { STRING_ALL_TODOS } from '../../constants/Firebase'
+import { v4 } from 'uuid'
+import { Props as TodoInputProps } from '../../components/todoInput/TodoInput.types'
 
 const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
@@ -50,10 +54,12 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   )
   const modifyTodo = useTodoStore((state) => state.modifyTodo)
   const removeTodo = useTodoStore((state) => state.removeTodo)
+  const addTodo = useTodoStore((state) => state.addTodo)
 
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
     useState<boolean>(false)
+  const addingTodoModalProps = useRef<TodoInputProps>()
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
     useState<boolean>(false)
   const [isTodoEditModalShowing, setIsTodoEditModalShowing] =
@@ -74,6 +80,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   }
   function handleRemoveTodoModalActivation(id: string): void {
     setSelectedTodoId(id)
+    setIsTodoEditModalShowing(false)
     setIsRemoveTodoModalShowing(true)
   }
   function handleRemoveModalDismiss(): void {
@@ -168,7 +175,22 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
           <TodoInput
             ref={todoInputRef}
             cancelFunction={() => handleAddTodoModalDismiss()}
+            submitFunction={(title, activeCategory) => {
+              const todo = {
+                categoryId: activeCategory
+                  ? activeCategory.id
+                  : STRING_ALL_TODOS,
+                title,
+                timestamp: new Date(Date.now()),
+                lastChange: new Date(Date.now()),
+                done: false,
+                id: v4(),
+              }
+              addTodo(todo)
+              addTodoFirebase(todo)
+            }}
             activeCategory={category}
+            {...addingTodoModalProps.current}
           />
         </Modal>
       )}
@@ -191,7 +213,15 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
             paddingBottom: 12 + insets.bottom,
           }}
         >
-          <TodoEdit todo={findTodoById(selectedTodoId, todos)} />
+          <TodoEdit
+            todo={findTodoById(selectedTodoId, todos)}
+            handleEdit={(title) => {
+              setIsTodoEditModalShowing(false)
+              setIsAddTodoModalShowing(true)
+              addingTodoModalProps.current = { initialValue: title }
+            }}
+            handleDelete={(id) => handleRemoveTodoModalActivation(id)}
+          />
         </Modal>
       )}
     </>

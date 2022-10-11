@@ -4,6 +4,8 @@ import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
   todo?: TodoLocal
+  handleEdit: (title: string) => void
+  handleDelete: (id: string) => void
 }
 
 export type TodoEditStylesContext = {
