@@ -45,7 +45,7 @@ export type ButtonStyleContext = {
 }
 
 export type ButtonStyles = {
-  buttonWrapper: StyleProp<ViewStyle>
   buttonContainer: StyleProp<ViewStyle>
   text: StyleProp<TextStyle>
+  pressable: StyleProp<ViewStyle>
 }

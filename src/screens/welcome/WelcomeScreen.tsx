@@ -47,7 +47,6 @@ const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
             variant={'secondary'}
             rounded
             style={{
-              wrapper: styles.buttonWrapper,
               container: styles.buttonContainer,
             }}
             onPress={() => navigation.navigate('Login')}
@@ -60,6 +59,27 @@ const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
             }
             showIconRight
           />
+          {/* <Pressable
+            style={{
+              width: '40%',
+              height: 48,
+              overflow: 'hidden',
+              borderRadius: 10,
+            }}
+          >
+            {({ pressed }) => (
+              <View
+                style={{
+                  width: '100%',
+                  height: '100%',
+
+                  backgroundColor: 'white',
+                }}
+              >
+                <Text>Hallo</Text>
+              </View>
+            )}
+          </Pressable> */}
         </View>
       </View>
     </View>

@@ -23,8 +23,8 @@ export const getStyles = (ctx: TodoInputStylesContext): TodoInputStyles => {
       paddingHorizontal: 10,
     },
     touchableWrapper: {
-      marginHorizontal: 10,
       flex: 1,
+      paddingHorizontal: 10,
     },
     buttonText: {
       fontWeight: '600',

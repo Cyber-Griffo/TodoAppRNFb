@@ -2,7 +2,6 @@ import React, { useContext, useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
-import SafetyQuestion from '../../components/safetyquestion/SafetyQuestion'
 import TodoInput from '../../components/todoInput/TodoInput'
 import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInput/TodoInput.types'
 import { getStyles } from './TodoScreen.styles'
@@ -30,6 +29,7 @@ import TodoEdit from '../../components/todoedit/TodoEdit'
 import { STRING_ALL_TODOS } from '../../constants/Firebase'
 import { v4 } from 'uuid'
 import { Props as TodoInputProps } from '../../components/todoInput/TodoInput.types'
+import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
 
 const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
@@ -218,7 +218,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
             handleEdit={(title) => {
               setIsTodoEditModalShowing(false)
               setIsAddTodoModalShowing(true)
-              addingTodoModalProps.current = { initialValue: title }
+              // addingTodoModalProps.current = { initialValue: title }
             }}
             handleDelete={(id) => handleRemoveTodoModalActivation(id)}
           />
