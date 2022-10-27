@@ -29,7 +29,7 @@ import TodoEdit from '../../components/todoedit/TodoEdit'
 import { STRING_ALL_TODOS } from '../../constants/Firebase'
 import { v4 } from 'uuid'
 import { Props as TodoInputProps } from '../../components/todoInput/TodoInput.types'
-import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
+import SafetyQuestion from '../../components/safetyquestion/SafetyQuestion'
 
 const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()

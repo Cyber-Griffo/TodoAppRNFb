@@ -47,6 +47,7 @@ const WelcomeScreen = ({ navigation }: WelcomScreenProps) => {
             variant={'secondary'}
             rounded
             style={{
+              wrapper: { width: '60%' },
               container: styles.buttonContainer,
             }}
             onPress={() => navigation.navigate('Login')}
