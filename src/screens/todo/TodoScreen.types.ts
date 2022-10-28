@@ -20,4 +20,6 @@ export type TodoScreenStyles = {
   footerText: StyleProp<TextStyle>
   loadingScreenContainer: StyleProp<ViewStyle>
   loadingScreenText: StyleProp<TextStyle>
+  todoEditModalContainer: StyleProp<ViewStyle>
+  safeAreaBottomContainer: StyleProp<ViewStyle>
 }

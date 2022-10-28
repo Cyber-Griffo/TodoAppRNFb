@@ -1,8 +1,9 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { TodoLocal } from '../../types/GeneralTypes'
 import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
-  title: string
+  todo?: TodoLocal
   acceptFunction: () => void
   cancelFunction: () => void
 }

@@ -2,19 +2,43 @@ import React, { useContext } from 'react'
 import { Text, View } from 'react-native'
 import { ThemeContext } from '../../utils/ThemeContext'
 import Button from '../button/Button'
+import TodoElement from '../todoelement/TodoElement'
 import { getStyles } from './SafetyQuestion.styles'
 import { Props as SafetyQuestionProps } from './SafetyQuestion.types'
 
 const SafetyQuestion = (props: SafetyQuestionProps) => {
   const { theme } = useContext(ThemeContext)
-  const { acceptFunction, cancelFunction, title } = props
+  const { acceptFunction, cancelFunction, todo } = props
   const styles = getStyles({ theme })
-
-  const displayMessage = `Are you sure you want to delete \n '${title}'?`
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{displayMessage}</Text>
+      <Text style={styles.title}>
+        Are you sure you want to delete the Todo:
+      </Text>
+      {todo ? (
+        <TodoElement
+          todo={todo}
+          pressable={false}
+          style={{
+            wrapper: {
+              marginVertical: 12,
+            },
+          }}
+        />
+      ) : (
+        <Text
+          style={{
+            marginVertical: 12,
+            textAlign: 'center',
+            fontWeight: '500',
+            fontSize: 20,
+            color: theme.primaryColor,
+          }}
+        >
+          No Todo Selected!
+        </Text>
+      )}
       <View style={styles.buttonWrapper}>
         <Button
           variant={'error'}

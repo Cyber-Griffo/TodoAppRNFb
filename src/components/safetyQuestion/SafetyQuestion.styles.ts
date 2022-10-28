@@ -11,10 +11,10 @@ export const getStyles = (
       width: '80%',
       backgroundColor: ctx.theme.backgroundColor,
       borderRadius: 12,
+      padding: 10,
     },
     title: {
       marginTop: 20,
-      marginBottom: 30,
       textAlign: 'center',
       fontSize: 16,
       fontWeight: '400',
