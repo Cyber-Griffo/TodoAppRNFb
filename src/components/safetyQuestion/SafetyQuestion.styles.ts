@@ -35,5 +35,12 @@ export const getStyles = (
     buttonText: {
       fontWeight: '600',
     },
+    noTodoMessage: {
+      marginVertical: 12,
+      textAlign: 'center',
+      fontWeight: '500',
+      fontSize: 20,
+      color: ctx.theme.primaryColor,
+    },
   }
 }

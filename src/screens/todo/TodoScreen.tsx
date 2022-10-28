@@ -24,7 +24,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
-import { TodoLocal } from '../../types/GeneralTypes'
+import { CategoryLocal, TodoLocal } from '../../types/GeneralTypes'
 import { useTodoStore } from '../../zustand/TodoStore'
 import TodoEdit from '../../components/todoedit/TodoEdit'
 import { STRING_ALL_TODOS } from '../../constants/Firebase'
@@ -62,7 +62,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
     useState<boolean>(false)
   const todoAddingInitialProps = useRef<{
     initialValue: string
-    submitFunction: (value: string, activeCategory: string) => void
+    submitFunction: (value: string, activeCategory?: CategoryLocal) => void
     submitButtonText: string
     titleText: string
   }>()

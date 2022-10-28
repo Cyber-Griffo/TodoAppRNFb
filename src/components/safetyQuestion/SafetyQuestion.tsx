@@ -27,17 +27,7 @@ const SafetyQuestion = (props: SafetyQuestionProps) => {
           }}
         />
       ) : (
-        <Text
-          style={{
-            marginVertical: 12,
-            textAlign: 'center',
-            fontWeight: '500',
-            fontSize: 20,
-            color: theme.primaryColor,
-          }}
-        >
-          No Todo Selected!
-        </Text>
+        <Text style={styles.noTodoMessage}>No Todo Selected!</Text>
       )}
       <View style={styles.buttonWrapper}>
         <Button

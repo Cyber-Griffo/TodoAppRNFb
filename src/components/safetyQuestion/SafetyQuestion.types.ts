@@ -18,4 +18,5 @@ export type SafetyQuestionStyles = {
   buttonWrapper: StyleProp<ViewStyle>
   touchableWrapper: StyleProp<ViewStyle>
   buttonText: StyleProp<TextStyle>
+  noTodoMessage: StyleProp<TextStyle>
 }

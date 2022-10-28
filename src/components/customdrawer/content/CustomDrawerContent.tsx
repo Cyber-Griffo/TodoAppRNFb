@@ -72,7 +72,7 @@ export function CustomDrawerContent(props: CustomDrawerContentProps) {
             onSubmitEditing={() => handleSubmitting()}
           />
           <Pressable
-            style={{ marginHorizontal: 12 }}
+            style={styles.headerIconButtonWrapper}
             onPress={() => handleSubmitting()}
           >
             {({ pressed }) => (
