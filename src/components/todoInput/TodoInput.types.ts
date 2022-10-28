@@ -8,6 +8,7 @@ export type Props = {
   submitButtonText?: string
   activeCategory?: CategoryLocal
   initialValue?: string
+  titleText?: string
 }
 
 export type RefFunctions = {

@@ -6,6 +6,7 @@ import { ThemeContext } from '../../utils/ThemeContext'
 import TodoElement from '../todoelement/TodoElement'
 import Seperator from '../seperator/Seperator'
 import Button from '../button/Button'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
   const { todo } = props
@@ -54,6 +55,15 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
           style={{ text: { fontSize: 16, color: theme.darkColor } }}
           pressEffectTextStyles={{ color: theme.darkGreyColor }}
           inverted
+          iconRight={
+            <MaterialCommunityIcon
+              name="pencil-outline"
+              size={22}
+              color={theme.darkColor}
+              style={{ marginLeft: 12 }}
+            />
+          }
+          showIconRight
         />
         <Seperator />
         <Button
@@ -62,6 +72,15 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
           variant="error"
           style={{ text: { fontSize: 16 } }}
           inverted
+          iconRight={
+            <MaterialCommunityIcon
+              name="trash-can-outline"
+              size={22}
+              color={theme.errorColor}
+              style={{ marginLeft: 12 }}
+            />
+          }
+          showIconRight
         />
       </View>
     </View>

@@ -60,7 +60,12 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
     useState<boolean>(false)
-  const initialValueTodoEdit = useRef<string | undefined>()
+  const todoAddingInitialProps = useRef<{
+    initialValue: string
+    submitFunction: (value: string, activeCategory: string) => void
+    submitButtonText: string
+    titleText: string
+  }>()
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
     useState<boolean>(false)
   const [isTodoEditModalShowing, setIsTodoEditModalShowing] =
@@ -79,10 +84,14 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   function clearSelectedTodoId(): void {
     selectedTodoId.current = undefined
   }
+  function clearTodoInputInitialValues(): void {
+    todoAddingInitialProps.current = undefined
+  }
   function handleAddTodoModalActivation(): void {
     setIsAddTodoModalShowing(true)
   }
   function handleAddTodoModalDismiss(): void {
+    clearTodoInputInitialValues()
     setIsAddTodoModalShowing(false)
   }
   function handleRemoveTodoModalActivation(): void {
@@ -198,7 +207,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
               addTodoFirebase(todo)
             }}
             activeCategory={category}
-            initialValue={initialValueTodoEdit.current}
+            {...todoAddingInitialProps.current}
           />
         </Modal>
       )}
@@ -230,7 +239,27 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
             handleEdit={(title) => {
               setIsTodoEditModalShowing(false)
               setIsAddTodoModalShowing(true)
-              initialValueTodoEdit.current = title
+              todoAddingInitialProps.current = {
+                initialValue: title,
+                submitFunction: (value) => {
+                  console.log('hallp')
+                  let refTodo = findTodoById(
+                    selectedTodoId.current || '',
+                    todos
+                  )
+                  if (refTodo) {
+                    let modifiedTodo: TodoLocal = {
+                      ...refTodo,
+                      title: value,
+                      lastChange: new Date(Date.now()),
+                    }
+                    modifyTodo(modifiedTodo)
+                    modifyTodoFirebase(modifiedTodo)
+                  }
+                },
+                submitButtonText: 'Update',
+                titleText: 'Edit Todo',
+              }
             }}
             handleDelete={() => handleRemoveTodoModalActivation()}
           />
