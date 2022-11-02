@@ -47,7 +47,7 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
             No Todo Selected!
           </Text>
         )}
-        <Seperator />
+        <Seperator styles={{ marginVertical: 2 }} />
         <Button
           value="Edit Todo"
           onPress={() => props.handleEdit(todo?.title)}
@@ -55,7 +55,7 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
           pressEffectTextStyles={{ color: theme.darkGreyColor }}
           inverted
         />
-        <Seperator />
+        <Seperator styles={{ marginVertical: 2 }} />
         <Button
           value="Delete Todo"
           onPress={() => props.handleDelete(todo?.id)}

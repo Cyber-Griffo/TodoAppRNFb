@@ -8,7 +8,7 @@ const Seperator = (props: SeperatorProps) => {
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
 
-  return <View style={styles.line} />
+  return <View style={[styles.line, props.styles]} />
 }
 
 export default Seperator

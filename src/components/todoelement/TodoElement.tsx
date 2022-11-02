@@ -40,15 +40,17 @@ const TodoElement = (props: TodoElementProps) => {
               },
             ]}
           >
-            <View style={styles.mark}>
-              {todo.done && (
-                <FontAwesome
-                  name="check"
-                  color={theme.backgroundColor}
-                  size={12}
-                />
-              )}
-            </View>
+            {pressable && (
+              <View style={styles.mark}>
+                {todo.done && (
+                  <FontAwesome
+                    name="check"
+                    color={theme.backgroundColor}
+                    size={12}
+                  />
+                )}
+              </View>
+            )}
             <View style={styles.titleWrapper}>
               {showCategory && category && (
                 <Text style={styles.category}>{category.title}</Text>
