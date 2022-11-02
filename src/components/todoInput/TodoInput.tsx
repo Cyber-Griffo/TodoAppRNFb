@@ -22,6 +22,7 @@ const TodoInput: React.ForwardRefRenderFunction<
     submitFunction,
     initialValue,
     submitButtonText,
+    titleText,
   } = props
   //! PLACEHOLDER STRING ONLY FOR DEV-STAGE
   const [title, setTitle] = useState<string>(
@@ -55,7 +56,7 @@ const TodoInput: React.ForwardRefRenderFunction<
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <Text style={styles.title}>Add new Todo</Text>
+        <Text style={styles.title}>{titleText || 'Add new Todo'}</Text>
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
         <TextInput
           value={title}

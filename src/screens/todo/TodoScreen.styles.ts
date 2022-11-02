@@ -59,5 +59,14 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
       fontWeight: '600',
       fontSize: 18,
     },
+    todoEditModalContainer: {
+      justifyContent: 'flex-end',
+    },
+    safeAreaBottomContainer: {
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      backgroundColor: ctx.theme.primaryColor,
+    },
   }
 }

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { ThemeContext } from '../../../utils/ThemeContext'
+import { getStyles } from './CustomDrawerItemListElemtent.styles'
 import { Props as CustomDrawerItemListElemtentProps } from './CustomDrawerItemListElemtent.types'
 
 const CustomDrawerItemListElemtent = (
@@ -24,41 +25,26 @@ const CustomDrawerItemListElemtent = (
     ? activeBackgroundColor
     : inactiveBackgroundColor
 
+  const styles = getStyles({ theme })
+
   //TODO: Refactor Styles!
 
   return (
-    <View style={{ width: '100%', paddingHorizontal: 12, marginVertical: 4 }}>
+    <View style={styles.wrapper}>
       <Pressable
-        style={{ flex: 1 }}
+        style={styles.pressable}
         onPress={onPress}
       >
         {({ pressed }) => (
           <View
             style={[
-              {
-                width: '100%',
-                position: 'relative',
-                borderRadius: 12,
-                overflow: 'hidden',
-                backgroundColor: backgroundColor,
-              },
-              pressed && {
-                backgroundColor: '#DBE7F0',
-                transform: [{ scale: 0.99 }],
-              },
+              styles.containerWrapper,
+              { backgroundColor },
+              pressed && styles.containerWrapperPressed,
             ]}
           >
             <View
-              style={[
-                {
-                  paddingVertical: 10,
-                  paddingHorizontal: 12,
-                  flexDirection: 'row',
-                  alignItems: 'baseline',
-                  justifyContent: 'space-between',
-                },
-                focused && { paddingLeft: 18 },
-              ]}
+              style={[styles.container, focused && styles.containerFocused]}
             >
               {typeof label === 'string' ? (
                 <Text
@@ -68,9 +54,7 @@ const CustomDrawerItemListElemtent = (
                     {
                       color,
                     },
-                    focused && {
-                      fontWeight: '500',
-                    },
+                    focused && styles.textFocused,
                     labelStyle,
                   ]}
                 >
@@ -81,27 +65,14 @@ const CustomDrawerItemListElemtent = (
               )}
               <Text
                 style={[
-                  {
-                    fontSize: 14,
-                    fontWeight: '500',
-                    color: theme.accentGreyColor,
-                  },
-                  focused && { color: theme.accentColor, fontWeight: '600' },
+                  styles.categoryCountText,
+                  focused && styles.categoryCountTextFocused,
                 ]}
               >
                 {categoryCount}
               </Text>
             </View>
-            {focused && (
-              <View
-                style={{
-                  height: '100%',
-                  width: 6,
-                  backgroundColor: theme.primaryColor,
-                  position: 'absolute',
-                }}
-              />
-            )}
+            {focused && <View style={styles.focusedMarker} />}
           </View>
         )}
       </Pressable>

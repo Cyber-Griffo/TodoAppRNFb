@@ -6,6 +6,7 @@ import { ThemeContext } from '../../utils/ThemeContext'
 import TodoElement from '../todoelement/TodoElement'
 import Seperator from '../seperator/Seperator'
 import Button from '../button/Button'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
   const { todo } = props
@@ -14,15 +15,8 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
   const styles = getStyles({ theme })
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          borderRadius: 12,
-          width: '100%',
-          backgroundColor: theme.backgroundColor,
-          paddingHorizontal: 12,
-        }}
-      >
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
         {todo ? (
           <TodoElement
             todo={todo}
@@ -35,33 +29,41 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
             }}
           />
         ) : (
-          <Text
-            style={{
-              marginVertical: 12,
-              textAlign: 'center',
-              fontWeight: '500',
-              fontSize: 20,
-              color: theme.primaryColor,
-            }}
-          >
-            No Todo Selected!
-          </Text>
+          <Text style={styles.noTodoMessage}>No Todo Selected!</Text>
         )}
         <Seperator styles={{ marginVertical: 2 }} />
         <Button
           value="Edit Todo"
-          onPress={() => props.handleEdit(todo?.title)}
+          onPress={() => props.handleEdit(todo?.title || '')}
           style={{ text: { fontSize: 16, color: theme.darkColor } }}
           pressEffectTextStyles={{ color: theme.darkGreyColor }}
           inverted
+          iconRight={
+            <MaterialCommunityIcon
+              name="pencil-outline"
+              size={22}
+              color={theme.darkColor}
+              style={styles.icon}
+            />
+          }
+          showIconRight
         />
         <Seperator styles={{ marginVertical: 2 }} />
         <Button
           value="Delete Todo"
-          onPress={() => props.handleDelete(todo?.id)}
+          onPress={() => props.handleDelete(todo?.id || '')}
           variant="error"
           style={{ text: { fontSize: 16 } }}
           inverted
+          iconRight={
+            <MaterialCommunityIcon
+              name="trash-can-outline"
+              size={22}
+              color={theme.errorColor}
+              style={styles.icon}
+            />
+          }
+          showIconRight
         />
       </View>
     </View>

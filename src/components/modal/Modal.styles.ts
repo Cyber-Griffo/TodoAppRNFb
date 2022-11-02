@@ -10,6 +10,7 @@ export const getStyles = (): ModalStyles => {
         top: 0,
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 2,
       },
     ],
     wrapper: [
@@ -19,6 +20,7 @@ export const getStyles = (): ModalStyles => {
         backgroundColor: 'rgba(0,0,0,.7)',
         position: 'absolute',
         top: 0,
+        zIndex: 1,
       },
     ],
   }

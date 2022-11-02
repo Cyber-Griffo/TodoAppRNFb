@@ -1,4 +1,4 @@
-import { StyleProp, ViewStyle } from 'react-native'
+import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 import { TodoLocal } from '../../types/GeneralTypes'
 import { Theme } from '../../utils/ThemeContext'
 
@@ -13,5 +13,8 @@ export type TodoEditStylesContext = {
 }
 
 export type TodoEditStyles = {
+  wrapper: StyleProp<ViewStyle>
   container: StyleProp<ViewStyle>
+  noTodoMessage: StyleProp<TextStyle>
+  icon: StyleProp<ViewStyle>
 }
