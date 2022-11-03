@@ -4,9 +4,9 @@ import { getStyles } from './TodoEdit.styles'
 import { Props as TodoEditProps } from './TodoEdit.types'
 import { ThemeContext } from '../../utils/ThemeContext'
 import TodoElement from '../todoelement/TodoElement'
-import Seperator from '../seperator/Seperator'
 import Button from '../button/Button'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Seperator from '../seperator/Seperator'
 
 const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
   const { todo } = props
@@ -31,7 +31,7 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
         ) : (
           <Text style={styles.noTodoMessage}>No Todo Selected!</Text>
         )}
-        <Seperator styles={{ marginVertical: 2 }} />
+        <Seperator styles={styles.seperator} />
         <Button
           value="Edit Todo"
           onPress={() => props.handleEdit(todo?.title || '')}
@@ -48,7 +48,7 @@ const TodoEdit: React.FC<TodoEditProps> = (props): JSX.Element => {
           }
           showIconRight
         />
-        <Seperator styles={{ marginVertical: 2 }} />
+        <Seperator styles={styles.seperator} />
         <Button
           value="Delete Todo"
           onPress={() => props.handleDelete(todo?.id || '')}

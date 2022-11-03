@@ -17,4 +17,5 @@ export type TodoEditStyles = {
   container: StyleProp<ViewStyle>
   noTodoMessage: StyleProp<TextStyle>
   icon: StyleProp<ViewStyle>
+  seperator: StyleProp<ViewStyle>
 }
