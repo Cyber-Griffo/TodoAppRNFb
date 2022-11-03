@@ -19,6 +19,5 @@ export type WelcomeScreenStyles = {
   headerText: StyleProp<TextStyle>
   bottomHeaderText: StyleProp<TextStyle>
   bottomSubHeaderText: StyleProp<TextStyle>
-  buttonWrapper: StyleProp<ViewStyle>
   buttonContainer: StyleProp<ViewStyle>
 }

@@ -1,6 +1,6 @@
-import { ModalStyleContext, ModalStyles } from './Modal.types'
+import { ModalStyles } from './Modal.types'
 
-export const getStyles = (ctx: ModalStyleContext): ModalStyles => {
+export const getStyles = (): ModalStyles => {
   return {
     container: [
       {
@@ -10,6 +10,7 @@ export const getStyles = (ctx: ModalStyleContext): ModalStyles => {
         top: 0,
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 2,
       },
     ],
     wrapper: [
@@ -19,8 +20,8 @@ export const getStyles = (ctx: ModalStyleContext): ModalStyles => {
         backgroundColor: 'rgba(0,0,0,.7)',
         position: 'absolute',
         top: 0,
+        zIndex: 1,
       },
-      ctx.containerStyles !== undefined && ctx.containerStyles,
     ],
   }
 }

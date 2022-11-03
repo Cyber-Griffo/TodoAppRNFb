@@ -74,46 +74,45 @@ const Button = (props: ButtonProps) => {
   }
 
   return (
-    <View style={[styles.buttonWrapper, props.style?.wrapper]}>
-      <Pressable
-        style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}
-        onPress={props.onPress}
-        {...props.pressableProps}
-      >
-        {({ pressed }) => (
-          <View
+    <Pressable
+      style={[styles.pressable, props.style?.wrapper]}
+      onPress={props.onPress}
+      {...props.pressableProps}
+    >
+      {({ pressed }) => (
+        <View
+          style={[
+            styles.buttonContainer,
+            props.style?.container,
+            pressed &&
+              pressEffectSize && [
+                { transform: [{ scale: 0.975 }] },
+                props.pressEffectViewStyles,
+              ],
+            pressed &&
+              pressEffectColor &&
+              !inverted && {
+                backgroundColor: pressedColor,
+              },
+          ]}
+        >
+          {showIconLeft && iconLeft}
+          <Text
             style={[
-              styles.buttonContainer,
-              props.style?.container,
-              pressed &&
-                pressEffectSize && [
-                  { transform: [{ scale: 0.975 }] },
-                  props.pressEffectViewStyles,
-                ],
+              styles.text,
+              props.style?.text,
               pressed &&
                 pressEffectColor &&
-                !inverted && {
-                  backgroundColor: pressedColor,
-                },
+                inverted && { color: pressedColor },
+              pressed && pressEffectColor && props.pressEffectTextStyles,
             ]}
           >
-            {showIconLeft && iconLeft}
-            <Text
-              style={[
-                styles.text,
-                props.style?.text,
-                pressed &&
-                  pressEffectColor &&
-                  inverted && { color: pressedColor },
-              ]}
-            >
-              {props.value}
-            </Text>
-            {showIconRight && iconRight}
-          </View>
-        )}
-      </Pressable>
-    </View>
+            {props.value}
+          </Text>
+          {showIconRight && iconRight}
+        </View>
+      )}
+    </Pressable>
   )
 }
 

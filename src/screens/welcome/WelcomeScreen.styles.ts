@@ -49,11 +49,9 @@ export const getStyles = (
       fontSize: 14,
       color: ctx.theme.backgroundColor,
     },
-    buttonWrapper: {
-      width: '60%',
-      alignItems: 'center',
-      justifyContent: 'center',
+    buttonContainer: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
     },
-    buttonContainer: { justifyContent: 'space-between', paddingHorizontal: 20 },
   }
 }

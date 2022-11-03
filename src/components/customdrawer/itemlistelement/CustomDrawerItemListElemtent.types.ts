@@ -1,4 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { Theme } from '../../../utils/ThemeContext'
 
 export type Props = {
   label:
@@ -24,12 +25,18 @@ export type Props = {
 }
 
 export type CustomDrawerItemListElemtentStyleContext = {
-  activeTintColor?: string
-  inactiveTintColor?: string
-  activeBackgroundColor?: string
-  inactiveBackgroundColor?: string
-  allowFontScaling?: boolean
-  focused?: boolean
+  theme: Theme
 }
 
-export type CustomDrawerItemListElemtentStyles = {}
+export type CustomDrawerItemListElemtentStyles = {
+  wrapper: StyleProp<ViewStyle>
+  pressable: StyleProp<ViewStyle>
+  containerWrapper: StyleProp<ViewStyle>
+  containerWrapperPressed: StyleProp<ViewStyle>
+  container: StyleProp<ViewStyle>
+  containerFocused: StyleProp<ViewStyle>
+  textFocused: StyleProp<TextStyle>
+  categoryCountText: StyleProp<TextStyle>
+  categoryCountTextFocused: StyleProp<TextStyle>
+  focusedMarker: StyleProp<ViewStyle>
+}

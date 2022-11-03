@@ -1,14 +1,15 @@
+//region imports
 import React, { useContext, useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
-import SafetyQuestion from '../../components/safetyquestion/SafetyQuestion'
 import TodoInput from '../../components/todoInput/TodoInput'
 import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInput/TodoInput.types'
 import { getStyles } from './TodoScreen.styles'
 import Button from '../../components/button/Button'
 import TodoList from '../../components/todoList/TodoList'
 import {
+  addTodoFirebase,
   modifyTodoFirebase,
   removeTodoFirebase,
 } from '../../database/FirebaseHandler'
@@ -23,16 +24,22 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { ThemeContext } from '../../utils/ThemeContext'
-import { TodoLocal } from '../../types/GeneralTypes'
+import { CategoryLocal, TodoLocal } from '../../types/GeneralTypes'
 import { useTodoStore } from '../../zustand/TodoStore'
+import TodoEdit from '../../components/todoedit/TodoEdit'
+import { STRING_ALL_TODOS } from '../../constants/Firebase'
+import { v4 } from 'uuid'
+import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
+//#endregion
 
 const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
+  const insets = useSafeAreaInsets()
   // TODO: Many Rerenders (Modal...)
   // State for managing Todos
-  const [selectedTodoId, setSelectedTodoId] = useState<string>('')
+  const selectedTodoId = useRef<string>()
 
   const categories = useTodoStore((state) => state.categories)
   const todos = useTodoStore((state) =>
@@ -48,11 +55,20 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   )
   const modifyTodo = useTodoStore((state) => state.modifyTodo)
   const removeTodo = useTodoStore((state) => state.removeTodo)
+  const addTodo = useTodoStore((state) => state.addTodo)
 
   // State for correct Modal to show
   const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
     useState<boolean>(false)
+  const todoAddingInitialProps = useRef<{
+    initialValue: string
+    submitFunction: (value: string, activeCategory?: CategoryLocal) => void
+    submitButtonText: string
+    titleText: string
+  }>()
   const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
+    useState<boolean>(false)
+  const [isTodoEditModalShowing, setIsTodoEditModalShowing] =
     useState<boolean>(false)
 
   // Refs
@@ -62,18 +78,37 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const safeareaInsets = useSafeAreaInsets()
 
   //#region Handler
+  function setSelectedTodoId(id: string): void {
+    selectedTodoId.current = id
+  }
+  function clearSelectedTodoId(): void {
+    selectedTodoId.current = undefined
+  }
+  function clearTodoInputInitialValues(): void {
+    todoAddingInitialProps.current = undefined
+  }
   function handleAddTodoModalActivation(): void {
     setIsAddTodoModalShowing(true)
   }
   function handleAddTodoModalDismiss(): void {
+    clearTodoInputInitialValues()
     setIsAddTodoModalShowing(false)
   }
-  function handleRemoveTodoModalActivation(id: string): void {
-    setSelectedTodoId(id)
+  function handleRemoveTodoModalActivation(): void {
+    setIsTodoEditModalShowing(false)
     setIsRemoveTodoModalShowing(true)
   }
   function handleRemoveModalDismiss(): void {
+    clearSelectedTodoId()
     setIsRemoveTodoModalShowing(false)
+  }
+  function handleTodoEditModalActivation(id: string): void {
+    setSelectedTodoId(id)
+    setIsTodoEditModalShowing(true)
+  }
+  function handleTodoEditModalDismiss(): void {
+    clearSelectedTodoId()
+    setIsTodoEditModalShowing(false)
   }
 
   function handleToggleTodo(todo?: TodoLocal): void {
@@ -131,7 +166,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
         <TodoList
           todos={todos}
           todoOnPress={(id) => handleToggleTodo(findTodoById(id, todos))}
-          todoOnLongPress={(id) => handleRemoveTodoModalActivation(id)}
+          todoOnLongPress={(id) => handleTodoEditModalActivation(id)}
           displayTodoCategory={category ? false : true}
         />
         <Button
@@ -142,7 +177,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
             container: styles.footerButton,
             text: styles.footerText,
           }}
-          pressEffectColor={false}
+          inverted
           pressEffectSize={false}
         />
       </View>
@@ -157,20 +192,87 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
           <TodoInput
             ref={todoInputRef}
             cancelFunction={() => handleAddTodoModalDismiss()}
+            submitFunction={(title, activeCategory) => {
+              const todo = {
+                categoryId: activeCategory
+                  ? activeCategory.id
+                  : STRING_ALL_TODOS,
+                title,
+                timestamp: new Date(Date.now()),
+                lastChange: new Date(Date.now()),
+                done: false,
+                id: v4(),
+              }
+              addTodo(todo)
+              addTodoFirebase(todo)
+            }}
             activeCategory={category}
+            {...todoAddingInitialProps.current}
           />
         </Modal>
       )}
       {isRemoveTodoModalShowing && (
         <Modal onBackdropPress={() => handleRemoveModalDismiss()}>
           <SafetyQuestion
-            title={findTodoById(selectedTodoId, todos)?.title || ''}
+            todo={findTodoById(selectedTodoId.current || '', todos)}
             acceptFunction={() =>
-              handleRemoveTodo(findTodoById(selectedTodoId, todos))
+              handleRemoveTodo(
+                findTodoById(selectedTodoId.current || '', todos)
+              )
             }
             cancelFunction={() => handleRemoveModalDismiss()}
           />
         </Modal>
+      )}
+      {isTodoEditModalShowing && (
+        <Modal
+          onBackdropPress={() => handleTodoEditModalDismiss()}
+          containerStyles={[
+            styles.todoEditModalContainer,
+            {
+              paddingBottom: 12 + insets.bottom,
+            },
+          ]}
+        >
+          <TodoEdit
+            todo={findTodoById(selectedTodoId.current || '', todos)}
+            handleEdit={(title) => {
+              setIsTodoEditModalShowing(false)
+              setIsAddTodoModalShowing(true)
+              todoAddingInitialProps.current = {
+                initialValue: title,
+                submitFunction: (value) => {
+                  console.log('hallp')
+                  let refTodo = findTodoById(
+                    selectedTodoId.current || '',
+                    todos
+                  )
+                  if (refTodo) {
+                    let modifiedTodo: TodoLocal = {
+                      ...refTodo,
+                      title: value,
+                      lastChange: new Date(Date.now()),
+                    }
+                    modifyTodo(modifiedTodo)
+                    modifyTodoFirebase(modifiedTodo)
+                  }
+                  handleAddTodoModalDismiss()
+                },
+                submitButtonText: 'Update',
+                titleText: 'Edit Todo',
+              }
+            }}
+            handleDelete={() => handleRemoveTodoModalActivation()}
+          />
+        </Modal>
+      )}
+      {!!safeareaInsets.bottom && (
+        <View
+          style={[
+            styles.safeAreaBottomContainer,
+            { height: safeareaInsets.bottom },
+          ]}
+        />
       )}
     </>
   )

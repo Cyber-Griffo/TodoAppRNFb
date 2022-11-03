@@ -11,22 +11,22 @@ import { getStyles } from './TodoInput.styles'
 import { RefFunctions, Props as TodoInputProps } from './TodoInput.types'
 import { faker } from '@faker-js/faker'
 import { ThemeContext } from '../../utils/ThemeContext'
-import { addTodoFirebase } from '../../database/FirebaseHandler'
-import { useTodoStore } from '../../zustand/TodoStore'
-import { v4 } from 'uuid'
-import { STRING_ALL_TODOS } from '../../constants/Firebase'
 
 const TodoInput: React.ForwardRefRenderFunction<
   RefFunctions,
   TodoInputProps
 > = (props: TodoInputProps, ref) => {
-  const { cancelFunction, activeCategory } = props
-  // const categories = useTodoStore((state) => state.categories)
-  const addTodo = useTodoStore((state) => state.addTodo)
-
+  const {
+    cancelFunction,
+    activeCategory,
+    submitFunction,
+    initialValue,
+    submitButtonText,
+    titleText,
+  } = props
   //! PLACEHOLDER STRING ONLY FOR DEV-STAGE
   const [title, setTitle] = useState<string>(
-    faker.lorem.sentence(Math.floor(Math.random() * 10) + 1)
+    initialValue || faker.lorem.sentence(Math.floor(Math.random() * 10) + 1)
   )
   const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -43,20 +43,11 @@ const TodoInput: React.ForwardRefRenderFunction<
 
   const handleSubmitting = () => {
     // just create a new Todo if Title is provided
-    if (title) {
-      const todo = {
-        categoryId: activeCategory ? activeCategory.id : STRING_ALL_TODOS,
-        title,
-        timestamp: new Date(Date.now()),
-        lastChange: new Date(Date.now()),
-        done: false,
-        id: v4(),
-      }
-      addTodo(todo)
-      addTodoFirebase(todo)
-    } else {
+    if (!title) {
       setErrorMessage('Please enter a Title!')
+      return
     }
+    submitFunction(title, activeCategory)
     setTitle('')
   }
 
@@ -65,7 +56,7 @@ const TodoInput: React.ForwardRefRenderFunction<
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <Text style={styles.title}>Add new Todo</Text>
+        <Text style={styles.title}>{titleText || 'Add new Todo'}</Text>
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
         <TextInput
           value={title}
@@ -84,7 +75,7 @@ const TodoInput: React.ForwardRefRenderFunction<
         />
         <View style={styles.buttonWrapper}>
           <Button
-            value={'Create'}
+            value={submitButtonText || 'Create'}
             rounded
             onPress={() => handleSubmitting()}
             style={{

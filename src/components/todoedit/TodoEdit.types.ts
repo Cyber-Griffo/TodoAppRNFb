@@ -4,19 +4,17 @@ import { Theme } from '../../utils/ThemeContext'
 
 export type Props = {
   todo?: TodoLocal
-  acceptFunction: () => void
-  cancelFunction: () => void
+  handleEdit: (title: string) => void
+  handleDelete: (id: string) => void
 }
 
-export type SafetyQuestionStylesContext = {
+export type TodoEditStylesContext = {
   theme: Theme
 }
 
-export type SafetyQuestionStyles = {
+export type TodoEditStyles = {
+  wrapper: StyleProp<ViewStyle>
   container: StyleProp<ViewStyle>
-  title: StyleProp<TextStyle>
-  buttonWrapper: StyleProp<ViewStyle>
-  touchableWrapper: StyleProp<ViewStyle>
-  buttonText: StyleProp<TextStyle>
   noTodoMessage: StyleProp<TextStyle>
+  icon: StyleProp<ViewStyle>
 }

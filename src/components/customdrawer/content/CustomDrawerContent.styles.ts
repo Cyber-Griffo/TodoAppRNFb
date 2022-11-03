@@ -53,8 +53,6 @@ export const getStyles = (
     ],
     headerIconButtonWrapper: {
       marginHorizontal: 12,
-      width: 42,
-      aspectRatio: 1,
     },
     headerIcon: {
       textAlign: 'center',

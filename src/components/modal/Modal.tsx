@@ -4,16 +4,16 @@ import { getStyles } from './Modal.styles'
 import { Props as ModalProps } from './Modal.types'
 
 const Modal = (props: ModalProps) => {
-  const { children, onBackdropPress, containerStyles } = props
-  const styles = getStyles({ containerStyles })
+  const { children, onBackdropPress } = props
+  const styles = getStyles()
 
   return (
     <>
       <TouchableWithoutFeedback onPress={onBackdropPress}>
-        <View style={styles.wrapper} />
+        <View style={[styles.wrapper, props.wrapperStyles]} />
       </TouchableWithoutFeedback>
       <SafeAreaView
-        style={styles.container}
+        style={[styles.container, props.containerStyles]}
         pointerEvents={'box-none'}
       >
         {children}

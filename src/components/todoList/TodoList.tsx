@@ -1,6 +1,5 @@
 import React from 'react'
 import { FlatList } from 'react-native'
-import { useTodoStore } from '../../zustand/TodoStore'
 import TodoElement from '../todoelement/TodoElement'
 import { getStyles } from './TodoList.styles'
 import { Props as TodoListProps } from './TodoList.types'
@@ -8,8 +7,6 @@ import { Props as TodoListProps } from './TodoList.types'
 const TodoList = (props: TodoListProps) => {
   const { todos, todoOnLongPress, todoOnPress, displayTodoCategory } = props
   const styles = getStyles()
-
-  const categories = useTodoStore((state) => state.categories)
 
   return (
     <FlatList
@@ -21,11 +18,7 @@ const TodoList = (props: TodoListProps) => {
       renderItem={({ item: todo }) => (
         <TodoElement
           todo={todo}
-          category={
-            displayTodoCategory
-              ? categories.find((category) => category.id === todo.categoryId)
-              : undefined
-          }
+          showCategory={displayTodoCategory}
           onPress={() => todoOnPress(todo.id)}
           onLongPress={() => todoOnLongPress(todo.id)}
           key={todo.id}

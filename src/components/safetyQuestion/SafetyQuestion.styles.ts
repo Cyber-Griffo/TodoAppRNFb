@@ -11,10 +11,10 @@ export const getStyles = (
       width: '80%',
       backgroundColor: ctx.theme.backgroundColor,
       borderRadius: 12,
+      padding: 10,
     },
     title: {
       marginTop: 20,
-      marginBottom: 30,
       textAlign: 'center',
       fontSize: 16,
       fontWeight: '400',
@@ -34,6 +34,13 @@ export const getStyles = (
     },
     buttonText: {
       fontWeight: '600',
+    },
+    noTodoMessage: {
+      marginVertical: 12,
+      textAlign: 'center',
+      fontWeight: '500',
+      fontSize: 20,
+      color: ctx.theme.primaryColor,
     },
   }
 }

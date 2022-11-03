@@ -3,19 +3,25 @@ import { ButtonStyleContext, ButtonStyles } from './Button.types'
 
 export const getStyles = (ctx: ButtonStyleContext): ButtonStyles => {
   return {
-    buttonWrapper: [
-      { width: '100%', height: FOOTER_HEIGHT },
-      ctx.variant === 'secondary' && {
-        borderColor: ctx.backgroundColor,
+    pressable: [
+      {
+        width: '100%',
+        height: FOOTER_HEIGHT,
+        overflow: 'hidden',
+      },
+      ctx.rounded && {
+        borderRadius: ctx.borderRadius,
       },
     ],
     buttonContainer: [
       {
         width: '100%',
+        height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: ctx.backgroundColor,
         flexDirection: 'row',
+        paddingHorizontal: 12,
       },
       ctx.iconButton && {
         padding: 0,
