@@ -1,5 +1,5 @@
 //region imports
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
@@ -19,7 +19,7 @@ import {
   todoSortingConditionsMainScreen,
 } from '../../helper/TodoHelper'
 import { TodoScreenProps as Props } from './TodoScreen.types'
-import { HEADER_HEIGHT } from '../../constants/StyleGuides'
+import { HEADER_HEIGHT, HEADER_ICON_HEIGHT } from '../../constants/StyleGuides'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
@@ -32,7 +32,10 @@ import { v4 } from 'uuid'
 import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
 //#endregion
 
-const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
+const TodoScreen: React.FC<Props> = ({
+  activeCategory: category,
+  iconRight,
+}: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
@@ -76,6 +79,20 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
 
   // Getting SafeAreaInsets
   const safeareaInsets = useSafeAreaInsets()
+
+  // Function for calculation total ausgaben in list
+  const calculateTotalCosts = (): number => {
+    let totalCosts = 0
+    console.log('CALCULATE TOTAL COSTS')
+    todos.forEach((todo) => {
+      totalCosts += parseFloat(todo?.title.split(':')[1].replace(',', '.')) || 0
+    })
+    return totalCosts
+  }
+
+  useEffect(() => {
+    console.log('TodoScreen: useEffect')
+  }, [todos.length])
 
   //#region Handler
   function setSelectedTodoId(id: string): void {
@@ -153,16 +170,60 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
           <View style={styles.headerContainer}>
             <MaterialIcon
               name="menu"
-              style={styles.menuIcon}
-              size={28}
+              size={HEADER_ICON_HEIGHT}
               color={theme.backgroundColor}
               onPress={() => navigation.openDrawer()}
             />
-            <Text style={styles.headerText}>
-              {category ? category.title : "All Todo's"}
-            </Text>
+            <View style={styles.headerTextWrapper}>
+              <Text
+                style={styles.headerText}
+                numberOfLines={1}
+              >
+                {category ? category.title : "All Todo's"}
+              </Text>
+            </View>
+            {iconRight ? (
+              iconRight
+            ) : (
+              <View style={styles.headerPlaceholderRight} />
+            )}
           </View>
         </View>
+        {category?.title.toLocaleLowerCase().includes('ausgaben') && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingTop: 6,
+              backgroundColor: theme.primaryGreyColor,
+              marginBottom: -6,
+              paddingBottom: 6,
+            }}
+          >
+            <Text />
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 16,
+                color: theme.darkColor,
+                opacity: 0.85,
+              }}
+            >
+              Anzahl: {todos.length}
+            </Text>
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 16,
+                color: theme.darkColor,
+                opacity: 0.85,
+              }}
+            >
+              Summe: {calculateTotalCosts().toFixed(2)} €
+            </Text>
+            <Text />
+          </View>
+        )}
         <TodoList
           todos={todos}
           todoOnPress={(id) => handleToggleTodo(findTodoById(id, todos))}

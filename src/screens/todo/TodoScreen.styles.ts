@@ -1,4 +1,8 @@
-import { FOOTER_HEIGHT, HEADER_HEIGHT } from '../../constants/StyleGuides'
+import {
+  FOOTER_HEIGHT,
+  HEADER_HEIGHT,
+  HEADER_ICON_HEIGHT,
+} from '../../constants/StyleGuides'
 import { TodoScreenStyleContext, TodoScreenStyles } from './TodoScreen.types'
 
 export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
@@ -25,17 +29,25 @@ export const getStyles = (ctx: TodoScreenStyleContext): TodoScreenStyles => {
     headerContainer: {
       height: HEADER_HEIGHT,
       width: '100%',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       alignItems: 'center',
+      flexDirection: 'row',
+      paddingHorizontal: 16,
+    },
+    headerTextWrapper: {
+      flex: 1,
+      paddingHorizontal: 16,
     },
     headerText: {
       color: ctx.theme.backgroundColor,
       fontWeight: '500',
       fontSize: 24,
+      textAlign: 'center',
+      textAlignVertical: 'center',
     },
-    menuIcon: {
-      position: 'absolute',
-      left: 16,
+    headerPlaceholderRight: {
+      height: HEADER_ICON_HEIGHT,
+      aspectRatio: 1,
     },
     footerButton: {
       width: '100%',
