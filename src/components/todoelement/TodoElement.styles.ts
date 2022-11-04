@@ -81,6 +81,8 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
       borderRadius: 20,
       backgroundColor: ctx.theme.backgroundColor,
     },
-    markFillerPressed: { backgroundColor: 'trasparent' },
+    markFillerPressed: {
+      backgroundColor: 'transparent',
+    },
   }
 }

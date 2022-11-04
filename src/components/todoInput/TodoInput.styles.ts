@@ -6,12 +6,12 @@ export const getStyles = (ctx: TodoInputStylesContext): TodoInputStyles => {
       width: '80%',
       backgroundColor: ctx.theme.backgroundColor,
       borderRadius: 12,
+      padding: 20,
     },
     title: {
-      marginTop: 20,
       textAlign: 'center',
-      fontSize: 18,
-      fontWeight: '400',
+      fontSize: 22,
+      fontWeight: '500',
       paddingHorizontal: 20,
       color: ctx.theme.darkColor,
     },
@@ -19,12 +19,9 @@ export const getStyles = (ctx: TodoInputStylesContext): TodoInputStyles => {
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'space-evenly',
-      marginBottom: 20,
-      paddingHorizontal: 10,
     },
     touchableWrapper: {
       flex: 1,
-      paddingHorizontal: 10,
     },
     buttonText: {
       fontWeight: '600',
@@ -34,15 +31,7 @@ export const getStyles = (ctx: TodoInputStylesContext): TodoInputStyles => {
       borderWidth: 1,
       borderRadius: 10,
       padding: 10,
-      marginHorizontal: 20,
-      marginVertical: 20,
       color: ctx.theme.darkColor,
-    },
-    errorText: {
-      marginTop: 10,
-      marginBottom: -12,
-      color: ctx.theme.errorColor,
-      marginLeft: 28,
     },
   }
 }

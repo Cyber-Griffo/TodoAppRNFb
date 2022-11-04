@@ -1,5 +1,6 @@
 import React, { useContext, useImperativeHandle, useState } from 'react'
 import {
+  ColorValue,
   Keyboard,
   Text,
   TextInput,
@@ -28,12 +29,28 @@ const TodoInput: React.ForwardRefRenderFunction<
   const [title, setTitle] = useState<string>(
     initialValue || faker.lorem.sentence(Math.floor(Math.random() * 10) + 1)
   )
-  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [description, setDescription] = useState<string>()
 
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
 
-  const INPUT_PLACEHOLDER = 'Title'
+  const TITLE_PLACEHOLDER = {
+    default: {
+      text: 'Enter your title here...',
+      color: theme.darkGreyColor,
+    },
+    error: {
+      text: 'Please enter a Title!',
+      color: theme.errorColor,
+    },
+  }
+
+  const [titlePlaceholderObj, setTitlePlaceholderObj] = useState<{
+    text: string
+    color: ColorValue
+  }>(TITLE_PLACEHOLDER.default)
+
+  const DESCRIPTION_PLACEHOLDER = 'Enter your description here...'
 
   useImperativeHandle(ref, () => ({
     isInputEmpty() {
@@ -44,7 +61,7 @@ const TodoInput: React.ForwardRefRenderFunction<
   const handleSubmitting = () => {
     // just create a new Todo if Title is provided
     if (!title) {
-      setErrorMessage('Please enter a Title!')
+      setTitlePlaceholderObj(TITLE_PLACEHOLDER.error)
       return
     }
     submitFunction(title, activeCategory)
@@ -57,29 +74,63 @@ const TodoInput: React.ForwardRefRenderFunction<
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <Text style={styles.title}>{titleText || 'Add new Todo'}</Text>
-        {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
-        <TextInput
-          value={title}
-          onChangeText={(text) => {
-            setTitle(text)
-            if (errorMessage) {
-              setErrorMessage('')
-            }
-          }}
-          style={styles.textInput}
-          placeholder={INPUT_PLACEHOLDER}
-          placeholderTextColor={theme.primaryGreyColor}
-          onSubmitEditing={() => handleSubmitting()}
-          blurOnSubmit={false}
-          autoFocus
-        />
+        <View>
+          <View style={{ marginBottom: 20, marginTop: 10 }}>
+            <Text
+              style={{
+                color: theme.accentColor,
+                fontWeight: '500',
+                marginBottom: 4,
+              }}
+            >
+              Title
+            </Text>
+            <TextInput
+              value={title}
+              onChangeText={(text) => {
+                setTitle(text)
+              }}
+              style={styles.textInput}
+              placeholder={titlePlaceholderObj.text}
+              placeholderTextColor={titlePlaceholderObj.color}
+              onSubmitEditing={() => handleSubmitting()}
+              onFocus={() => setTitlePlaceholderObj(TITLE_PLACEHOLDER.default)}
+              blurOnSubmit={false}
+              autoFocus
+            />
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text
+              style={{
+                color: theme.accentColor,
+                fontWeight: '500',
+                marginBottom: 4,
+              }}
+            >
+              Description
+            </Text>
+            <TextInput
+              value={description}
+              onChangeText={(text) => {
+                setDescription(text)
+              }}
+              style={[styles.textInput, { maxHeight: 72 }]}
+              placeholder={DESCRIPTION_PLACEHOLDER}
+              placeholderTextColor={theme.darkGreyColor}
+              onSubmitEditing={() => handleSubmitting()}
+              blurOnSubmit={false}
+              multiline
+              scrollEnabled
+            />
+          </View>
+        </View>
         <View style={styles.buttonWrapper}>
           <Button
             value={submitButtonText || 'Create'}
             rounded
             onPress={() => handleSubmitting()}
             style={{
-              wrapper: styles.touchableWrapper,
+              wrapper: [styles.touchableWrapper, { marginRight: 10 }],
               text: styles.buttonText,
             }}
           />
@@ -89,7 +140,7 @@ const TodoInput: React.ForwardRefRenderFunction<
             rounded
             onPress={() => cancelFunction()}
             style={{
-              wrapper: styles.touchableWrapper,
+              wrapper: [styles.touchableWrapper, { marginLeft: 10 }],
               text: styles.buttonText,
             }}
             inverted

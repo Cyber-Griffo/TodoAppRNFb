@@ -1,12 +1,11 @@
 //region imports
 import React, { useContext, useMemo, useRef, useState } from 'react'
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
 import TodoInput from '../../components/todoInput/TodoInput'
 import { RefFunctions as TodoInputRefFunctions } from '../../components/todoInput/TodoInput.types'
 import { getStyles } from './TodoScreen.styles'
-import Button from '../../components/button/Button'
 import TodoList from '../../components/todoList/TodoList'
 import {
   addTodoFirebase,
@@ -70,7 +69,7 @@ const TodoScreen: React.FC<Props> = ({
   // Modas States
   const todoInputInitialProps = useRef<TodoInputInitalProps>()
   const [isTodoInputModalShowing, setIsTodoInputModalShowing] =
-    useState<boolean>(false)
+    useState<boolean>(true)
   const [isTodoRemoveModalShowing, setIsTodoRemoveModalShowing] =
     useState<boolean>(false)
   const [isTodoEditModalShowing, setIsTodoEditModalShowing] =
@@ -112,18 +111,18 @@ const TodoScreen: React.FC<Props> = ({
   function clearTodoInputInitialValues(): void {
     todoInputInitialProps.current = undefined
   }
-  function handleAddTodoModalActivation(): void {
+  function handleTodoInputModalActivation(): void {
     setIsTodoInputModalShowing(true)
   }
-  function handleAddTodoModalDismiss(): void {
+  function handleTodoInputModalDismiss(): void {
     clearTodoInputInitialValues()
     setIsTodoInputModalShowing(false)
   }
-  function handleRemoveTodoModalActivation(): void {
+  function handleTodoRemoveModalActivation(): void {
     setIsTodoEditModalShowing(false)
     setIsTodoRemoveModalShowing(true)
   }
-  function handleRemoveModalDismiss(): void {
+  function handleTodoRemoveModalDismiss(): void {
     clearSelectedTodoId()
     setIsTodoRemoveModalShowing(false)
   }
@@ -238,29 +237,53 @@ const TodoScreen: React.FC<Props> = ({
           todoOnLongPress={(id) => handleTodoEditModalActivation(id)}
           displayTodoCategory={category ? false : true}
         />
-        <Button
-          value={isAusgabenCategory ? 'Add new Cost' : 'Add new Todo'}
-          variant={'secondary'}
-          onPress={() => handleAddTodoModalActivation()}
-          style={{
-            container: styles.footerButton,
-            text: styles.footerText,
-          }}
-          inverted
-          pressEffectSize={false}
-        />
+        <Pressable onPress={() => handleTodoInputModalActivation()}>
+          {({ pressed }) => (
+            <View
+              style={[
+                {
+                  position: 'absolute',
+                  bottom: 16,
+                  right: 16,
+                  aspectRatio: 1,
+                  height: HEADER_HEIGHT,
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  backgroundColor: theme.primaryColor,
+                  borderRadius: 40,
+                  overflow: 'hidden',
+                },
+                pressed && {
+                  transform: [{ scale: 0.95 }],
+                },
+              ]}
+            >
+              <MaterialIcon
+                name="add"
+                color={theme.backgroundColor}
+                style={[
+                  {
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    fontSize: 32,
+                  },
+                ]}
+              />
+            </View>
+          )}
+        </Pressable>
       </View>
       {isTodoInputModalShowing && (
         <Modal
           onBackdropPress={() => {
             if (todoInputRef.current?.isInputEmpty()) {
-              handleAddTodoModalDismiss()
+              handleTodoInputModalDismiss()
             }
           }}
         >
           <TodoInput
             ref={todoInputRef}
-            cancelFunction={() => handleAddTodoModalDismiss()}
+            cancelFunction={() => handleTodoInputModalDismiss()}
             submitFunction={(title, activeCategory) => {
               const todo = {
                 categoryId: activeCategory
@@ -281,7 +304,7 @@ const TodoScreen: React.FC<Props> = ({
         </Modal>
       )}
       {isTodoRemoveModalShowing && (
-        <Modal onBackdropPress={() => handleRemoveModalDismiss()}>
+        <Modal onBackdropPress={() => handleTodoRemoveModalDismiss()}>
           <SafetyQuestion
             todo={findTodoById(selectedTodoId.current || '', todos)}
             acceptFunction={() =>
@@ -289,7 +312,7 @@ const TodoScreen: React.FC<Props> = ({
                 findTodoById(selectedTodoId.current || '', todos)
               )
             }
-            cancelFunction={() => handleRemoveModalDismiss()}
+            cancelFunction={() => handleTodoRemoveModalDismiss()}
           />
         </Modal>
       )}
@@ -325,13 +348,13 @@ const TodoScreen: React.FC<Props> = ({
                     modifyTodo(modifiedTodo)
                     modifyTodoFirebase(modifiedTodo)
                   }
-                  handleAddTodoModalDismiss()
+                  handleTodoInputModalDismiss()
                 },
                 submitButtonText: 'Update',
                 titleText: 'Edit Todo',
               }
             }}
-            handleDelete={() => handleRemoveTodoModalActivation()}
+            handleDelete={() => handleTodoRemoveModalActivation()}
           />
         </Modal>
       )}

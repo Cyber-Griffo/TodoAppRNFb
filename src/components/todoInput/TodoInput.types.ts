@@ -26,5 +26,4 @@ export type TodoInputStyles = {
   buttonWrapper: StyleProp<ViewStyle>
   touchableWrapper: StyleProp<ViewStyle>
   buttonText: StyleProp<TextStyle>
-  errorText: StyleProp<TextStyle>
 }
