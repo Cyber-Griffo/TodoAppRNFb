@@ -13,6 +13,7 @@ const TodoElement = (props: TodoElementProps) => {
     onLongPress,
     showCategory = true,
     pressable = true,
+    pressEffectScale = 0.99,
   } = props
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme, todo })
@@ -36,24 +37,47 @@ const TodoElement = (props: TodoElementProps) => {
               styles.container,
               pressed && {
                 backgroundColor: theme.primaryLightColor,
-                transform: [{ scale: 1 }],
+                transform: [{ scale: pressEffectScale }],
               },
             ]}
           >
-            <View style={styles.mark}>
-              {todo.done && (
+            <View
+              style={[
+                styles.mark,
+                pressed && {
+                  opacity: 0.7,
+                },
+              ]}
+            >
+              {todo.done ? (
                 <FontAwesome
                   name="check"
                   color={theme.backgroundColor}
                   size={12}
                 />
+              ) : (
+                <View
+                  style={[
+                    {
+                      height: '75%',
+                      aspectRatio: 1,
+                      borderRadius: 20,
+                      backgroundColor: theme.backgroundColor,
+                    },
+                    pressed && { backgroundColor: 'transparent' },
+                  ]}
+                />
               )}
             </View>
             <View style={styles.titleWrapper}>
               {showCategory && category && (
-                <Text style={styles.category}>{category.title}</Text>
+                <Text style={[styles.category, pressed && { opacity: 0.7 }]}>
+                  {category.title}
+                </Text>
               )}
-              <Text style={styles.title}>{todo.title}</Text>
+              <Text style={[styles.title, pressed && { opacity: 0.7 }]}>
+                {todo.title}
+              </Text>
             </View>
           </View>
         )}

@@ -11,6 +11,7 @@ export type Props = {
     wrapper?: StyleProp<ViewStyle>
   }
   pressable?: boolean
+  pressEffectScale?: number
 }
 
 export type TodoElementStyleContext = {

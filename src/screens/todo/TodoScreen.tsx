@@ -239,7 +239,7 @@ const TodoScreen: React.FC<Props> = ({
           displayTodoCategory={category ? false : true}
         />
         <Button
-          value={'Add new Todo'}
+          value={isAusgabenCategory ? 'Add new Cost' : 'Add new Todo'}
           variant={'secondary'}
           onPress={() => handleAddTodoModalActivation()}
           style={{
