@@ -13,6 +13,7 @@ const TodoElement = (props: TodoElementProps) => {
     onLongPress,
     showCategory = true,
     pressable = true,
+    pressEffectScale = 0.99,
   } = props
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme, todo })
@@ -36,7 +37,7 @@ const TodoElement = (props: TodoElementProps) => {
               styles.container,
               pressed && {
                 backgroundColor: theme.primaryLightColor,
-                transform: [{ scale: 1 }],
+                transform: [{ scale: pressEffectScale }],
               },
             ]}
           >
