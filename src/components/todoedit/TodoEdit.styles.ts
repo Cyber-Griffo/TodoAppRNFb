@@ -22,5 +22,8 @@ export const getStyles = (ctx: TodoEditStylesContext): TodoEditStyles => {
     icon: {
       marginLeft: 12,
     },
+    seperator: {
+      margin: 12,
+    },
   }
 }

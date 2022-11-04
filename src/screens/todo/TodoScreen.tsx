@@ -1,5 +1,5 @@
 //region imports
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useMemo, useRef, useState } from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Modal from '../../components/modal/Modal'
@@ -19,7 +19,7 @@ import {
   todoSortingConditionsMainScreen,
 } from '../../helper/TodoHelper'
 import { TodoScreenProps as Props } from './TodoScreen.types'
-import { HEADER_HEIGHT } from '../../constants/StyleGuides'
+import { HEADER_HEIGHT, HEADER_ICON_HEIGHT } from '../../constants/StyleGuides'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
@@ -32,15 +32,25 @@ import { v4 } from 'uuid'
 import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
 //#endregion
 
-const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
+type TodoInputInitalProps = {
+  initialValue: string
+  submitFunction: (value: string, activeCategory?: CategoryLocal) => void
+  submitButtonText: string
+  titleText: string
+}
+
+const TodoScreen: React.FC<Props> = ({
+  activeCategory: category,
+  iconRight,
+}: Props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { theme } = useContext(ThemeContext)
   const styles = getStyles({ theme })
   const insets = useSafeAreaInsets()
-  // TODO: Many Rerenders (Modal...)
-  // State for managing Todos
+
   const selectedTodoId = useRef<string>()
 
+  // TODO: zustand calls Store every time a rerender accurs
   const categories = useTodoStore((state) => state.categories)
   const todos = useTodoStore((state) =>
     category
@@ -57,16 +67,11 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   const removeTodo = useTodoStore((state) => state.removeTodo)
   const addTodo = useTodoStore((state) => state.addTodo)
 
-  // State for correct Modal to show
-  const [isAddTodoModalShowing, setIsAddTodoModalShowing] =
+  // Modas States
+  const todoInputInitialProps = useRef<TodoInputInitalProps>()
+  const [isTodoInputModalShowing, setIsTodoInputModalShowing] =
     useState<boolean>(false)
-  const todoAddingInitialProps = useRef<{
-    initialValue: string
-    submitFunction: (value: string, activeCategory?: CategoryLocal) => void
-    submitButtonText: string
-    titleText: string
-  }>()
-  const [isRemoveTodoModalShowing, setIsRemoveTodoModalShowing] =
+  const [isTodoRemoveModalShowing, setIsTodoRemoveModalShowing] =
     useState<boolean>(false)
   const [isTodoEditModalShowing, setIsTodoEditModalShowing] =
     useState<boolean>(false)
@@ -77,6 +82,26 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
   // Getting SafeAreaInsets
   const safeareaInsets = useSafeAreaInsets()
 
+  const isAusgabenCategory = useMemo(() => {
+    return category?.title.toLocaleLowerCase().includes('ausgaben')
+  }, [category])
+
+  // TODO: Too many rerenders doe to zustand
+  // Function for calculation total ausgaben in list
+  const calculateTotalCosts = useMemo((): number => {
+    if (!isAusgabenCategory) return 0
+    let totalCosts = 0
+    todos.forEach((todo) => {
+      try {
+        totalCosts +=
+          parseFloat(todo.title.split(':')[1].replace(',', '.')) || 0
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    return totalCosts
+  }, [todos, isAusgabenCategory])
+
   //#region Handler
   function setSelectedTodoId(id: string): void {
     selectedTodoId.current = id
@@ -85,22 +110,22 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
     selectedTodoId.current = undefined
   }
   function clearTodoInputInitialValues(): void {
-    todoAddingInitialProps.current = undefined
+    todoInputInitialProps.current = undefined
   }
   function handleAddTodoModalActivation(): void {
-    setIsAddTodoModalShowing(true)
+    setIsTodoInputModalShowing(true)
   }
   function handleAddTodoModalDismiss(): void {
     clearTodoInputInitialValues()
-    setIsAddTodoModalShowing(false)
+    setIsTodoInputModalShowing(false)
   }
   function handleRemoveTodoModalActivation(): void {
     setIsTodoEditModalShowing(false)
-    setIsRemoveTodoModalShowing(true)
+    setIsTodoRemoveModalShowing(true)
   }
   function handleRemoveModalDismiss(): void {
     clearSelectedTodoId()
-    setIsRemoveTodoModalShowing(false)
+    setIsTodoRemoveModalShowing(false)
   }
   function handleTodoEditModalActivation(id: string): void {
     setSelectedTodoId(id)
@@ -128,7 +153,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
     if (todo) {
       removeTodo(todo)
       removeTodoFirebase(todo)
-      setIsRemoveTodoModalShowing(false)
+      setIsTodoRemoveModalShowing(false)
     } else {
       console.error('Removing Error')
     }
@@ -153,16 +178,60 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
           <View style={styles.headerContainer}>
             <MaterialIcon
               name="menu"
-              style={styles.menuIcon}
-              size={28}
+              size={HEADER_ICON_HEIGHT}
               color={theme.backgroundColor}
               onPress={() => navigation.openDrawer()}
             />
-            <Text style={styles.headerText}>
-              {category ? category.title : "All Todo's"}
-            </Text>
+            <View style={styles.headerTextWrapper}>
+              <Text
+                style={styles.headerText}
+                numberOfLines={1}
+              >
+                {category ? category.title : "All Todo's"}
+              </Text>
+            </View>
+            {iconRight ? (
+              iconRight
+            ) : (
+              <View style={styles.headerPlaceholderRight} />
+            )}
           </View>
         </View>
+        {isAusgabenCategory && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingTop: 6,
+              backgroundColor: theme.primaryGreyColor,
+              marginBottom: -6,
+              paddingBottom: 6,
+            }}
+          >
+            <Text />
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 16,
+                color: theme.darkColor,
+                opacity: 0.85,
+              }}
+            >
+              Anzahl: {todos.length}
+            </Text>
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 16,
+                color: theme.darkColor,
+                opacity: 0.85,
+              }}
+            >
+              Summe: {calculateTotalCosts.toFixed(2)} €
+            </Text>
+            <Text />
+          </View>
+        )}
         <TodoList
           todos={todos}
           todoOnPress={(id) => handleToggleTodo(findTodoById(id, todos))}
@@ -181,7 +250,7 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
           pressEffectSize={false}
         />
       </View>
-      {isAddTodoModalShowing && (
+      {isTodoInputModalShowing && (
         <Modal
           onBackdropPress={() => {
             if (todoInputRef.current?.isInputEmpty()) {
@@ -207,11 +276,11 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
               addTodoFirebase(todo)
             }}
             activeCategory={category}
-            {...todoAddingInitialProps.current}
+            {...todoInputInitialProps.current}
           />
         </Modal>
       )}
-      {isRemoveTodoModalShowing && (
+      {isTodoRemoveModalShowing && (
         <Modal onBackdropPress={() => handleRemoveModalDismiss()}>
           <SafetyQuestion
             todo={findTodoById(selectedTodoId.current || '', todos)}
@@ -238,8 +307,8 @@ const TodoScreen: React.FC<Props> = ({ activeCategory: category }: Props) => {
             todo={findTodoById(selectedTodoId.current || '', todos)}
             handleEdit={(title) => {
               setIsTodoEditModalShowing(false)
-              setIsAddTodoModalShowing(true)
-              todoAddingInitialProps.current = {
+              setIsTodoInputModalShowing(true)
+              todoInputInitialProps.current = {
                 initialValue: title,
                 submitFunction: (value) => {
                   console.log('hallp')
