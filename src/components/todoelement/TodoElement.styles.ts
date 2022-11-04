@@ -40,7 +40,10 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         marginTop: 1,
       },
     ],
-    category: [
+    titlePressed: {
+      opacity: 0.7,
+    },
+    categoryTitle: [
       {
         color: ctx.theme.primaryColor,
         fontSize: 14,
@@ -51,6 +54,9 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         marginBottom: 1,
       },
     ],
+    categoryTitlePressed: {
+      opacity: 0.7,
+    },
     mark: [
       {
         height: 16,
@@ -66,5 +72,15 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         borderColor: ctx.theme.accentGreyColor,
       },
     ],
+    markPressed: {
+      opacity: 0.7,
+    },
+    markFiller: {
+      height: '75%',
+      aspectRatio: 1,
+      borderRadius: 20,
+      backgroundColor: ctx.theme.backgroundColor,
+    },
+    markFillerPressed: { backgroundColor: 'trasparent' },
   }
 }

@@ -23,7 +23,12 @@ export type TodoElementStyles = {
   container: StyleProp<ViewStyle>
   titleWrapper: StyleProp<ViewStyle>
   title: StyleProp<TextStyle>
-  category: StyleProp<TextStyle>
+  titlePressed: StyleProp<TextStyle>
+  categoryTitle: StyleProp<TextStyle>
+  categoryTitlePressed: StyleProp<TextStyle>
   mark: StyleProp<ViewStyle>
+  markPressed: StyleProp<ViewStyle>
+  markFiller: StyleProp<ViewStyle>
+  markFillerPressed: StyleProp<ViewStyle>
   wrapper: StyleProp<ViewStyle>
 }

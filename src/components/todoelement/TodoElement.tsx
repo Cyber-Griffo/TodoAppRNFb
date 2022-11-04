@@ -41,14 +41,7 @@ const TodoElement = (props: TodoElementProps) => {
               },
             ]}
           >
-            <View
-              style={[
-                styles.mark,
-                pressed && {
-                  opacity: 0.7,
-                },
-              ]}
-            >
+            <View style={[styles.mark, pressed && styles.markPressed]}>
               {todo.done ? (
                 <FontAwesome
                   name="check"
@@ -58,24 +51,24 @@ const TodoElement = (props: TodoElementProps) => {
               ) : (
                 <View
                   style={[
-                    {
-                      height: '75%',
-                      aspectRatio: 1,
-                      borderRadius: 20,
-                      backgroundColor: theme.backgroundColor,
-                    },
-                    pressed && { backgroundColor: 'transparent' },
+                    styles.markFiller,
+                    pressed && styles.markFillerPressed,
                   ]}
                 />
               )}
             </View>
             <View style={styles.titleWrapper}>
               {showCategory && category && (
-                <Text style={[styles.category, pressed && { opacity: 0.7 }]}>
+                <Text
+                  style={[
+                    styles.categoryTitle,
+                    pressed && styles.categoryTitlePressed,
+                  ]}
+                >
                   {category.title}
                 </Text>
               )}
-              <Text style={[styles.title, pressed && { opacity: 0.7 }]}>
+              <Text style={[styles.title, pressed && styles.titlePressed]}>
                 {todo.title}
               </Text>
             </View>
