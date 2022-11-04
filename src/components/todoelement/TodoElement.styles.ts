@@ -53,12 +53,10 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     ],
     mark: [
       {
-        width: 16,
         height: 16,
+        aspectRatio: 1,
         borderRadius: 8,
-        backgroundColor: ctx.theme.backgroundColor,
-        borderWidth: 2,
-        borderColor: ctx.theme.accentColor,
+        backgroundColor: ctx.theme.accentColor,
         marginRight: 12,
         justifyContent: 'center',
         alignItems: 'center',
