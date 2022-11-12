@@ -6,8 +6,8 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
     wrapper: [
       {
         marginVertical: 6,
-        marginHorizontal: 12,
-        borderRadius: 13,
+        borderRadius: 12,
+        overflow: 'hidden',
       },
     ],
     container: [
@@ -17,7 +17,6 @@ export const getStyles = (ctx: TodoElementStyleContext): TodoElementStyles => {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        borderRadius: 12,
       },
       ctx.todo.done && {
         backgroundColor: ctx.theme.primaryLightColor,
