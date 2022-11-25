@@ -54,6 +54,7 @@ const CustomDrawerItemListElemtent = (
                     {
                       color,
                     },
+                    { flex: 1, paddingRight: 10 },
                     focused && styles.textFocused,
                     labelStyle,
                   ]}

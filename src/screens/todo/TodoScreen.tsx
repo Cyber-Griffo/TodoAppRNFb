@@ -28,7 +28,7 @@ import { useTodoStore } from '../../zustand/TodoStore'
 import TodoEdit from '../../components/todoedit/TodoEdit'
 import { STRING_ALL_TODOS } from '../../constants/Firebase'
 import { v4 } from 'uuid'
-import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
+import SafetyQuestion from '../../components/safetyquestion/SafetyQuestion'
 //#endregion
 
 type TodoInputInitalProps = {
@@ -69,7 +69,7 @@ const TodoScreen: React.FC<Props> = ({
   // Modas States
   const todoInputInitialProps = useRef<TodoInputInitalProps>()
   const [isTodoInputModalShowing, setIsTodoInputModalShowing] =
-    useState<boolean>(true)
+    useState<boolean>(false)
   const [isTodoRemoveModalShowing, setIsTodoRemoveModalShowing] =
     useState<boolean>(false)
   const [isTodoEditModalShowing, setIsTodoEditModalShowing] =
@@ -237,21 +237,33 @@ const TodoScreen: React.FC<Props> = ({
           todoOnLongPress={(id) => handleTodoEditModalActivation(id)}
           displayTodoCategory={category ? false : true}
         />
-        <Pressable onPress={() => handleTodoInputModalActivation()}>
+        <Pressable
+          style={{
+            position: 'absolute',
+            bottom: 16,
+            right: 16,
+            aspectRatio: 1,
+            height: HEADER_HEIGHT,
+            justifyContent: 'center',
+            alignContent: 'center',
+            borderRadius: 40,
+          }}
+          onPress={() => {
+            handleTodoInputModalActivation()
+            console.log('Pressed')
+          }}
+        >
           {({ pressed }) => (
             <View
               style={[
                 {
-                  position: 'absolute',
-                  bottom: 16,
-                  right: 16,
-                  aspectRatio: 1,
                   height: HEADER_HEIGHT,
-                  justifyContent: 'center',
-                  alignContent: 'center',
+                  aspectRatio: 1,
                   backgroundColor: theme.primaryColor,
                   borderRadius: 40,
                   overflow: 'hidden',
+                  justifyContent: 'center',
+                  alignContent: 'center',
                 },
                 pressed && {
                   transform: [{ scale: 0.95 }],

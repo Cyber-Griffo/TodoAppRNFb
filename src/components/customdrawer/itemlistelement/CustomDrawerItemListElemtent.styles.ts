@@ -29,7 +29,7 @@ export const getStyles = (
       paddingVertical: 10,
       paddingHorizontal: 12,
       flexDirection: 'row',
-      alignItems: 'baseline',
+      alignItems: 'flex-end',
       justifyContent: 'space-between',
     },
     containerFocused: {
