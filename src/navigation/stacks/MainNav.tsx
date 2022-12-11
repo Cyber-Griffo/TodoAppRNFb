@@ -46,6 +46,7 @@ export function MainStack() {
     return firestoreTodoPath.onSnapshot((querySnapshot) => {
       querySnapshot.docChanges().forEach((docChange) => {
         const firebaseTodo: TodoFirebase = docChange.doc.data() as TodoFirebase
+        console.log(firebaseTodo.timestamp)
         const localTodo: TodoLocal = {
           ...firebaseTodo,
           timestamp: firebaseTodo.timestamp?.toDate() || new Date(Date.now()),

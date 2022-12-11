@@ -7,6 +7,7 @@ export type TodoFirebase = {
   categoryId: string
   timestamp: FirebaseFirestoreTypes.Timestamp
   lastChange: FirebaseFirestoreTypes.Timestamp
+  description?: string
 }
 
 export type TodoLocal = {
@@ -16,6 +17,7 @@ export type TodoLocal = {
   categoryId: string
   timestamp: Date
   lastChange: Date
+  description?: string
 }
 
 export type CategoryLocal = {

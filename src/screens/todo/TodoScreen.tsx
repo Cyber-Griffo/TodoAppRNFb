@@ -1,4 +1,3 @@
-//region imports
 import React, { useContext, useMemo, useRef, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -28,8 +27,7 @@ import { useTodoStore } from '../../zustand/TodoStore'
 import TodoEdit from '../../components/todoedit/TodoEdit'
 import { STRING_ALL_TODOS } from '../../constants/Firebase'
 import { v4 } from 'uuid'
-import SafetyQuestion from '../../components/safetyquestion/SafetyQuestion'
-//#endregion
+import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
 
 type TodoInputInitalProps = {
   initialValue: string
@@ -346,7 +344,6 @@ const TodoScreen: React.FC<Props> = ({
               todoInputInitialProps.current = {
                 initialValue: title,
                 submitFunction: (value) => {
-                  console.log('hallp')
                   let refTodo = findTodoById(
                     selectedTodoId.current || '',
                     todos

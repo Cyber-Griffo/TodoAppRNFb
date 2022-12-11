@@ -206,3 +206,14 @@ export async function TESTING_ONLY_CONVERT_TODOS() {
 export async function TESTING_ONLY_ADDING_CUSTOM_DOC_ID() {
   firestore().collection('test').doc('123').set({ title: 'baum' })
 }
+
+export async function TESTING_ONLY_ADDING_EMPTY_DESCRIPTION_TO_ALL_TODOS() {
+  const todos = await firestoreTodoPath.get()
+
+  todos.forEach((todo) => {
+    firestoreTodoPath.doc(todo.id).update({
+      ...todo.data(),
+      description: '',
+    })
+  })
+}
