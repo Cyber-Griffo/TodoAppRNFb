@@ -27,7 +27,7 @@ import { useTodoStore } from '../../zustand/TodoStore'
 import TodoEdit from '../../components/todoedit/TodoEdit'
 import { STRING_ALL_TODOS } from '../../constants/Firebase'
 import { v4 } from 'uuid'
-import SafetyQuestion from '../../components/safetyQuestion/SafetyQuestion'
+import SafetyQuestion from '../../components/safetyquestion/SafetyQuestion'
 
 type TodoInputInitalProps = {
   initialValue: string
